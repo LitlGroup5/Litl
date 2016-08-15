@@ -17,6 +17,13 @@ Required:
       - Skill set
       - Number of connections
       - Tabbed Reviews (Reviews by the user and of the user)
+* [ ] User should be able to look at the detail view of the Tasks in Proposals/Offers 
+* [ ] User should be able to create new Proposals 
+* [ ] User should be able to edit existing Proposals 
+* [ ] User should be able to accept/reject the offers by the other users
+* [ ] User should be to Bif for the offers by other users 
+
+
 
 
 Optional:
@@ -31,3 +38,5 @@ Optional:
 Stretch:
 
 * [ ] A screen to track when a task starts and ends - track duration, location and other metrics
+* [ ] User should be able to comment on Taks in Proposals/Offers 
+* [ ] User should be able to chat with the creator of the offer 
