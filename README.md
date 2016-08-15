@@ -34,13 +34,14 @@ Required:
    * [ ] Wall will display tabbed navigation of **Proposals** and **Offers**
    * [ ] User can take bookmark (and unbookmark) tasks they like
    * [ ] User can filter proposals or offers by the following
-      [ ] Location
-      [ ] Date
-      [ ] Time of day
-      [ ] Circles
-      [ ] Categories
- * [ ] User can create a task from **Floating Action Button**
- * [ ] User can view a RecycleView of rich media for Do-It-Yourself educational articles and tutorials
+      - Location
+      - Date
+      - Time of day
+      - Circles
+      - Categories
+   * [ ] User can create a task from **Floating Action Button**
+* [ ] User can view a RecycleView of rich media for Do-It-Yourself educational articles and tutorials
+  * [ ] Educational Media will use **CardViewss**
   
 
 
