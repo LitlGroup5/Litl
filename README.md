@@ -22,7 +22,26 @@ Required:
 * [ ] User should be able to edit existing Proposals 
 * [ ] User should be able to accept/reject the offers by the other users
 * [ ] User should be to Bif for the offers by other users 
-
+* [ ] User can access a drawer layout menu with following options - 
+      - Profile
+      - Connections
+      - History
+      - Bookmarks
+      - Settings
+      - Logout
+      - Contact Us
+* [ ] Signed in user will be taken to initial screen of wall
+   * [ ] Wall will display tabbed navigation of **Proposals** and **Offers**
+   * [ ] User can take bookmark (and unbookmark) tasks they like
+   * [ ] User can filter proposals or offers by the following
+      [ ] Location
+      [ ] Date
+      [ ] Time of day
+      [ ] Circles
+      [ ] Categories
+ * [ ] User can create a task from **Floating Action Button**
+ * [ ] User can view a RecycleView of rich media for Do-It-Yourself educational articles and tutorials
+  
 
 
 
@@ -30,7 +49,7 @@ Optional:
 
 * [ ] The launch screen should additionally display a set of quick tour slides
 * [ ] Add support for connecting LinkedIn and Twitter social media accounts
-
+* [ ] User can **search for proposals and offers matching a particular query** and see results
 
 * [ ] Search: toggle between map search and list search
 
