@@ -8,6 +8,7 @@ import java.util.Date;
 public class Bookmark {
     private Task bookmarkedTask;
     private Date createdAt;
-    private Boolean isSynced;
+    private Boolean isSyncedWithRemoteStorage;
+    private Boolean isBookmarked;
     private User user;
 }

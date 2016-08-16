@@ -17,13 +17,22 @@ public class Task {
     private String workImageURL;
     private String workVideoURL;
     private ArrayList<String> categories;
+    private Bookmark bookmark;
+    private String title;
+    private float price;
+    private long id;
+    private int favorPoints;
 
 
     public enum Type {
-        PROPOSAL, OFFER
+        PROPOSAL,
+        OFFER;
     }
     public enum State {
-        inBiddingProcess, successfullyAccepted, notAccepted, EXPIRED
+        inBiddingProcess,
+        successfullyAccepted,
+        notAccepted,
+        EXPIRED;
     }
 
 }
