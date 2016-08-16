@@ -1,0 +1,10 @@
+#
+# Build configuration for Circle CI
+#
+dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --all --filter "build-tools-24.0.1"
+
+test:
+  override:
+    - ./gradlew assembleDebug
