@@ -22,6 +22,7 @@ public class Task {
     private float price;
     private long id;
     private int favorPoints;
+    private User user;
 
 
     public enum Type {
