@@ -32,7 +32,7 @@
                 android:layout_width="283dp"
                 android:layout_height="wrap_content"
                 android:text="New Text"
-                android:id="@+id/textView"
+                android:id="@+id/tvDescription"
                 android:layout_alignTop="@+id/ivAvatar"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
@@ -41,7 +41,7 @@
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="50dp"
-            android:id="@+id/imageButton"
+            android:id="@+id/ibBookmark"
             android:layout_alignParentTop="true"
             android:layout_alignRight="@+id/textView"
             android:layout_alignEnd="@+id/textView"
