@@ -114,6 +114,7 @@ public class Task {
         task1.price = 20.00;
         task1.favorPoints = 7;
         task1.user = User.getFakeUser();
+        task1.bookmark = getBookmark(true);
 
         Task task2 = new Task();
         task2.address = address1;
@@ -125,6 +126,7 @@ public class Task {
         task2.price = 35.00;
         task2.favorPoints = 10;
         task2.user = User.getFakeUser();
+        task2.bookmark = getBookmark(false);
 
         Task task3 = new Task();
         task3.address = address1;
@@ -136,6 +138,7 @@ public class Task {
         task3.price = 135.00;
         task3.favorPoints = 1000;
         task3.user = User.getFakeUser();
+        task3.bookmark = getBookmark(false);
 
         Task task4 = new Task();
         task4.address = address1;
@@ -147,6 +150,7 @@ public class Task {
         task4.price = 28.00;
         task4.favorPoints = 4;
         task4.user = User.getFakeUser();
+        task4.bookmark = getBookmark(true);
 
         Task task5 = new Task();
         task5.address = address1;
@@ -158,6 +162,7 @@ public class Task {
         task5.price = 5.00;
         task5.favorPoints = 1;
         task5.user = User.getFakeUser();
+        task5.bookmark = getBookmark(true);
 
         taskList.add(task1);
         taskList.add(task2);
@@ -177,8 +182,6 @@ public class Task {
         address1.setStateAbbreviation("MI");
         address1.setStreet("Fake St.");
         address1.setZipcode(68198);
-        Bookmark bookmark1 = new Bookmark();
-        bookmark1.setBookmarked(true);
 
         task1.address = address1;
         task1.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
@@ -189,6 +192,7 @@ public class Task {
         task1.price = 40.00;
         task1.favorPoints = 17;
         task1.user = User.getFakeUser();
+        task1.bookmark = getBookmark(true);
 
         Task task2 = new Task();
         task2.address = address1;
@@ -200,7 +204,7 @@ public class Task {
         task2.price = 85.00;
         task2.favorPoints = 20;
         task2.user = User.getFakeUser();
-        task2.bookmark = bookmark1;
+        task2.bookmark = getBookmark(true);
 
         Task task3 = new Task();
         task3.address = address1;
@@ -212,6 +216,7 @@ public class Task {
         task3.price = 255.00;
         task3.favorPoints = 3000;
         task3.user = User.getFakeUser();
+        task3.bookmark = getBookmark(false);
 
         Task task4 = new Task();
         task4.address = address1;
@@ -223,7 +228,7 @@ public class Task {
         task4.price = 48.00;
         task4.favorPoints = 4;
         task4.user = User.getFakeUser();
-        task4.bookmark = bookmark1;
+        task4.bookmark = getBookmark(false);
 
         Task task5 = new Task();
         task5.address = address1;
@@ -235,6 +240,7 @@ public class Task {
         task5.price = 15.00;
         task5.favorPoints = 2;
         task5.user = User.getFakeUser();
+        task5.bookmark = getBookmark(true);
 
         taskList.add(task1);
         taskList.add(task2);
@@ -243,6 +249,12 @@ public class Task {
         taskList.add(task5);
 
         return  taskList;
+    }
+
+    private static Bookmark getBookmark(boolean exists) {
+        Bookmark bookmark = new Bookmark();
+        bookmark.setBookmarked(exists);
+        return bookmark;
     }
 }
 
