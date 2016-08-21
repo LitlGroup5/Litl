@@ -21,4 +21,75 @@ public class User {
     private float money;
     private int favorPoints;
     private ArrayList<Connection> connections;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public String getBiography() {
+        return biography;
+    }
+
+    public String getProfileImageURL() {
+        return profileImageURL;
+    }
+
+    public String getThumbnailURL() {
+        return thumbnailURL;
+    }
+
+    public ArrayList<Review> getVreviewsOfMe() {
+        return vreviewsOfMe;
+    }
+
+    public ArrayList<Review> getVreviewsByMe() {
+        return vreviewsByMe;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public ArrayList<String> getCategories() {
+        return categories;
+    }
+
+    public ArrayList<Bookmark> getBookmarks() {
+        return bookmarks;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public float getMoney() {
+        return money;
+    }
+
+    public int getFavorPoints() {
+        return favorPoints;
+    }
+
+    public ArrayList<Connection> getConnections() {
+        return connections;
+    }
+
+    public static User getFakeUser() {
+        User fakeUser = new User();
+        fakeUser.firstName = "Liz";
+        fakeUser.lastName = "Lemon";
+        fakeUser.biography = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
+        fakeUser.profileImageURL = "https://img.buzzfeed.com/buzzfeed-static/static/enhanced/webdr03/2013/1/31/12/enhanced-buzz-27911-1359652419-4.jpg?no-auto";
+
+        return fakeUser;
+    }
+
 }

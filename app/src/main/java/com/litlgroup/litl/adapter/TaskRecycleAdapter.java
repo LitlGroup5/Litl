@@ -66,7 +66,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         Glide.with(taskCardView.getContext()).load(task.getWorkImageURL()).diskCacheStrategy(DiskCacheStrategy.ALL).into(ivBackgrouind);
 
         final ImageView ivAvatar = (ImageView) taskCardView.findViewById(R.id.ivAvatar);
-        Glide.with(taskCardView.getContext()).load(task.getProfileImageURL()).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(new BitmapImageViewTarget(ivAvatar){
+        Glide.with(taskCardView.getContext()).load(task.getUser().getProfileImageURL()).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(new BitmapImageViewTarget(ivAvatar){
             @Override
             protected void setResource(Bitmap resource) {
                 RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(taskCardView.getResources(), resource);
