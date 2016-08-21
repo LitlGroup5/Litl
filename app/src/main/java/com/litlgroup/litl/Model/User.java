@@ -1,4 +1,4 @@
-package com.litlgroup.litl.Model;
+package com.litlgroup.litl.model;
 
 import java.util.ArrayList;
 

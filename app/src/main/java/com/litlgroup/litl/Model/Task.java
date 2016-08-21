@@ -1,4 +1,4 @@
-package com.litlgroup.litl.Model;
+package com.litlgroup.litl.model;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,11 +17,11 @@ public class Task {
     private String workImageURL;
     private String workVideoURL;
     private ArrayList<String> categories;
-    private Bookmark bookmark;
     private String title;
     private float price;
     private long id;
     private int favorPoints;
+    private Bookmark bookmark;
     private User user;
 
 
