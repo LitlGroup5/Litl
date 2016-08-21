@@ -53,7 +53,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Task task = tasks.get(position);
-        setSubviews(holder, task);
+        setSubviews(holder, task, position);
     }
 
     @Override
@@ -61,8 +61,9 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         return tasks.size();
     }
 
-    private void setSubviews(ViewHolder viewHolder, final Task task) {
+    private void setSubviews(ViewHolder viewHolder, final Task task, final int position) {
         final CardView taskCardView = viewHolder.cardView;
+        taskCardView.setTag(position);
 
         ImageView ivBackground = (ImageView) taskCardView.findViewById(R.id.ivBackground);
         Glide.with(taskCardView.getContext()).load(task.getWorkImageURL()).diskCacheStrategy(DiskCacheStrategy.ALL).into(ivBackground);
@@ -81,11 +82,25 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         tvDescription.setText(getFormattedDescriptionDateAddress(task));
 
         final ImageButton ibBookmark = (ImageButton) taskCardView.findViewById(R.id.ibBookmark);
+        if (task.getBookmark().getBookmarked()) {
+            ibBookmark.setBackgroundColor(ContextCompat.getColor(thisContext, R.color.colorAccent));
+        } else {
+            ibBookmark.setBackgroundColor(Color.TRANSPARENT);
+        }
         highlightBookmark(task, ibBookmark);
         ibBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                highlightBookmark(task, (ImageButton) view);
+                ImageButton tappedButton = (ImageButton) view;
+                Task selectedTask = tasks.get(position);
+
+                if (selectedTask.getBookmark().getBookmarked()) {
+                    tappedButton.setBackgroundColor(Color.TRANSPARENT);
+                    selectedTask.getBookmark().setBookmarked(false);
+                } else {
+                    tappedButton.setBackgroundColor(ContextCompat.getColor(thisContext, R.color.colorAccent));
+                    selectedTask.getBookmark().setBookmarked(true);
+                }
             }
         });
     }
@@ -101,10 +116,6 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
     }
 
     private void highlightBookmark(Task task, ImageButton button) {
-        if (task.getBookmark().getBookmarked()) {
-            button.setBackgroundColor(Color.TRANSPARENT);
-        } else {
-            button.setBackgroundColor(ContextCompat.getColor(thisContext, R.color.colorAccent));
-        }
+
     }
 }
