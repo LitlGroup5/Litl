@@ -1,6 +1,9 @@
 package com.litlgroup.litl.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +13,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.model.Task;
 
@@ -54,11 +60,20 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
     }
 
     private void setSubviews(ViewHolder viewHolder, final Task task) {
-        CardView taskCardView = viewHolder.cardView;
+        final CardView taskCardView = viewHolder.cardView;
 
         ImageView ivBackgrouind = (ImageView) taskCardView.findViewById(R.id.ivBackground);
+        Glide.with(taskCardView.getContext()).load(task.getWorkImageURL()).diskCacheStrategy(DiskCacheStrategy.ALL).into(ivBackgrouind);
 
-        ImageView ivAvatar = (ImageView) taskCardView.findViewById(R.id.ivAvatar);
+        final ImageView ivAvatar = (ImageView) taskCardView.findViewById(R.id.ivAvatar);
+        Glide.with(taskCardView.getContext()).load(task.getProfileImageURL()).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(new BitmapImageViewTarget(ivAvatar){
+            @Override
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(taskCardView.getResources(), resource);
+                circularBitmapDrawable.setCircular(true);
+                ivAvatar.setImageDrawable(circularBitmapDrawable);
+            }
+        });
 
         TextView tvDescription = (TextView) taskCardView.findViewById(R.id.tvDescription);
 
