@@ -87,7 +87,7 @@ public class User {
         fakeUser.firstName = "Liz";
         fakeUser.lastName = "Lemon";
         fakeUser.biography = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
-        fakeUser.profileImageURL = "https://img.buzzfeed.com/buzzfeed-static/static/enhanced/webdr03/2013/1/31/12/enhanced-buzz-27911-1359652419-4.jpg?no-auto";
+        fakeUser.profileImageURL = "http://yourblackworld.net/wp-content/uploads/2013/06/21/afro-puffs.jpg";
 
         return fakeUser;
     }

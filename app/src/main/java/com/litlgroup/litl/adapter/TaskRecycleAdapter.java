@@ -2,6 +2,8 @@ package com.litlgroup.litl.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.CardView;
@@ -62,8 +64,8 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
     private void setSubviews(ViewHolder viewHolder, final Task task) {
         final CardView taskCardView = viewHolder.cardView;
 
-        ImageView ivBackgrouind = (ImageView) taskCardView.findViewById(R.id.ivBackground);
-        Glide.with(taskCardView.getContext()).load(task.getWorkImageURL()).diskCacheStrategy(DiskCacheStrategy.ALL).into(ivBackgrouind);
+        ImageView ivBackground = (ImageView) taskCardView.findViewById(R.id.ivBackground);
+        Glide.with(taskCardView.getContext()).load(task.getWorkImageURL()).diskCacheStrategy(DiskCacheStrategy.ALL).into(ivBackground);
 
         final ImageView ivAvatar = (ImageView) taskCardView.findViewById(R.id.ivAvatar);
         Glide.with(taskCardView.getContext()).load(task.getUser().getProfileImageURL()).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(new BitmapImageViewTarget(ivAvatar){
@@ -78,16 +80,12 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         TextView tvDescription = (TextView) taskCardView.findViewById(R.id.tvDescription);
         tvDescription.setText(getFormattedDescriptionDateAddress(task));
 
-        ImageButton ibBookmark = (ImageButton) taskCardView.findViewById(R.id.ibBookmark);
+        final ImageButton ibBookmark = (ImageButton) taskCardView.findViewById(R.id.ibBookmark);
+        highlightBookmark(task, ibBookmark);
         ibBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (task.getBookmark().getBookmarked()) {
-                    //unfill bookmark
-
-                } else {
-                    //fill bookmark
-                }
+                highlightBookmark(task, (ImageButton) view);
             }
         });
     }
@@ -100,5 +98,13 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
                 + task.getAddress();
 
         return formattedString;
+    }
+
+    private void highlightBookmark(Task task, ImageButton button) {
+        if (task.getBookmark().getBookmarked()) {
+            button.setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            button.setBackgroundColor(ContextCompat.getColor(thisContext, R.color.colorAccent));
+        }
     }
 }

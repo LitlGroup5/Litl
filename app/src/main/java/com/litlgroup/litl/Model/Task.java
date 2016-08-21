@@ -177,6 +177,8 @@ public class Task {
         address1.setStateAbbreviation("MI");
         address1.setStreet("Fake St.");
         address1.setZipcode(68198);
+        Bookmark bookmark1 = new Bookmark();
+        bookmark1.setBookmarked(true);
 
         task1.address = address1;
         task1.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
@@ -198,6 +200,7 @@ public class Task {
         task2.price = 85.00;
         task2.favorPoints = 20;
         task2.user = User.getFakeUser();
+        task2.bookmark = bookmark1;
 
         Task task3 = new Task();
         task3.address = address1;
@@ -220,6 +223,7 @@ public class Task {
         task4.price = 48.00;
         task4.favorPoints = 4;
         task4.user = User.getFakeUser();
+        task4.bookmark = bookmark1;
 
         Task task5 = new Task();
         task5.address = address1;

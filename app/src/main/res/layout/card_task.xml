@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     android:id="@+id/card_view"
     card_view:cardCornerRadius="5dp">
 
@@ -14,9 +14,8 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/ivBackground"
-            android:background="#07f0d5"
             />
 
         <ImageView
@@ -25,8 +24,9 @@
             android:id="@+id/ivAvatar"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_marginLeft="20dp"
-            android:background="#f79809" />
+            android:layout_marginStart="20dp" />
 
             <TextView
                 android:layout_width="283dp"
@@ -47,7 +47,7 @@
             android:layout_alignEnd="@+id/tvDescription"
             android:layout_marginRight="27dp"
             android:layout_marginEnd="27dp"
-            android:background="#f55555" />
+             />
 
     </RelativeLayout>
 

@@ -33,4 +33,7 @@ public class Bookmark {
         return isBookmarked;
     }
 
+    public void setBookmarked(Boolean bookmarked) {
+        isBookmarked = bookmarked;
+    }
 }

@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WallActivity">
+    tools:context=".WallActivity"
+    android:background="#FFF6E5">
 
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs"
@@ -13,6 +14,11 @@
         app:pstsTextAllCaps="true"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:textSize="20sp"
+        android:textColor="#2185C5"
+        app:pstsDividerColor="@color/colorPrimary"
+        app:pstsIndicatorColor="@color/colorAccent"
+        app:pstsUnderlineColor="@color/colorPrimary"
         />
 
     <android.support.v4.view.ViewPager
