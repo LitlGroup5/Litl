@@ -43,8 +43,8 @@
             android:layout_height="50dp"
             android:id="@+id/ibBookmark"
             android:layout_alignParentTop="true"
-            android:layout_alignRight="@+id/textView"
-            android:layout_alignEnd="@+id/textView"
+            android:layout_alignRight="@+id/tvDescription"
+            android:layout_alignEnd="@+id/tvDescription"
             android:layout_marginRight="27dp"
             android:layout_marginEnd="27dp"
             android:background="#f55555" />

@@ -24,6 +24,70 @@ public class Task {
     private Bookmark bookmark;
     private User user;
 
+    public Date getDeadlineDate() {
+        return deadlineDate;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public String getProfileImageURL() {
+        return profileImageURL;
+    }
+
+    public String getWorkImageURL() {
+        return workImageURL;
+    }
+
+    public String getWorkVideoURL() {
+        return workVideoURL;
+    }
+
+    public ArrayList<String> getCategories() {
+        return categories;
+    }
+
+    public Bookmark getBookmark() {
+        return bookmark;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public int getFavorPoints() {
+        return favorPoints;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
 
     public enum Type {
         PROPOSAL,

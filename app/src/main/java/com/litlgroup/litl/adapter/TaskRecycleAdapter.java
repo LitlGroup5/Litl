@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,10 +24,6 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
             private CardView cardView;
-            private ImageView ivBackground;
-            private ImageView ivAvatar;
-            private ImageButton ibBookmark;
-            private TextView tvDescription;
 
             public ViewHolder(CardView v) {
                 super(v);
@@ -47,11 +44,36 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        Task task = tasks.get(position);
+        setSubviews(holder, task);
     }
 
     @Override
     public int getItemCount() {
         return tasks.size();
+    }
+
+    private void setSubviews(ViewHolder viewHolder, final Task task) {
+        CardView taskCardView = viewHolder.cardView;
+
+        ImageView ivBackgrouind = (ImageView) taskCardView.findViewById(R.id.ivBackground);
+
+        ImageView ivAvatar = (ImageView) taskCardView.findViewById(R.id.ivAvatar);
+
+        TextView tvDescription = (TextView) taskCardView.findViewById(R.id.tvDescription);
+
+        ImageButton ibBookmark = (ImageButton) taskCardView.findViewById(R.id.ibBookmark);
+        ibBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (task.getBookmark().getBookmarked()) {
+                    //unfill bookmark
+
+                } else {
+                    //fill bookmark
+                }
+            }
+        });
+
     }
 }
