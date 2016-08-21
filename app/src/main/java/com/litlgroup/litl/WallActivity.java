@@ -12,7 +12,6 @@ import com.litlgroup.litl.fragment.OffersFragment;
 import com.litlgroup.litl.fragment.ProposalsFragment;
 
 public class WallActivity extends AppCompatActivity {
-    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
