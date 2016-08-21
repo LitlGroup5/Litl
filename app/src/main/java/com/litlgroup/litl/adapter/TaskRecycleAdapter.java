@@ -76,6 +76,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         });
 
         TextView tvDescription = (TextView) taskCardView.findViewById(R.id.tvDescription);
+        tvDescription.setText(getFormattedDescriptionDateAddress(task));
 
         ImageButton ibBookmark = (ImageButton) taskCardView.findViewById(R.id.ibBookmark);
         ibBookmark.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +90,15 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
                 }
             }
         });
+    }
 
+    private String getFormattedDescriptionDateAddress(Task task) {
+        String formattedString = task.getDescription()
+                + System.getProperty("line.seperator")
+                + task.getDeadlineDate()
+                + System.getProperty("line.seperator")
+                + task.getAddress();
+
+        return formattedString;
     }
 }
