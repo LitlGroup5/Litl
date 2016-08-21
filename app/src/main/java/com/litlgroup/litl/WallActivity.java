@@ -21,7 +21,7 @@ public class WallActivity extends AppCompatActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new TaskPagerAdapter(getSupportFragmentManager()));
 
-        PagerSlidingTabStrip tabStrip =  (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabStrip.setViewPager(viewPager);
     }
 
