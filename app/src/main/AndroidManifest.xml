@@ -23,6 +23,7 @@
             android:name=".activities.TaskDetailActivity"
             android:theme="@style/AppTheme.NoActionBar">
        </activity>
+        <activity android:name=".activities.BidSelectScreenActivity"></activity>
    </application>
 
 </manifest>

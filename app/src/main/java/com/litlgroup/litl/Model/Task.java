@@ -2,11 +2,17 @@ package com.litlgroup.litl.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by andrj148 on 8/16/16.
  */
 public class Task {
+    public Task()
+    {
+
+    }
+
     private Date deadlineDate;
     private Date createdAt;
     private Address address;
@@ -97,6 +103,7 @@ public class Task {
         notAccepted,
         EXPIRED
     }
+
 
     public static ArrayList<Task> getFakeTaskDataProposals() {
         ArrayList<Task> taskList = new ArrayList<>();
@@ -259,6 +266,25 @@ public class Task {
         bookmark.setBookmarked(exists);
         return bookmark;
     }
+
+    public static Task fromTaskObjectMap(Map<String, Object> taskObjectMap)
+    {
+        try
+        {
+            Task task = new Task();
+            task.price = Float.parseFloat(taskObjectMap.get("price").toString().replace("$",""));
+            task.title = taskObjectMap.get("title").toString();
+            task.description = taskObjectMap.get("description").toString();
+            return task;
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return null;
+
+    }
+
 }
 
 

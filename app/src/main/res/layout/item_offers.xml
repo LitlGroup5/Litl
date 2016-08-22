@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="14dp"
+    android:layout_marginBottom="14dp">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ivProfileImage"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FF000000"
+        android:layout_marginLeft="14dp"
+        android:layout_gravity="center"
+        android:src="@drawable/offer_profile_image" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Username"
+        android:id="@+id/tvUsername"
+        android:layout_gravity="center"
+        android:layout_marginLeft="13dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_marginStart="13dp"
+        android:ellipsize="end" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="$XX"
+        android:id="@+id/tvOfferValue"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/ibOfferAccept"
+        android:layout_toStartOf="@+id/ibOfferAccept"
+        android:layout_marginRight="14dp"
+        android:layout_marginEnd="14dp" />
+
+    <ImageButton
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/ibOfferAccept"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:background="#00ffffff"
+        android:src="@drawable/offer_accept"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/ibOfferReject"
+        android:layout_toStartOf="@+id/ibOfferReject"
+        android:layout_marginRight="14dp"
+        android:layout_marginEnd="14dp" />
+
+    <ImageButton
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/ibOfferReject"
+        android:layout_gravity="center"
+        android:src="@drawable/offer_reject"
+        android:scaleType="centerCrop"
+        android:background="#00ffffff"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="14dp" />
+
+</RelativeLayout>
