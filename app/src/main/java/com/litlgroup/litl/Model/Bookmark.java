@@ -1,4 +1,4 @@
-package com.litlgroup.litl.Model;
+package com.litlgroup.litl.model;
 
 import java.util.Date;
 
@@ -11,4 +11,29 @@ public class Bookmark {
     private Boolean isSyncedWithRemoteStorage;
     private Boolean isBookmarked;
     private User user;
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public Task getBookmarkedTask() {
+        return bookmarkedTask;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public Boolean getSyncedWithRemoteStorage() {
+        return isSyncedWithRemoteStorage;
+    }
+
+    public Boolean getBookmarked() {
+        return isBookmarked;
+    }
+
+    public void setBookmarked(Boolean bookmarked) {
+        isBookmarked = bookmarked;
+    }
 }

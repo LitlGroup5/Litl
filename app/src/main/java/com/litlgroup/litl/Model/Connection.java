@@ -1,4 +1,4 @@
-package com.litlgroup.litl.Model;
+package com.litlgroup.litl.model;
 
 /**
  * Created by andrj148 on 8/16/16.
