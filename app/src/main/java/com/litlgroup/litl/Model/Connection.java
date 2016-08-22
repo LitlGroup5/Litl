@@ -6,4 +6,5 @@ package com.litlgroup.litl.Model;
 public class Connection {
     private long id;
     private int circleLevel;
+    private User user;
 }
