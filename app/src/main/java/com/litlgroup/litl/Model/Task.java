@@ -2,6 +2,7 @@ package com.litlgroup.litl.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,7 +14,8 @@ public class Task {
 
     }
 
-    private Date deadlineDate;
+    //private Date deadlineDate;
+    private String deadlineDate;
     private Date createdAt;
     private Address address;
     private String description;
@@ -283,6 +285,36 @@ public class Task {
         return null;
 
     }
+
+
+    public Task(String title, String description,
+                String price, String deadlineDate, final String categoryValue )
+    {
+        this.title = title;
+        this.description = description;
+        if(price.contains("$"))
+            price = price.replace("$", "");
+        this.price = Float.parseFloat(price);
+        this.deadlineDate = deadlineDate;
+        this.categories = new ArrayList<>();
+        this.categories.add(categoryValue);
+
+    }
+
+
+
+    public Map<String, Object> toMap()
+    {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("price", String.valueOf(price));
+        result.put("deadline_date", deadlineDate);
+        result.put("address",address);
+        result.put("title", title);
+        result.put("description", description);
+        result.put("user", user);
+        return result;
+    }
+
 
 }
 

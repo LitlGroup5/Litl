@@ -28,4 +28,22 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white" />
 
+    <android.support.design.widget.FloatingActionButton
+
+        app:fabSize="normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_anchorGravity="bottom|right|end"
+        android:layout_gravity="bottom|right"
+        app:layout_behavior="com.codepath.apps.tweettrove.helpers.ScrollAwareFABBehavior"
+        android:id="@+id/fabCreateTask"
+
+
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_input_add" />
+
 </RelativeLayout>
