@@ -1,0 +1,120 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/app_bar_task" />
+
+    <RelativeLayout
+        android:id="@+id/rel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/activity_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="Move Out"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/tvPostedDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tvTitle"
+            android:text="posted 2 days ago"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="10$"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tvPostedDate"
+            android:layout_alignStart="@+id/tvPostedDate"
+            android:layout_below="@+id/tvPostedDate"
+            android:paddingTop="16dp"
+            android:text="This is the time to move out. This is really time to move out"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvViewedBy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tvDescription"
+            android:layout_alignStart="@+id/tvDescription"
+            android:layout_below="@+id/tvDescription"
+            android:paddingTop="16dp"
+            android:text="@string/viewed_by"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvViewedByCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tvViewedBy"
+            android:layout_toEndOf="@+id/tvViewedBy"
+            android:layout_toRightOf="@+id/tvViewedBy"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:text="7"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvBidByCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/tvDescription"
+            android:layout_alignRight="@+id/tvDescription"
+            android:layout_below="@+id/tvDescription"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:text="23"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvBidBy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tvBidByCount"
+            android:layout_toLeftOf="@+id/tvBidByCount"
+            android:layout_toStartOf="@+id/tvBidByCount"
+            android:paddingTop="16dp"
+            android:text="@string/bid_by"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnBidNow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:text="@string/bid_now"
+        app:layout_anchor="@id/rel"
+        app:layout_anchorGravity="bottom|center" />
+
+</android.support.design.widget.CoordinatorLayout>
