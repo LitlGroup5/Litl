@@ -1,5 +1,6 @@
 package com.litlgroup.litl;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,15 +9,25 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.litlgroup.litl.activities.CreateTaskActivity;
 import com.litlgroup.litl.fragment.OffersFragment;
 import com.litlgroup.litl.fragment.ProposalsFragment;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class WallActivity extends AppCompatActivity {
+
+
+    @BindView(R.id.fabCreateTask)
+    android.support.design.widget.FloatingActionButton fabCreateTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wall);
+        ButterKnife.bind(this);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new TaskPagerAdapter(getSupportFragmentManager()));
@@ -51,5 +62,13 @@ public class WallActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return tabTitles[position];
         }
+    }
+
+    @OnClick(R.id.fabCreateTask)
+    public void launchCreateTaskActivity()
+    {
+        Intent intent = new Intent(WallActivity.this, CreateTaskActivity.class);
+        startActivity(intent);
+
     }
 }

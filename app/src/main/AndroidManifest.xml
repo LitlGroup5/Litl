@@ -11,19 +11,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".WallActivity">
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.TaskDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-       </activity>
-        <activity android:name=".activities.BidSelectScreenActivity"></activity>
-   </application>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".activities.BidSelectScreenActivity" />
+        <activity android:name=".activities.CreateTaskActivity"></activity>
+    </application>
 
 </manifest>
