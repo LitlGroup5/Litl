@@ -93,7 +93,6 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         } else {
             ibBookmark.setBackgroundColor(Color.TRANSPARENT);
         }
-        highlightBookmark(task, ibBookmark);
         ibBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,19 +108,5 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
                 }
             }
         });
-    }
-
-    private String getFormattedDescriptionDateAddress(Task task) {
-        String formattedString = task.getDescription()
-                + System.getProperty("line.seperator")
-                + task.getDeadlineDate()
-                + System.getProperty("line.seperator")
-                + task.getAddress();
-
-        return formattedString;
-    }
-
-    private void highlightBookmark(Task task, ImageButton button) {
-
     }
 }
