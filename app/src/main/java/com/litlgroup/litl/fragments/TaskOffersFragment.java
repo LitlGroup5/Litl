@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.utils.CircleIndicator;
+import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.MediaPagerAdapter;
 
@@ -63,11 +64,17 @@ public class TaskOffersFragment extends Fragment {
     @BindColor(R.color.colorPrimary)
     int mColorPrimary;
 
+    private String mTaskId;
+
     public TaskOffersFragment() {
     }
 
-    public static TaskOffersFragment newInstance() {
+    public static TaskOffersFragment newInstance(String taskid) {
         TaskOffersFragment fragment = new TaskOffersFragment();
+
+        Bundle args = new Bundle();
+        args.putString(Constants.TASK_ID, taskid);
+        fragment.setArguments(args);
 
         return fragment;
     }
@@ -76,6 +83,8 @@ public class TaskOffersFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        mTaskId = getArguments().getString(Constants.TASK_ID);
     }
 
     @Override
