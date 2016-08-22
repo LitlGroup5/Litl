@@ -1,4 +1,4 @@
-package com.litlgroup.litl.fragment;
+package com.litlgroup.litl.fragments;
 
 
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.litlgroup.litl.R;
-import com.litlgroup.litl.adapter.TaskRecycleAdapter;
+import com.litlgroup.litl.adapters.TaskRecycleAdapter;
 import com.litlgroup.litl.model.Task;
 
 import java.util.ArrayList;

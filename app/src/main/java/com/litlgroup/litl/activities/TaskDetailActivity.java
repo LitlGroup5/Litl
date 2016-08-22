@@ -5,8 +5,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.litlgroup.litl.R;
-import com.litlgroup.litl.fragment.TaskOffersFragment;
-import com.litlgroup.litl.fragment.TaskProposalFragment;
+import com.litlgroup.litl.fragments.TaskOffersFragment;
+import com.litlgroup.litl.fragments.TaskProposalFragment;
 import com.litlgroup.litl.utils.Constants.DetailViewType;
 
 public class TaskDetailActivity extends AppCompatActivity {

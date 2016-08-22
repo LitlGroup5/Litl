@@ -10,8 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.litlgroup.litl.activities.CreateTaskActivity;
-import com.litlgroup.litl.fragment.OffersFragment;
-import com.litlgroup.litl.fragment.ProposalsFragment;
+import com.litlgroup.litl.fragments.OffersFragment;
+import com.litlgroup.litl.fragments.ProposalsFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

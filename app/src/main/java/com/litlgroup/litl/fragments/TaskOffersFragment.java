@@ -1,4 +1,4 @@
-package com.litlgroup.litl.fragment;
+package com.litlgroup.litl.fragments;
 
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;

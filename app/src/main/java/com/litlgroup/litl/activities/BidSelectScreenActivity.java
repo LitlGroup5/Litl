@@ -15,8 +15,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.model.Offer;
 import com.litlgroup.litl.model.User;
 import com.litlgroup.litl.R;
-import com.litlgroup.litl.adapter.OffersAdapter;
-import com.litlgroup.litl.helpers.SpacesItemDecoration;
+import com.litlgroup.litl.adapters.OffersAdapter;
+import com.litlgroup.litl.utils.SpacesItemDecoration;
 
 import java.util.ArrayList;
 

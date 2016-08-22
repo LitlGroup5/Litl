@@ -1,4 +1,4 @@
-package com.litlgroup.litl.adapter;
+package com.litlgroup.litl.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
