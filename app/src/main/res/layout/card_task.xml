@@ -18,33 +18,62 @@
             android:id="@+id/ivBackground"
             />
 
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:id="@+id/ivAvatar"
+        <LinearLayout
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#66000000">
 
-            <TextView
-                android:layout_width="283dp"
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:id="@+id/ivAvatar"
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="10"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/tvDescription"
-                android:layout_alignTop="@+id/ivAvatar"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvDescription"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="#FFF6E5"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvDeadlineDate"
+                    android:maxLines="1"
+                    android:textColor="#FFF6E5"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:id="@+id/tvAddress"
+                    android:textColor="#FFF6E5"
+                    />
+            </LinearLayout>
+        </LinearLayout>
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="50dp"
             android:id="@+id/ibBookmark"
             android:layout_alignParentTop="true"
-            android:layout_alignRight="@+id/tvDescription"
-            android:layout_alignEnd="@+id/tvDescription"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginRight="27dp"
             android:layout_marginEnd="27dp"
              />

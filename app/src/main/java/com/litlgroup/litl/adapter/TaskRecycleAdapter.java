@@ -79,7 +79,13 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         });
 
         TextView tvDescription = (TextView) taskCardView.findViewById(R.id.tvDescription);
-        tvDescription.setText(getFormattedDescriptionDateAddress(task));
+        tvDescription.setText(task.getDescription());
+
+        TextView tvAddress = (TextView) taskCardView.findViewById(R.id.tvAddress);
+        tvAddress.setText(task.getAddress().getFormattedAddress());
+
+        TextView tvDeadlineDate = (TextView) taskCardView.findViewById(R.id.tvDeadlineDate);
+        tvDeadlineDate.setText(task.getDeadlineDate());
 
         final ImageButton ibBookmark = (ImageButton) taskCardView.findViewById(R.id.ibBookmark);
         if (task.getBookmark().getBookmarked()) {

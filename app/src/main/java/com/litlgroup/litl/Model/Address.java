@@ -37,6 +37,8 @@ public class Address {
         this.location = location;
     }
 
-
+    public String getFormattedAddress() {
+        return String.valueOf(houseNumber) + " " + street + ", " + city + ", " + stateAbbreviation + ", " + String.valueOf(zipcode);
+    }
 
 }

@@ -23,9 +23,12 @@ public class Task {
     private Bookmark bookmark;
     private User user;
 
-    public Date getDeadlineDate() {
-        return deadlineDate;
-    }
+//    public Date getDeadlineDate() {
+//        return deadlineDate;
+//    }
+    public String getDeadlineDate() {
+    return "September 7, 2016";
+}
 
     public Date getCreatedAt() {
         return createdAt;
