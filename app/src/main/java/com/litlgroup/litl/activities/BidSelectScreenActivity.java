@@ -16,6 +16,7 @@ import com.litlgroup.litl.Model.Offer;
 import com.litlgroup.litl.Model.User;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.adapter.OffersAdapter;
+import com.litlgroup.litl.helpers.SpacesItemDecoration;
 
 import java.util.ArrayList;
 
@@ -31,48 +32,71 @@ public class BidSelectScreenActivity extends AppCompatActivity {
     @BindView(R.id.rvOffers)
     RecyclerView rvOffers;
 
+    private String thisTaskId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bid_select_screen);
+
+        thisTaskId = getIntent().getStringExtra("taskId");
+
         ButterKnife.bind(this);
         offers = new ArrayList<>();
         adapter = new OffersAdapter(this, offers);
         rvOffers.setAdapter(adapter);
         rvOffers.setLayoutManager(new LinearLayoutManager(this));
+
+        SpacesItemDecoration decoration = new SpacesItemDecoration(20);
+        rvOffers.addItemDecoration(decoration);
+
         GetData();
     }
 
 
     private void GetData()
     {
-//        DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("Offers");
-        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        database.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                adapter.clear();
-                ArrayList<Offer> offersList = Offer.fromDataSnapshot(dataSnapshot.child("Offers"));
+        try {
 
-                for (Offer offer : offersList)
-                {
+            final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+            database.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    adapter.clear();
+                    ArrayList<Offer> offersList = Offer.fromDataSnapshot(dataSnapshot.child("Offers"));
+                    Log.d("Fetch Offers", dataSnapshot.toString());
 
-                    User user = dataSnapshot.child("Users").child(offer.getUser()).getValue(User.class);
-                    offer.setUserObject(user);
+                    if(offersList == null || offersList.isEmpty())
+                        return;
+                    ArrayList<Offer> filteredOffers = new ArrayList<Offer>();
+                    for (Offer offer : offersList) {
 
-//                    Task task = dataSnapshot.child("Tasks").child(offer.getTask()).getValue(Task.class);
-//                    offer.setTaskObject(task);
+                        try {
+                            if (offer.getUser() != null) {
+                                User user = dataSnapshot.child("Users").child(offer.getUser()).getValue(User.class);
+                                offer.setUserObject(user);
+                                if(offer.getTask().equals(thisTaskId))
+                                    filteredOffers.add(offer);
+                            }
+                        }
+                        catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                    adapter.addAll(filteredOffers);
 
                 }
-                adapter.addAll(offersList);
-                Log.d("Fetch Offers", dataSnapshot.toString());
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(BidSelectScreenActivity.this, "There was an error when fetching Offers data", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Toast.makeText(BidSelectScreenActivity.this, "There was an error when fetching Offers data", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
 
     }
 }

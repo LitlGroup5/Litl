@@ -36,6 +36,7 @@ public class PlaceBidFragment extends BottomSheetDialogFragment
     {
         PlaceBidFragment frag = new PlaceBidFragment();
         frag.taskKey = taskKey;
+        frag.userKey = userKey;
         return frag;
     }
 
@@ -100,8 +101,11 @@ public class PlaceBidFragment extends BottomSheetDialogFragment
             Map<String, Object> offerValues = offer.toMap();
 
             Map<String, Object> childUpdates = new HashMap<>();
+
+            //update the offers node
             childUpdates.put("/Offers/" + key, offerValues);
 
+            //update the tasks node
             childUpdates.put("/Tasks/" + taskId + "/" + "offers" + "/" + key, "true");
 
             mDatabase.updateChildren(childUpdates);

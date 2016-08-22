@@ -16,9 +16,9 @@ public class Task {
         return createdAt;
     }
 
-//    public Address getAddress() {
-//        return address;
-//    }
+    public Address getAddress() {
+        return address;
+    }
 
     public String getDescription() {
         return description;
@@ -75,7 +75,7 @@ public class Task {
 
     private Date deadlineDate;
     private Date createdAt;
-//    private Address address;
+    private Address address;
     private String description;
     private Type type;
     private State state;

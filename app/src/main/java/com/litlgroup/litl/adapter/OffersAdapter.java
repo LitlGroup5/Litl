@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.litlgroup.litl.Model.Offer;
@@ -76,26 +77,16 @@ public class OffersAdapter
 
         View view = inflater.inflate(R.layout.item_offers, parent, false);
 
-
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
 
         try {
             final Offer offer = mOffers.get(position);
-
             holder.tvOfferValue.setText(String.valueOf(offer.getPriceFormatted()));
-
-//            ArrayList<String> userIds = new ArrayList<>() ;
-//            userIds.add(offer.getUser());
-//            ArrayList<User> users = FireBaseService.getUser(userIds);
-//            User user = users.get(0);
-//            holder.tvUsername.setText(offer.getUser().getUserName());
-//
-//            String profileImageUrl = offer.getUser().getProfileImageURL();
 
             User user = offer.getUserObject();
             holder.tvUsername.setText(user.getUserName());
@@ -109,6 +100,25 @@ public class OffersAdapter
                         .into(holder.ivProfileImage);
 
             }
+
+            holder.ibOfferAccept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    holder.ibOfferReject.setAlpha(0.5f);
+                    holder.ibOfferAccept.setAlpha(1f);
+                    Toast.makeText(getContext(), "Offer accepted!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            holder.ibOfferReject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    holder.ibOfferAccept.setAlpha(0.5f);
+                    holder.ibOfferReject.setAlpha(1f);
+                    Toast.makeText(getContext(), "Offer rejected!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
         }
         catch (Exception ex)
         {
@@ -133,6 +143,4 @@ public class OffersAdapter
         mOffers.clear();
         notifyDataSetChanged();
     }
-
-
 }
