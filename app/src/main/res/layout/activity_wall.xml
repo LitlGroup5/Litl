@@ -45,7 +45,7 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
         android:tint="@color/colorAccent"
-        app:backgroundTint="@color/colorSkyBlue"
+        app:backgroundTint="@color/colorPrimary"
         android:src="@android:drawable/ic_input_add" />
 
 </RelativeLayout>
