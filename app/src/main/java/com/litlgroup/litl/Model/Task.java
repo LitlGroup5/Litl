@@ -288,7 +288,7 @@ public class Task {
 
 
     public Task(String title, String description,
-                String price, String deadlineDate, final String categoryValue )
+                String price, String deadlineDate, final String categoryValue)
     {
         this.title = title;
         this.description = description;
@@ -312,6 +312,7 @@ public class Task {
         result.put("title", title);
         result.put("description", description);
         result.put("user", user);
+        result.put("category", categories.get(0));
         return result;
     }
 

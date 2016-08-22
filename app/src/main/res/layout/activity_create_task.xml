@@ -55,7 +55,9 @@
         android:layout_marginTop="14dp"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"
+        android:entries="@array/categories_array_values"
+        />
 
     <TextView
         android:layout_width="wrap_content"

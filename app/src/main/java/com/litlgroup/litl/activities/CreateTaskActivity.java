@@ -66,8 +66,9 @@ public class CreateTaskActivity extends AppCompatActivity {
             String date = tvDueDate.getText().toString();
             String address = etAddress.getText().toString();
             String price = etPrice.getText().toString();
+            String category = spCategory.getSelectedItem().toString();
 
-            writeNewTask(title, description, price, date, "");
+            writeNewTask(title, description, price, date, category);
 
             Toast.makeText(this, "The task has been posted!", Toast.LENGTH_SHORT).show();
             finish();
