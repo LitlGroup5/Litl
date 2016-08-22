@@ -1,6 +1,7 @@
 package com.litlgroup.litl.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
@@ -19,7 +20,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.litlgroup.litl.R;
+import com.litlgroup.litl.activities.TaskDetailActivity;
 import com.litlgroup.litl.model.Task;
+import com.litlgroup.litl.utils.Constants;
 
 import java.util.ArrayList;
 
@@ -78,8 +81,18 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
             }
         });
 
-        TextView tvDescription = (TextView) taskCardView.findViewById(R.id.tvDescription);
+        final TextView tvDescription = (TextView) taskCardView.findViewById(R.id.tvDescription);
         tvDescription.setText(task.getDescription());
+
+        tvDescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(tvDescription.getContext(), TaskDetailActivity.class);
+                i.putExtra(Constants.TASK_ID, task.getId());
+                i.putExtra(Constants.TASK_TYPE, task.getType());
+                tvDescription.getContext().startActivity(i);
+            }
+        });
 
         TextView tvAddress = (TextView) taskCardView.findViewById(R.id.tvAddress);
         tvAddress.setText(task.getAddress().getFormattedAddress());
