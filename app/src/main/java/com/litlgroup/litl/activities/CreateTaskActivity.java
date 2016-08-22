@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -65,12 +66,11 @@ public class CreateTaskActivity extends AppCompatActivity {
             String date = tvDueDate.getText().toString();
             String address = etAddress.getText().toString();
             String price = etPrice.getText().toString();
-//            if(spCategory.getSelectedItem().toString() != null) {
-//                String category = spCategory.getSelectedItem().toString();
-//
-////                writeNewTask(title, description, price, date, category);
-//            }
+
             writeNewTask(title, description, price, date, "");
+
+            Toast.makeText(this, "The task has been posted!", Toast.LENGTH_SHORT).show();
+            finish();
         }
         catch (Exception ex)
         {
