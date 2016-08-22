@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.WallActivity"
-    android:background="#FFF6E5">
+    android:background="@color/colorLight">
 
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs"
@@ -15,10 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:textSize="20sp"
-        android:textColor="#2185C5"
-        app:pstsDividerColor="@color/colorPrimary"
+        android:textColor="@color/colorPrimary"
+        app:pstsDividerColor="@color/colorSkyBlue"
         app:pstsIndicatorColor="@color/colorAccent"
-        app:pstsUnderlineColor="@color/colorPrimary"
+        app:pstsUnderlineColor="@color/colorSkyBlue"
         />
 
     <android.support.v4.view.ViewPager
@@ -26,7 +26,7 @@
         android:layout_below="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white" />
+        android:background="@color/colorLight" />
 
     <android.support.design.widget.FloatingActionButton
 

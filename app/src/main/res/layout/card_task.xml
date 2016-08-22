@@ -44,7 +44,7 @@
                     android:id="@+id/tvDescription"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:textColor="#FFF6E5"
+                    android:textColor="@color/colorLight"
                     />
 
                 <TextView
@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tvDeadlineDate"
                     android:maxLines="1"
-                    android:textColor="#FFF6E5"
+                    android:textColor="@color/colorLight"
                     />
 
                 <TextView
@@ -62,7 +62,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:id="@+id/tvAddress"
-                    android:textColor="#FFF6E5"
+                    android:textColor="@color/colorLight"
                     />
             </LinearLayout>
         </LinearLayout>

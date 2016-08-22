@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#7ECEFD">
+    android:background="@color/colorSkyBlue">
 
     <Button
         android:layout_width="wrap_content"
@@ -16,7 +16,7 @@
         android:layout_marginRight="14dp"
         android:layout_marginTop="14dp"
         android:layout_marginBottom="14dp"
-        android:background="#FF7F66" />
+        android:background="@color/colorAccent" />
 
     <EditText
         android:layout_width="match_parent"
@@ -33,5 +33,5 @@
         android:layout_marginRight="14dp"
         android:layout_marginLeft="14dp"
         android:layout_marginTop="14dp"
-        android:textColor="#3e454c" />
+        android:textColor="@color/colorPrimaryDark" />
 </RelativeLayout>
