@@ -4,4 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="proposals">Proposals</string>
     <string name="offers">Offers</string>
+    <string name="bid_by">BID BY</string>
+    <string name="bid_now">BID NOW</string>
+    <string name="viewed_by">VIEWED BY</string>
 </resources>
