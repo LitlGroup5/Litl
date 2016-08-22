@@ -92,7 +92,6 @@ public class Task {
         return user;
     }
 
-
     public enum Type {
         PROPOSAL,
         OFFER

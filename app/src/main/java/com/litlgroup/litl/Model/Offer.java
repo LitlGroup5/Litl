@@ -83,15 +83,19 @@ public class Offer {
                 try {
                     Map<String, Object> dataMap = (Map<String, Object>) offerSnapShot.getValue();
 
-//                    Map<String, Object> userObjectMap = (Map<String, Object>) dataMap.get("user");
-//                    Map<String, Object> taskObjectMap = (Map<String, Object>) dataMap.get("task");
                     Offer offer = new Offer();
-//                    offer.user = User.fromUserObjectMap(userObjectMap);
-//                    offer.task = Task.fromTaskObjectMap(taskObjectMap);
 
+//                    offer.task = (((Map<String, Object>)dataMap.get("task")).get("task_id")).toString();
+//                    offer.user = (((Map<String, Object>)dataMap.get("user")).get("user_id")).toString();
 
-                    offer.task = (((Map<String, Object>)dataMap.get("task")).get("task_id")).toString();
-                    offer.user = (((Map<String, Object>)dataMap.get("user")).get("user_id")).toString();
+                    if(dataMap.get("user") != null) {
+                        offer.user = dataMap.get("user").toString();
+                    }
+
+                    if(dataMap.get("task") != null) {
+                        offer.task = dataMap.get("task").toString();
+                    }
+
                     offer.price = Float.parseFloat(dataMap.get("price").toString().replace("$", ""));
                     offer.created_at = dataMap.get("created_at").toString();
                     offers.add(offer);
