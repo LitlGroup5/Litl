@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.google.firebase.database.DatabaseReference;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.utils.CircleIndicator;
+import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.MediaPagerAdapter;
 
@@ -64,13 +65,20 @@ public class TaskProposalFragment extends Fragment {
     @BindColor(R.color.colorPrimary)
     int mColorPrimary;
 
+    private String mTaskId;
+
     private DatabaseReference mDatabase;
 
     public TaskProposalFragment() {
     }
 
-    public static TaskProposalFragment newInstance() {
+    public static TaskProposalFragment newInstance(String taskid) {
         TaskProposalFragment fragment = new TaskProposalFragment();
+
+        Bundle args = new Bundle();
+        args.putString(Constants.TASK_ID, taskid);
+        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -78,6 +86,8 @@ public class TaskProposalFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        mTaskId = getArguments().getString(Constants.TASK_ID);
     }
 
     @Override
