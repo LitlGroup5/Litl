@@ -1,5 +1,6 @@
 package com.litlgroup.litl.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
@@ -12,11 +13,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.litlgroup.litl.R;
+import com.litlgroup.litl.activities.BidSelectScreenActivity;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.MediaPagerAdapter;
@@ -95,6 +98,14 @@ public class TaskOffersFragment extends Fragment {
 
         setupViewPager();
 
+        Button bidNowButton = (Button) view.findViewById(R.id.btnBidNow);
+        bidNowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigateToBidActivity();
+            }
+        });
+
         return view;
     }
 
@@ -124,5 +135,10 @@ public class TaskOffersFragment extends Fragment {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    private void navigateToBidActivity() {
+        Intent i = new Intent(getActivity(), BidSelectScreenActivity.class);
+        startActivity(i);
     }
 }
