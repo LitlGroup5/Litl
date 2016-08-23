@@ -5,7 +5,7 @@ package com.litlgroup.litl.utils;
  */
 public class Constants {
 
-    public static String TASK_ID = "taskID";
-    public static String SELECTED_TASK = "selectedTask";
-    public static String TASK_TYPE = "taskType";
+    public static final String TASK_ID = "TaskID";
+    public static final String SELECTED_TASK = "SelectedTask";
+    public static final String TASK_TYPE = "TaskType";
 }
