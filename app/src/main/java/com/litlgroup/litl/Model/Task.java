@@ -1,5 +1,7 @@
 package com.litlgroup.litl.model;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,6 +10,8 @@ import java.util.Map;
 /**
  * Created by andrj148 on 8/16/16.
  */
+
+@Parcel
 public class Task {
     public Task()
     {
