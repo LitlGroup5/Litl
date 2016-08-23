@@ -32,15 +32,14 @@ public class BidSelectScreenActivity extends AppCompatActivity {
     @BindView(R.id.rvOffers)
     RecyclerView rvOffers;
 
-    private String thisTaskId;
+    private String thisTaskId = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bid_select_screen);
 
-        thisTaskId = getIntent().getStringExtra("taskId");
-
+//        thisTaskId = getIntent().getStringExtra("taskId");
         ButterKnife.bind(this);
         offers = new ArrayList<>();
         adapter = new OffersAdapter(this, offers);
