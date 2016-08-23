@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.BidSelectScreenActivity;
+import com.litlgroup.litl.model.Task;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ImageUtils;
@@ -30,6 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TaskOffersFragment extends Fragment {
+    private Task selectedTask;
 
     @BindView(R.id.tvTitle)
     TextView mTvTitle;
@@ -148,6 +150,7 @@ public class TaskOffersFragment extends Fragment {
 
     private void navigateToBidActivity() {
         Intent i = new Intent(getActivity(), BidSelectScreenActivity.class);
+        i.putExtra(Constants.TASK_ID, mTaskId);
         startActivity(i);
     }
 }
