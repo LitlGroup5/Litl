@@ -39,7 +39,7 @@ public class BidSelectScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bid_select_screen);
-        thisTaskId = getIntent().getIntExtra(Constants.TASKID, 0);
+        thisTaskId = getIntent().getIntExtra(Constants.TASK_ID, 0);
 
         ButterKnife.bind(this);
         offers = new ArrayList<>();

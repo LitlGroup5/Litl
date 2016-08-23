@@ -72,7 +72,7 @@ public class TaskFragment extends Fragment {
 
     private void navigateToTaskDetailActivity(int position) {
         Intent i = new Intent(getActivity(), TaskDetailActivity.class);
-        i.putExtra(Constants.SELECTEDTASK, Parcels.wrap(tasks.get(position)));
+        i.putExtra(Constants.SELECTED_TASK, Parcels.wrap(tasks.get(position)));
         startActivity(i);
     }
 }

@@ -19,7 +19,7 @@ public class TaskDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
 
-        Task selectedTask = (Task) Parcels.unwrap(getIntent().getParcelableExtra(Constants.SELECTEDTASK));
+        Task selectedTask = (Task) Parcels.unwrap(getIntent().getParcelableExtra(Constants.SELECTED_TASK));
         loadFragment(selectedTask);
     }
 
