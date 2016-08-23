@@ -1,10 +1,13 @@
 package com.litlgroup.litl.model;
 
+import org.parceler.Parcel;
+
 import java.util.Date;
 
 /**
  * Created by andrj148 on 8/16/16.
  */
+@Parcel
 public class Bookmark {
     private Task bookmarkedTask;
     private Date createdAt;

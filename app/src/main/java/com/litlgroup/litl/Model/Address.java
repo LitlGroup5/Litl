@@ -2,9 +2,13 @@ package com.litlgroup.litl.model;
 
 import android.location.Location;
 
+import org.parceler.Parcel;
+
 /**
  * Created by andrj148 on 8/16/16.
  */
+
+@Parcel
 public class Address {
     private int houseNumber;
     private String street;
