@@ -17,11 +17,11 @@ Required:
       - Skill set
       - Number of connections
       - Tabbed Reviews (Reviews by the user and of the user)
-* [ ] User should be able to look at the detail view of the Tasks in Proposals/Offers 
-* [ ] User should be able to create new Proposals 
+* [x] User should be able to look at the detail view of the Tasks in Proposals/Offers 
+* [x] User should be able to create new Proposals 
 * [ ] User should be able to edit existing Proposals 
-* [ ] User should be able to accept/reject the offers by the other users
-* [ ] User should be to Bif for the offers by other users 
+* [x] User should be able to accept/reject the offers by the other users
+* [x] User should be to Bid for the offers by other users 
 * [ ] User can access a drawer layout menu with following options - 
       - Profile
       - Connections
@@ -31,15 +31,15 @@ Required:
       - Logout
       - Contact Us
 * [ ] Signed in user will be taken to initial screen of wall
-   * [ ] Wall will display tabbed navigation of **Proposals** and **Offers**
-   * [ ] User can take bookmark (and unbookmark) tasks they like
+   * [x] Wall will display tabbed navigation of **Proposals** and **Offers**
+   * [x] User can take bookmark (and unbookmark) tasks they like
    * [ ] User can filter proposals or offers by the following
       - Location
       - Date
       - Time of day
       - Circles
       - Categories
-   * [ ] User can create a task from **Floating Action Button**
+   * [x] User can create a task from **Floating Action Button**
 * [ ] User can view a RecycleView of rich media for Do-It-Yourself educational articles and tutorials
   * [ ] Educational Media will use **CardViewss**
   
@@ -60,3 +60,11 @@ Stretch:
 * [ ] A screen to track when a task starts and ends - track duration, location and other metrics
 * [ ] User should be able to comment on Taks in Proposals/Offers 
 * [ ] User should be able to chat with the creator of the offer 
+
+## Video Walkthrough
+
+Here's a walkthrough of implemented user stories:
+
+![](http://imgur.com/fH3yJju.gif)
+
+GIF created with [LiceCap](http://www.cockos.com/licecap/).
