@@ -12,14 +12,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.litlgroup.litl.model.Offer;
-import com.litlgroup.litl.model.User;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.adapters.OffersAdapter;
+import com.litlgroup.litl.model.Offer;
+import com.litlgroup.litl.model.User;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.SpacesItemDecoration;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
