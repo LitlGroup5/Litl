@@ -16,6 +16,7 @@ import com.litlgroup.litl.model.Offer;
 import com.litlgroup.litl.model.User;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.adapters.OffersAdapter;
+import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.SpacesItemDecoration;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class BidSelectScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bid_select_screen);
 
-//        thisTaskId = getIntent().getStringExtra("taskId");
+//        thisTaskId = getIntent().getStringExtra(Constants.TASKID);
         ButterKnife.bind(this);
         offers = new ArrayList<>();
         adapter = new OffersAdapter(this, offers);

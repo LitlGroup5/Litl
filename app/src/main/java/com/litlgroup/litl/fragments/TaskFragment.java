@@ -15,6 +15,7 @@ import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.TaskDetailActivity;
 import com.litlgroup.litl.adapters.TaskRecycleAdapter;
 import com.litlgroup.litl.model.Task;
+import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ItemClickSupport;
 
 import org.parceler.Parcels;
@@ -71,7 +72,7 @@ public class TaskFragment extends Fragment {
 
     private void navigateToTaskDetailActivity(int position) {
         Intent i = new Intent(getActivity(), TaskDetailActivity.class);
-        i.putExtra("selectedTask", Parcels.wrap(tasks.get(position)));
+        i.putExtra(Constants.SELECTEDTASK, Parcels.wrap(tasks.get(position)));
         startActivity(i);
     }
 }
