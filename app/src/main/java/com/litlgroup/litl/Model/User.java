@@ -15,11 +15,11 @@ public class User {
     private String thumbnailURL;
     private ArrayList<Review>vreviewsOfMe;
     private ArrayList<Review>vreviewsByMe;
-    private long id;
+    private String id;
     private ArrayList<String> categories;
     private ArrayList<Bookmark> bookmarks;
     private String email;
-    private float money;
+    private double money;
     private int favorPoints;
     private ArrayList<Connection> connections;
 
@@ -61,7 +61,7 @@ public class User {
         return vreviewsByMe;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
@@ -77,7 +77,7 @@ public class User {
         return email;
     }
 
-    public float getMoney() {
+    public double getMoney() {
         return money;
     }
 

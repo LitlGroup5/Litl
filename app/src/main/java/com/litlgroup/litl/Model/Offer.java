@@ -25,7 +25,7 @@ public class Offer {
 
     private String user;
     private String task;
-    private float price;
+    private double price;
     private Date expiration;
     private String created_at;
 
@@ -46,7 +46,7 @@ public class Offer {
         return task;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 

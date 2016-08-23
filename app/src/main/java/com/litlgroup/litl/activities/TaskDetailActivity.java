@@ -7,10 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.fragments.TaskOffersFragment;
 import com.litlgroup.litl.fragments.TaskProposalFragment;
-import com.litlgroup.litl.model.Task;
 import com.litlgroup.litl.model.Task.Type;
 import com.litlgroup.litl.utils.Constants;
-import com.litlgroup.litl.utils.Constants.DetailViewType;
 
 public class TaskDetailActivity extends AppCompatActivity {
 

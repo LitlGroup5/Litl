@@ -8,6 +8,6 @@ import java.util.Date;
 public class Review {
     private User reviewedBy;
     private User reviewOf;
-    private long id;
+    private String id;
     private Date createdAt;
 }

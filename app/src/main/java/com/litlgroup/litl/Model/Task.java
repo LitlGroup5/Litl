@@ -26,7 +26,7 @@ public class Task {
     private ArrayList<String> categories;
     private String title;
     private double price;
-    private long id;
+    private String id;
     private int favorPoints;
     private Bookmark bookmark;
     private User user;
@@ -82,7 +82,7 @@ public class Task {
         return price;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
