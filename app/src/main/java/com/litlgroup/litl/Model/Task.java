@@ -104,9 +104,9 @@ public class Task {
         CLOSED
     }
     public enum State {
-        inBiddingProcess,
-        successfullyAccepted,
-        notAccepted,
+        IN_BIDDING_PROCESS,
+        SUCCESSFULLY_ACCEPTED,
+        NOT_ACCEPTED,
         EXPIRED
     }
 
@@ -124,7 +124,7 @@ public class Task {
         task1.address = address1;
         task1.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
         task1.type = Type.PROPOSAL;
-        task1.state = State.inBiddingProcess;
+        task1.state = State.IN_BIDDING_PROCESS;
         task1.workImageURL = "http://neighbourhoodhandyman.ca/wp-content/uploads/2015/05/yard-work.jpg";
         task1.title = "Yardwork";
         task1.price = 20.00;
@@ -136,7 +136,7 @@ public class Task {
         task2.address = address1;
         task2.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
         task2.type = Type.PROPOSAL;
-        task2.state = State.inBiddingProcess;
+        task2.state = State.IN_BIDDING_PROCESS;
         task2.workImageURL = "http://irepairhvac.com/wp-content/uploads/2014/06/Plumbing-Services.jpg";
         task2.title = "Plumbing";
         task2.price = 35.00;
@@ -148,7 +148,7 @@ public class Task {
         task3.address = address1;
         task3.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
         task3.type = Type.PROPOSAL;
-        task3.state = State.inBiddingProcess;
+        task3.state = State.IN_BIDDING_PROCESS;
         task3.workImageURL = "http://listdose.com/wp-content/uploads/2013/06/10..bmp";
         task3.title = "Parenting";
         task3.price = 135.00;
@@ -160,7 +160,7 @@ public class Task {
         task4.address = address1;
         task4.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
         task4.type = Type.PROPOSAL;
-        task4.state = State.notAccepted;
+        task4.state = State.NOT_ACCEPTED;
         task4.workImageURL = "http://pictures.dealer.com/c/coulternissan/1967/9c3b5c55b085babe06347934ff4efd1cx.jpg";
         task4.title = "Oil Change";
         task4.price = 28.00;
@@ -172,7 +172,7 @@ public class Task {
         task5.address = address1;
         task5.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
         task5.type = Type.PROPOSAL;
-        task5.state = State.successfullyAccepted;
+        task5.state = State.SUCCESSFULLY_ACCEPTED;
         task5.workImageURL = "http://www.dpccars.com/gallery/var/albums/Car-Wash-Fail/Car%20Wash%20Fail%20-%2030.jpg";
         task5.title = "Car Wash";
         task5.price = 5.00;
@@ -202,7 +202,7 @@ public class Task {
         task1.address = address1;
         task1.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
         task1.type = Type.OFFER;
-        task1.state = State.inBiddingProcess;
+        task1.state = State.IN_BIDDING_PROCESS;
         task1.workImageURL = "http://www.transformationsmassage.com/wp-content/uploads/2012/06/gardener.jpg";
         task1.title = "Yardwork";
         task1.price = 40.00;
@@ -214,7 +214,7 @@ public class Task {
         task2.address = address1;
         task2.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
         task2.type = Type.OFFER;
-        task2.state = State.inBiddingProcess;
+        task2.state = State.IN_BIDDING_PROCESS;
         task2.workImageURL = "http://irepairhvac.com/wp-content/uploads/2014/06/Plumbing-Services.jpg";
         task2.title = "Plumbing";
         task2.price = 85.00;
@@ -238,7 +238,7 @@ public class Task {
         task4.address = address1;
         task4.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
         task4.type = Type.PROPOSAL;
-        task4.state = State.notAccepted;
+        task4.state = State.NOT_ACCEPTED;
         task4.workImageURL = "http://www.bls.gov/ooh/images/3491.jpg";
         task4.title = "Pick up perscription";
         task4.price = 48.00;
@@ -250,7 +250,7 @@ public class Task {
         task5.address = address1;
         task5.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
         task5.type = Type.PROPOSAL;
-        task5.state = State.successfullyAccepted;
+        task5.state = State.SUCCESSFULLY_ACCEPTED;
         task5.workImageURL = "http://cdn.skim.gs/image/upload/c_fill,dpr_1.0,w_940/v1456338269/msi/woman-cleaning-kitchen-horiz_nrzwt6.jpg";
         task5.title = "Clean Kitchen";
         task5.price = 15.00;
