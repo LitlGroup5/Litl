@@ -19,6 +19,8 @@ import com.litlgroup.litl.adapters.OffersAdapter;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.SpacesItemDecoration;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -33,14 +35,14 @@ public class BidSelectScreenActivity extends AppCompatActivity {
     @BindView(R.id.rvOffers)
     RecyclerView rvOffers;
 
-    private String thisTaskId = "0";
+    private int thisTaskId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bid_select_screen);
+        thisTaskId = getIntent().getIntExtra(Constants.TASKID, 0);
 
-//        thisTaskId = getIntent().getStringExtra(Constants.TASKID);
         ButterKnife.bind(this);
         offers = new ArrayList<>();
         adapter = new OffersAdapter(this, offers);

@@ -30,7 +30,7 @@ public class TaskDetailActivity extends AppCompatActivity {
             TaskProposalFragment fragmentDemo = TaskProposalFragment.newInstance();
             ft.replace(R.id.fragment_placeholder, fragmentDemo);
         } else if (selectedTask.getType() == Task.Type.OFFER){
-            TaskOffersFragment fragmentDemo = TaskOffersFragment.newInstance();
+            TaskOffersFragment fragmentDemo = TaskOffersFragment.newInstance(selectedTask);
             ft.replace(R.id.fragment_placeholder, fragmentDemo);
         }
 
