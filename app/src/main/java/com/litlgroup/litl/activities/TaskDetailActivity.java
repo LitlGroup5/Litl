@@ -8,6 +8,7 @@ import com.litlgroup.litl.R;
 import com.litlgroup.litl.fragments.TaskOffersFragment;
 import com.litlgroup.litl.fragments.TaskProposalFragment;
 import com.litlgroup.litl.model.Task;
+import com.litlgroup.litl.utils.Constants;
 
 import org.parceler.Parcels;
 
@@ -18,7 +19,7 @@ public class TaskDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
 
-        Task selectedTask = (Task) Parcels.unwrap(getIntent().getParcelableExtra("selectedTask"));
+        Task selectedTask = (Task) Parcels.unwrap(getIntent().getParcelableExtra(Constants.SELECTEDTASK));
         loadFragment(selectedTask);
     }
 

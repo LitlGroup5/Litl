@@ -100,7 +100,8 @@ public class Task {
 
     public enum Type {
         PROPOSAL,
-        OFFER
+        OFFER,
+        CLOSED
     }
     public enum State {
         inBiddingProcess,
