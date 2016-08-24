@@ -171,7 +171,7 @@ public class Task {
         Task task5 = new Task();
         task5.address = address1;
         task5.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
-        task5.type = Type.PROPOSAL;
+        task5.type = Type.CLOSED;
         task5.state = State.SUCCESSFULLY_ACCEPTED;
         task5.workImageURL = "http://www.dpccars.com/gallery/var/albums/Car-Wash-Fail/Car%20Wash%20Fail%20-%2030.jpg";
         task5.title = "Car Wash";
@@ -249,7 +249,7 @@ public class Task {
         Task task5 = new Task();
         task5.address = address1;
         task5.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
-        task5.type = Type.PROPOSAL;
+        task5.type = Type.CLOSED;
         task5.state = State.SUCCESSFULLY_ACCEPTED;
         task5.workImageURL = "http://cdn.skim.gs/image/upload/c_fill,dpr_1.0,w_940/v1456338269/msi/woman-cleaning-kitchen-horiz_nrzwt6.jpg";
         task5.title = "Clean Kitchen";
