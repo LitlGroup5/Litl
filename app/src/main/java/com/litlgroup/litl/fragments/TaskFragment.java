@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.TaskDetailActivity;
 import com.litlgroup.litl.adapters.TaskRecycleAdapter;
+import com.litlgroup.litl.behaviors.EndlessRecyclerViewScrollListener;
 import com.litlgroup.litl.model.Task;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ItemClickSupport;
@@ -68,6 +69,11 @@ public class TaskFragment extends Fragment {
                                navigateToTaskDetailActivity(position);
                     }
                 });
+        rvTasks.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+            }
+        });
     }
 
     private void navigateToTaskDetailActivity(int position) {
@@ -75,4 +81,6 @@ public class TaskFragment extends Fragment {
         i.putExtra(Constants.SELECTED_TASK, Parcels.wrap(tasks.get(position)));
         startActivity(i);
     }
+
+
 }
