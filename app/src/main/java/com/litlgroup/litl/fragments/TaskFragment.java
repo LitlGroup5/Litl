@@ -1,6 +1,7 @@
 package com.litlgroup.litl.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,8 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.litlgroup.litl.R;
+import com.litlgroup.litl.activities.TaskDetailActivity;
 import com.litlgroup.litl.adapters.TaskRecycleAdapter;
 import com.litlgroup.litl.model.Task;
+import com.litlgroup.litl.utils.Constants;
+import com.litlgroup.litl.utils.ItemClickSupport;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -55,5 +61,18 @@ public class TaskFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvTasks.setLayoutManager(linearLayoutManager);
         rvTasks.setAdapter(taskRecycleAdapter);
+        ItemClickSupport.addTo(rvTasks).setOnItemClickListener(
+                new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                               navigateToTaskDetailActivity(position);
+                    }
+                });
+    }
+
+    private void navigateToTaskDetailActivity(int position) {
+        Intent i = new Intent(getActivity(), TaskDetailActivity.class);
+        i.putExtra(Constants.SELECTED_TASK, Parcels.wrap(tasks.get(position)));
+        startActivity(i);
     }
 }

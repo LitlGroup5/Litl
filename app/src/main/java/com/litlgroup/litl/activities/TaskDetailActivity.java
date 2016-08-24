@@ -7,33 +7,30 @@ import android.support.v7.app.AppCompatActivity;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.fragments.TaskOffersFragment;
 import com.litlgroup.litl.fragments.TaskProposalFragment;
-import com.litlgroup.litl.model.Task.Type;
+import com.litlgroup.litl.model.Task;
 import com.litlgroup.litl.utils.Constants;
 
-public class TaskDetailActivity extends AppCompatActivity {
+import org.parceler.Parcels;
 
-    private String mTaskId;
-    private Type mType = Type.OFFER;
+public class TaskDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
 
-        mTaskId = getIntent().getStringExtra(Constants.TASK_ID);
-        mType = (Type) getIntent().getSerializableExtra(Constants.TASK_TYPE);
-
-        loadFragment();
+        Task selectedTask = (Task) Parcels.unwrap(getIntent().getParcelableExtra(Constants.SELECTED_TASK));
+        loadFragment(selectedTask);
     }
 
-    private void loadFragment() {
+    private void loadFragment(Task selectedTask) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        if (mType == Type.PROPOSAL) {
-            TaskProposalFragment fragmentDemo = TaskProposalFragment.newInstance(mTaskId);
+        if (selectedTask.getType() == Task.Type.PROPOSAL) {
+            TaskProposalFragment fragmentDemo = TaskProposalFragment.newInstance(selectedTask.getId());
             ft.replace(R.id.fragment_placeholder, fragmentDemo);
-        } else if (mType == Type.OFFER){
-            TaskOffersFragment fragmentDemo = TaskOffersFragment.newInstance(mTaskId);
+        } else if (selectedTask.getType() == Task.Type.OFFER){
+            TaskOffersFragment fragmentDemo = TaskOffersFragment.newInstance(selectedTask.getId());
             ft.replace(R.id.fragment_placeholder, fragmentDemo);
         }
 

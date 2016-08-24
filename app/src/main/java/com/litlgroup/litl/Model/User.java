@@ -1,11 +1,15 @@
 package com.litlgroup.litl.model;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 import java.util.Map;
 
 /**
  * Created by andrj148 on 8/16/16.
  */
+
+@Parcel
 public class User {
     private String firstName;
     private String lastName;
