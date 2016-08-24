@@ -15,6 +15,7 @@ import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.TaskDetailActivity;
 import com.litlgroup.litl.adapters.TaskRecycleAdapter;
 import com.litlgroup.litl.behaviors.EndlessRecyclerViewScrollListener;
+import com.litlgroup.litl.interfaces.InfiniteScrollListener;
 import com.litlgroup.litl.model.Task;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ItemClickSupport;
@@ -32,6 +33,7 @@ public class TaskFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private TaskRecycleAdapter taskRecycleAdapter;
     private ArrayList<Task> tasks;
+    public InfiniteScrollListener infiniteScrollListener;
 
     public TaskFragment() {
         // Required empty public constructor
@@ -72,6 +74,7 @@ public class TaskFragment extends Fragment {
         rvTasks.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
+                infiniteScrollListener.userScrolledPastBenchmark(TaskFragment.this, totalItemsCount - 1);
             }
         });
     }
@@ -81,6 +84,5 @@ public class TaskFragment extends Fragment {
         i.putExtra(Constants.SELECTED_TASK, Parcels.wrap(tasks.get(position)));
         startActivity(i);
     }
-
 
 }
