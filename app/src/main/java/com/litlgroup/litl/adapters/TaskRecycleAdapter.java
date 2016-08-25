@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -72,6 +74,9 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
         ImageView ivBackground = (ImageView) taskCardView.findViewById(R.id.ivBackground);
         Glide.with(taskCardView.getContext()).load(task.getWorkImageURL()).diskCacheStrategy(DiskCacheStrategy.ALL).into(ivBackground);
+        if (task.getType() == Task.Type.CLOSED) {
+            convertClosedTaskBackgroundImageToBlackAndWhite(ivBackground);
+        }
 
         final ImageView ivAvatar = (ImageView) taskCardView.findViewById(R.id.ivAvatar);
         Glide.with(taskCardView.getContext()).load(task.getUser().getProfileImageURL()).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(new BitmapImageViewTarget(ivAvatar){
@@ -123,5 +128,12 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
                 }
             }
         });
+    }
+
+    private void convertClosedTaskBackgroundImageToBlackAndWhite(ImageView closedTaskImageView) {
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+        closedTaskImageView.setColorFilter(filter);
     }
 }
