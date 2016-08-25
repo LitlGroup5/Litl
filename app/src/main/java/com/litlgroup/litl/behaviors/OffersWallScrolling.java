@@ -11,6 +11,6 @@ public class OffersWallScrolling implements InfiniteScrollListener {
     @Override
     public void userScrolledPastBenchmark(TaskFragment taskFragment, int startingPosition) {
         OffersFragment offersFragment = (OffersFragment) taskFragment;
-        offersFragment.setupFakeData();
+        offersFragment.setupFakeData(false);
     }
 }
