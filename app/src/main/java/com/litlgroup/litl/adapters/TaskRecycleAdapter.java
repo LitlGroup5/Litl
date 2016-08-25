@@ -64,6 +64,8 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         return tasks.size();
     }
 
+
+
     private void setSubviews(ViewHolder viewHolder, final Task task, final int position) {
         final CardView taskCardView = viewHolder.cardView;
         taskCardView.setTag(position);

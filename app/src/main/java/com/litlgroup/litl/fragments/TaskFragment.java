@@ -54,9 +54,15 @@ public class TaskFragment extends Fragment {
         taskRecycleAdapter = new TaskRecycleAdapter(tasks);
     }
 
-    public void addAll(ArrayList<Task> newTasks) {
-        tasks.addAll(newTasks);
-        taskRecycleAdapter.notifyItemRangeInserted(taskRecycleAdapter.getItemCount(), tasks.size() - 1);
+    public void addAll(ArrayList<Task> newTasks, boolean isRefresh) {
+        if (isRefresh) {
+         tasks.addAll(0, newTasks);
+            taskRecycleAdapter.notifyItemRangeInserted(0, newTasks.size() - 1);
+            linearLayoutManager.scrollToPosition(0);
+        } else {
+            tasks.addAll(newTasks);
+            taskRecycleAdapter.notifyItemRangeInserted(taskRecycleAdapter.getItemCount(), tasks.size() - 1);
+        }
     }
 
     private void setUpRecycleView(View v) {

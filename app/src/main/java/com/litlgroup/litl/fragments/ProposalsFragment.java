@@ -23,6 +23,6 @@ public class ProposalsFragment extends TaskFragment {
     }
 
     public void setupFakeData() {
-        addAll(Task.getFakeTaskDataProposals());
+        addAll(Task.getFakeTaskDataProposals(), false);
     }
 }
