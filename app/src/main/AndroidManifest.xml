@@ -20,10 +20,12 @@
         </activity>
         <activity
             android:name=".activities.TaskDetailActivity"
-            android:parentActivityName=".WallActivity"
+            android:parentActivityName=".activities.WallActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activities.BidSelectScreenActivity" />
         <activity android:name=".activities.CreateTaskActivity"></activity>
+        <activity android:name=".activities.SignInActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
