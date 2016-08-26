@@ -23,5 +23,10 @@
         <item name="colorAccent">#FF7F66</item>
 
     </style>
+    <style name="BookmarkButton" parent="@android:style/Widget.ImageButton">
+        <item name="android:gravity">top|center_horizontal</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
 
 </resources>

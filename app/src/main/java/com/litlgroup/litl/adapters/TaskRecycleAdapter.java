@@ -106,23 +106,26 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         TextView tvDeadlineDate = (TextView) taskCardView.findViewById(R.id.tvDeadlineDate);
         tvDeadlineDate.setText(task.getDeadline_date());
 
-        final ImageButton ibBookmark = (ImageButton) taskCardView.findViewById(R.id.ibBookmark);
+            ImageButton ibBookmark = (ImageButton) taskCardView.findViewById(R.id.ibBookmark);
+        setUpAndManageBookmarkButtonState(ibBookmark, task, position);
+    }
+
+    private void setUpAndManageBookmarkButtonState(final ImageButton bookmarkButton, Task task, final int position) {
         if (task.getBookmark().getBookmarked() && task.getType() != Task.Type.CLOSED) {
-            ibBookmark.setBackgroundColor(ContextCompat.getColor(thisContext, R.color.colorAccent));
+            bookmarkButton.setImageResource(R.drawable.ic_bookmark_filled);
         } else {
-            ibBookmark.setBackgroundColor(Color.TRANSPARENT);
+            bookmarkButton.setImageResource(R.drawable.ic_bookmark_border);
         }
-        ibBookmark.setOnClickListener(new View.OnClickListener() {
+        bookmarkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ImageButton tappedButton = (ImageButton) view;
                 Task selectedTask = tasks.get(position);
 
                 if (selectedTask.getBookmark().getBookmarked()) {
-                    tappedButton.setBackgroundColor(Color.TRANSPARENT);
+                    bookmarkButton.setImageResource(R.drawable.ic_bookmark_border);
                     selectedTask.getBookmark().setBookmarked(false);
                 } else {
-                    tappedButton.setBackgroundColor(ContextCompat.getColor(thisContext, R.color.colorAccent));
+                    bookmarkButton.setImageResource(R.drawable.ic_bookmark_filled);
                     selectedTask.getBookmark().setBookmarked(true);
                 }
             }
@@ -140,4 +143,5 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
         closedTaskImageView.setColorFilter(filter);
     }
+
 }
