@@ -74,9 +74,8 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
         ImageView ivBackground = (ImageView) taskCardView.findViewById(R.id.ivBackground);
         Glide.with(taskCardView.getContext()).load(task.getWorkImageURL()).diskCacheStrategy(DiskCacheStrategy.ALL).into(ivBackground);
-        if (task.getType() == Task.Type.CLOSED) {
-            convertClosedTaskBackgroundImageToBlackAndWhite(ivBackground);
-        }
+        convertClosedTaskBackgroundImageToBlackAndWhite(ivBackground, task.getType());
+
 
         final ImageView ivAvatar = (ImageView) taskCardView.findViewById(R.id.ivAvatar);
         Glide.with(taskCardView.getContext()).load(task.getUser().getProfileImageURL()).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(new BitmapImageViewTarget(ivAvatar){
@@ -108,7 +107,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         tvDeadlineDate.setText(task.getDeadline_date());
 
         final ImageButton ibBookmark = (ImageButton) taskCardView.findViewById(R.id.ibBookmark);
-        if (task.getBookmark().getBookmarked()) {
+        if (task.getBookmark().getBookmarked() && task.getType() != Task.Type.CLOSED) {
             ibBookmark.setBackgroundColor(ContextCompat.getColor(thisContext, R.color.colorAccent));
         } else {
             ibBookmark.setBackgroundColor(Color.TRANSPARENT);
@@ -130,9 +129,14 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         });
     }
 
-    private void convertClosedTaskBackgroundImageToBlackAndWhite(ImageView closedTaskImageView) {
+    private void convertClosedTaskBackgroundImageToBlackAndWhite(ImageView closedTaskImageView, Task.Type type) {
         ColorMatrix matrix = new ColorMatrix();
-        matrix.setSaturation(0);
+
+        if (type == Task.Type.CLOSED) {
+            matrix.setSaturation(0);
+        } else {
+            matrix.setSaturation(1);
+        }
         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
         closedTaskImageView.setColorFilter(filter);
     }

@@ -35,6 +35,7 @@ public class TaskFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private TaskRecycleAdapter taskRecycleAdapter;
     private ArrayList<Task> tasks;
+    private SwipeRefreshLayout swipeContainer;
     public InfiniteScrollListener infiniteScrollListener;
     public SwipeToRefreshListener swipeToRefreshListener;
 
@@ -60,9 +61,10 @@ public class TaskFragment extends Fragment {
 
     public void addAll(ArrayList<Task> newTasks, boolean isRefresh) {
         if (isRefresh) {
-         tasks.addAll(0, newTasks);
+            tasks.addAll(0, newTasks);
             taskRecycleAdapter.notifyItemRangeInserted(0, newTasks.size() - 1);
             linearLayoutManager.scrollToPosition(0);
+            swipeContainer.setRefreshing(false);
         } else {
             tasks.addAll(newTasks);
             taskRecycleAdapter.notifyItemRangeInserted(taskRecycleAdapter.getItemCount(), tasks.size() - 1);
@@ -90,13 +92,18 @@ public class TaskFragment extends Fragment {
     }
 
     private void setupSwipeToRefresh(View view) {
-        SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 swipeToRefreshListener.userPulledDownRecycleViewToRefresh(TaskFragment.this);
             }
         });
+
+        swipeContainer.setColorSchemeResources(R.color.colorPrimary,
+                R.color.colorSkyBlue,
+                R.color.colorLight,
+                R.color.colorAccent);
     }
 
     private void navigateToTaskDetailActivity(int position) {
