@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/"
+            android:icon="@drawable/ic_one"
+            android:title="First" />
+        <item
+            android:id="@+id/nav_second_fragment"
+            android:icon="@drawable/ic_two"
+            android:title="Second" />
+        <item
+            android:id="@+id/nav_third_fragment"
+            android:icon="@drawable/ic_three"
+            android:title="Third"
+        <menu>
+            <item
+                android:id="@+id/drawer_favourite"
+                android:icon="@drawable/ic_favorite_black_24dp"
+                android:title="favourite"/>
+
+            <item
+                android:id="@+id/drawer_downloaded"
+                android:icon="@drawable/ic_file_download_black_24dp"
+                android:title="downloaded"/>
+        </menu>
+                />
+    </group>
+
+</menu>
