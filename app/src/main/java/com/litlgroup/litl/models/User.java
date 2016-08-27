@@ -12,14 +12,14 @@ import java.util.List;
 public class User {
 
     private List<String> bookmarks = new ArrayList<String>();
-    private String contact_no;
+    private String contactNo;
     private Float earnings;
     private String email;
     private List<String> media = new ArrayList<String>();
     private String name;
     private String photo;
     private Float rating;
-    private List<String> skillset = new ArrayList<String>();
+    private List<String> skillSet = new ArrayList<String>();
 
     public User() {
     }
@@ -45,19 +45,19 @@ public class User {
     /**
      *
      * @return
-     * The contact_no
+     * The contactNo
      */
-    public String getContact_no() {
-        return contact_no;
+    public String getContactNo() {
+        return contactNo;
     }
 
     /**
      *
-     * @param contact_no
-     * The contact_no
+     * @param contactNo
+     * The contactNo
      */
-    public void setContact_no(String contact_no) {
-        this.contact_no = contact_no;
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
     }
 
     /**
@@ -171,19 +171,19 @@ public class User {
     /**
      *
      * @return
-     * The skillset
+     * The skillSet
      */
-    public List<String> getSkillset() {
-        return skillset;
+    public List<String> getSkillSet() {
+        return skillSet;
     }
 
     /**
      *
-     * @param skillset
-     * The skillset
+     * @param skillSet
+     * The skillSet
      */
-    public void setSkillset(List<String> skillset) {
-        this.skillset = skillset;
+    public void setSkillSet(List<String> skillSet) {
+        this.skillSet = skillSet;
     }
 
 }
