@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:gravity="center_vertical|center_horizontal">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="14dp">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="7dp"
+            android:id="@+id/etApt"
+            android:hint="Apt"
+            android:layout_marginTop="14dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="14dp"
+            android:hint="House Num"
+            android:id="@+id/etHouseNum" />
+
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etStreetAddress"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp"
+        android:layout_marginTop="14dp"
+        android:hint="Street Address" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="14dp">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
+            android:layout_marginRight="7dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="14dp"
+            android:hint="City" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
+            android:layout_marginLeft="7dp"
+            android:hint="Zip"
+            android:inputType="number" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="14dp"
+            android:layout_marginLeft="7dp"
+            android:layout_weight="0.33"
+            android:hint="State" />
+
+    </LinearLayout>
+
+</LinearLayout>
