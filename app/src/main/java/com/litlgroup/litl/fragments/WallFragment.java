@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.litlgroup.litl.R;
@@ -47,6 +46,12 @@ public class WallFragment extends Fragment {
         tabStrip.setViewPager(viewPager);
     }
 
+    @OnClick(R.id.fabCreateTask)
+    public void launchCreateTaskActivity() {
+        Intent intent = new Intent(getActivity(), CreateTaskActivity.class);
+        startActivity(intent);
+    }
+
     public class TaskPagerAdapter extends FragmentPagerAdapter {
         private String tabTitles[] = {"Proposals", "Offers" };
 
@@ -72,12 +77,5 @@ public class WallFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             return tabTitles[position];
         }
-    }
-
-    @OnClick(R.id.fabCreateTask)
-    public void launchCreateTaskActivity()
-    {
-        Intent intent = new Intent(getActivity(), CreateTaskActivity.class);
-        startActivity(intent);
     }
 }
