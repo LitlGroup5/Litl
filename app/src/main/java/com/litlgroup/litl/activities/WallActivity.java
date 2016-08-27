@@ -88,12 +88,6 @@ public class WallActivity extends AppCompatActivity implements
 
         ButterKnife.bind(this);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new TaskPagerAdapter(getSupportFragmentManager()));
-
-        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabStrip.setViewPager(viewPager);
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -172,45 +166,4 @@ public class WallActivity extends AppCompatActivity implements
         // Close the navigation drawer
         drawerLayout.closeDrawers();
     }
-
-    public class TaskPagerAdapter extends FragmentPagerAdapter {
-        private String tabTitles[] = {"Proposals", "Offers"};
-
-        public TaskPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            if (position == 0) {
-                return new ProposalsFragment();
-            } else {
-                return new OffersFragment();
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return tabTitles.length;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return tabTitles[position];
-        }
-    }
-
-    @OnClick(R.id.fabCreateTask)
-    public void launchCreateTaskActivity() {
-        Intent intent = new Intent(WallActivity.this, CreateTaskActivity.class);
-
-        startActivity(intent);
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Timber.d("onConnectionFailed:" + connectionResult);
-    }
-
 }
