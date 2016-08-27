@@ -7,4 +7,5 @@
     <string name="bid_by">BID BY</string>
     <string name="bid_now">BID NOW</string>
     <string name="viewed_by">VIEWED BY</string>
+    <string name="storage_reference_url">gs://litl-40ef9.appspot.com</string>
 </resources>

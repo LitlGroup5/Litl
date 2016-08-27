@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -15,10 +16,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.fragments.AddressFragment;
 import com.litlgroup.litl.fragments.DatePickerFragment;
@@ -32,6 +38,8 @@ import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Permissions;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -91,6 +99,10 @@ public class CreateTaskActivity
 
     Address address;
 
+    StorageReference storageReference;
+
+    ArrayList<String> mediaUrls;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +112,13 @@ public class CreateTaskActivity
         permissions = new Permissions(this);
         address = new Address();
         setupViewPager();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        storageReference =
+                storage.
+                        getReferenceFromUrl(getString(R.string.storage_reference_url))
+                        .child("Tasks");
+        mediaUrls= new ArrayList<>();
+
     }
 
     @OnClick(R.id.btnPostTask)
@@ -141,8 +160,7 @@ public class CreateTaskActivity
             String category = spCategory.getSelectedItem().toString();
             List<String> categories = new ArrayList<>();
             categories.add(category);
-            List<String> mediaUrls = new ArrayList<>();
-            mediaUrls.add("gs://litl-40ef9.appspot.com/Tasks/Assembly-the-Splitback-Sofa03.jpg");
+            List<String> mediaUrls = this.mediaUrls;
 
             String status = "IN_BID_PROCESS";
 
@@ -180,38 +198,14 @@ public class CreateTaskActivity
         return null;
     }
 
-//    private void writeNewTask(String title, String description, String price, Address address,
-//                              String date, String category)
-//    {
-//        try {
-//            DatabaseReference mDatabase =
-//                    FirebaseDatabase.getInstance().getReference();
-//            String key = mDatabase.child("Tasks").push().getKey();
-//
-//            Task task = new Task(title, description, price, date, category);
-//            Map<String, Object> taskValues = task.toMap();
-//
-//            Map<String, Object> childUpdates = new HashMap<>();
-//
-//            //update the offers node
-//            childUpdates.put("/Tasks/" + key, taskValues);
-//
-//            mDatabase.updateChildren(childUpdates);
-//        }
-//        catch (Exception ex)
-//        {
-//            ex.printStackTrace();
-//        }
-//    }
-
     private void writeNewTask(Task task)
     {
         try {
             DatabaseReference mDatabase =
                     FirebaseDatabase.getInstance().getReference();
 
-            String key = mDatabase.child("Tasks").push().getKey();
-            mDatabase.child("Tasks").child(key).setValue(task);
+            String key = mDatabase.child("Tasks_Temporary").push().getKey();
+            mDatabase.child("Tasks_Temporary").child(key).setValue(task);
         }
         catch (Exception ex)
         {
@@ -251,7 +245,6 @@ public class CreateTaskActivity
         DialogFragment datePickerFragment = DatePickerFragment.newInstance(day, month - 1, year);
         datePickerFragment.show(getSupportFragmentManager(), "datePicker");
     }
-
 
     @Override
     public void onFinishDatePickDialog(int year, int monthOfYear, int dayOfMonth) {
@@ -390,6 +383,8 @@ public class CreateTaskActivity
             if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
                 if (resultCode == RESULT_OK) {
 
+                    startImageUpload(fileUri);
+
                     mediaPagerAdapter.insert(fileUri, pageIndex);
                     mediaPagerAdapter.notifyDataSetChanged();
                     circleIndicator.refreshIndicator();
@@ -409,6 +404,8 @@ public class CreateTaskActivity
 
                 @Override
                 public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {
+                    Uri fileUri = Uri.fromFile(imageFile);
+                    startImageUpload(fileUri);
                     //Handle the image
                     mediaPagerAdapter.insert(Uri.parse(imageFile.getAbsolutePath()), pageIndex);
                     mediaPagerAdapter.notifyDataSetChanged();
@@ -492,6 +489,65 @@ public class CreateTaskActivity
         {
             ex.printStackTrace();
         }
+    }
+
+    private void startImageUpload(final Uri fileUri)
+    {
+        try
+        {
+
+            String filename = getFileName(fileUri);
+            if(filename == null || filename.isEmpty()) {
+                Toast
+                        .makeText(CreateTaskActivity.this, "Could not get file name!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            StorageReference imagesStorageReference = storageReference.child("images");
+            StorageReference imageStorageReference = imagesStorageReference.child(filename);
+            InputStream stream = new FileInputStream(new File(fileUri.getPath()));
+
+            UploadTask uploadTask = imageStorageReference.putStream(stream);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+
+                    Toast.makeText(CreateTaskActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    if(downloadUrl != null)
+
+                        mediaUrls.add(downloadUrl.toString());
+                        Toast.makeText(CreateTaskActivity.this,
+                            String.format("Image uploaded to : %s", downloadUrl.toString()), Toast.LENGTH_SHORT).show();
+
+
+                }
+            });
+
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error uploading image",ex);
+            ex.printStackTrace();
+        }
+    }
+
+
+    private String getFileName(Uri fileUri)
+    {
+        try {
+
+            return (new File("" + fileUri)).getName();
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error getting file name from uri", ex);
+        }
+        return "";
     }
 
     @Override

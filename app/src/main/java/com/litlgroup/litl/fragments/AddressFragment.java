@@ -75,13 +75,13 @@ public class AddressFragment
                 if(address.getHouse_no() == null)
                     etHouseNum.setText("");
                 else
-                    etHouseNum.setText(address.getHouse_no());
+                    etHouseNum.setText(address.getHouse_no().toString());
                 etStreetAddress.setText(address.getStreet_address());
                 etCity.setText(address.getCity());
                 if(address.getZip() == null)
                     etZip.setText("");
                 else
-                    etZip.setText(address.getZip());
+                    etZip.setText(address.getZip().toString());
                 etState.setText(address.getState());
 
 
