@@ -11,18 +11,18 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="ToolbarThemeProfile" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="colorControlNormal">@android:color/white</item>
 
         <item name="colorPrimary">#7ECEFD</item>
         <item name="colorPrimaryDark">#3E454C</item>
         <item name="colorAccent">#FF7F66</item>
-
     </style>
+
+    <style name="ToolbarThemeProfile" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+
     <style name="BookmarkButton" parent="@android:style/Widget.ImageButton">
         <item name="android:gravity">top|center_horizontal</item>
         <item name="android:focusable">true</item>

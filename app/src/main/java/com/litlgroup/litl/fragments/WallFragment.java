@@ -16,6 +16,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.CreateTaskActivity;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -23,6 +24,8 @@ import butterknife.OnClick;
  */
 public class WallFragment extends Fragment {
 
+    @BindView(R.id.fabCreateTask)
+    android.support.design.widget.FloatingActionButton fabCreateTask;
 
     public WallFragment() {
         // Required empty public constructor

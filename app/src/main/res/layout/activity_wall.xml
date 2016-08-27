@@ -9,13 +9,12 @@
     android:fitsSystemWindows="true"
     tools:context=".activities.WallActivity">
 
-    <RelativeLayout
+    <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.WallActivity"
+        android:orientation="vertical"
         android:background="@color/colorLight">
 
         <include
@@ -23,54 +22,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!-- The main content view where fragments are loaded -->
-
         <FrameLayout
             android:id="@+id/flContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <!--<com.astuetz.PagerSlidingTabStrip-->
-            <!--android:id="@+id/tabs"-->
-            <!--app:pstsShouldExpand="true"-->
-            <!--app:pstsTextAllCaps="true"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="48dp"-->
-            <!--android:textSize="20sp"-->
-            <!--android:textColor="@color/colorPrimary"-->
-            <!--app:pstsDividerColor="@color/colorSkyBlue"-->
-            <!--app:pstsIndicatorColor="@color/colorAccent"-->
-            <!--app:pstsUnderlineColor="@color/colorSkyBlue"-->
-            <!--/>-->
-
-        <!--<android.support.v4.view.ViewPager-->
-            <!--android:id="@+id/viewpager"-->
-            <!--android:layout_below="@+id/tabs"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@color/colorLight" />-->
-
-        <!--<android.support.design.widget.FloatingActionButton-->
-
-            <!--app:fabSize="normal"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-
-            <!--app:layout_anchorGravity="bottom|right|end"-->
-            <!--android:layout_gravity="bottom|right"-->
-            <!--app:layout_behavior="com.codepath.apps.tweettrove.helpers.ScrollAwareFABBehavior"-->
-            <!--android:id="@+id/fabCreateTask"-->
-
-
-            <!--android:layout_alignParentBottom="true"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_margin="16dp"-->
-            <!--android:tint="@color/colorAccent"-->
-            <!--app:backgroundTint="@color/colorPrimary"-->
-            <!--android:src="@android:drawable/ic_input_add" />-->
-
-    </RelativeLayout>
+    </LinearLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nvView"

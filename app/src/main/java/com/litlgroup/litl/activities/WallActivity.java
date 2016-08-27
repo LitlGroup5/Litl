@@ -26,7 +26,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.fragments.OffersFragment;
+import com.litlgroup.litl.fragments.PlaceBidFragment;
 import com.litlgroup.litl.fragments.ProposalsFragment;
+import com.litlgroup.litl.fragments.TaskOffersFragment;
+import com.litlgroup.litl.fragments.TaskProposalFragment;
+import com.litlgroup.litl.fragments.WallFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +58,7 @@ public class WallActivity extends AppCompatActivity implements
     private DatabaseReference mDatabase;
 
     private GoogleApiClient mGoogleApiClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,8 @@ public class WallActivity extends AppCompatActivity implements
                 .build();
 
         ButterKnife.bind(this);
+
+        loadFragmentIntoFrameLayout(new WallFragment());
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -135,16 +142,16 @@ public class WallActivity extends AppCompatActivity implements
 
         switch(menuItem.getItemId()) {
             case R.id.nav_first_fragment:
-                fragmentClass = FirstFragment.class;
+                fragmentClass = PlaceBidFragment.class;
                 break;
             case R.id.nav_second_fragment:
-                fragmentClass = SecondFragment.class;
+                fragmentClass = TaskOffersFragment.class;
                 break;
             case R.id.nav_third_fragment:
-                fragmentClass = ThirdFragment.class;
+                fragmentClass = TaskProposalFragment.class;
                 break;
             default:
-                fragmentClass = FirstFragment.class;
+                fragmentClass = WallFragment.class;
         }
 
         try {
@@ -154,8 +161,7 @@ public class WallActivity extends AppCompatActivity implements
         }
 
         // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        loadFragmentIntoFrameLayout(fragment);
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
