@@ -204,8 +204,8 @@ public class CreateTaskActivity
             DatabaseReference mDatabase =
                     FirebaseDatabase.getInstance().getReference();
 
-            String key = mDatabase.child("Tasks_Temporary").push().getKey();
-            mDatabase.child("Tasks_Temporary").child(key).setValue(task);
+            String key = mDatabase.child("Tasks").push().getKey();
+            mDatabase.child("Tasks").child(key).setValue(task);
         }
         catch (Exception ex)
         {
