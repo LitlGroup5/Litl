@@ -9,11 +9,11 @@ import com.google.firebase.database.IgnoreExtraProperties;
 public class Review {
 
     private String comment;
-    private String created_on;
+    private String createdOn;
     private Float rating;
-    private String reviewby;
-    private String reviewof;
-    private String taskid;
+    private String reviewBy;
+    private String reviewOf;
+    private String taskId;
 
     public Review() {
     }
@@ -39,19 +39,19 @@ public class Review {
     /**
      *
      * @return
-     * The created_on
+     * The createdOn
      */
-    public String getCreated_on() {
-        return created_on;
+    public String getCreatedOn() {
+        return createdOn;
     }
 
     /**
      *
-     * @param created_on
-     * The created_on
+     * @param createdOn
+     * The createdOn
      */
-    public void setCreated_on(String created_on) {
-        this.created_on = created_on;
+    public void setCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
     }
 
     /**
@@ -75,37 +75,37 @@ public class Review {
     /**
      *
      * @return
-     * The reviewby
+     * The reviewBy
      */
-    public String getReviewby() {
-        return reviewby;
+    public String getReviewBy() {
+        return reviewBy;
     }
 
     /**
      *
-     * @param reviewby
-     * The reviewby
+     * @param reviewBy
+     * The reviewBy
      */
-    public void setReviewby(String reviewby) {
-        this.reviewby = reviewby;
+    public void setReviewBy(String reviewBy) {
+        this.reviewBy = reviewBy;
     }
 
     /**
      *
      * @return
-     * The reviewof
+     * The reviewOf
      */
-    public String getReviewof() {
-        return reviewof;
+    public String getReviewOf() {
+        return reviewOf;
     }
 
     /**
      *
-     * @param reviewof
-     * The reviewof
+     * @param reviewOf
+     * The reviewOf
      */
-    public void setReviewof(String reviewof) {
-        this.reviewof = reviewof;
+    public void setReviewOf(String reviewOf) {
+        this.reviewOf = reviewOf;
     }
 
     /**
@@ -113,17 +113,17 @@ public class Review {
      * @return
      * The taskid
      */
-    public String getTaskid() {
-        return taskid;
+    public String getTaskId() {
+        return taskId;
     }
 
     /**
      *
-     * @param taskid
-     * The taskid
+     * @param taskId
+     * The taskId
      */
-    public void setTaskid(String taskid) {
-        this.taskid = taskid;
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 
 }

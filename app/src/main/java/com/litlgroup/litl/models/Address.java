@@ -10,9 +10,9 @@ public class Address {
 
     private String apt;
     private String city;
-    private Integer house_no;
+    private Integer houseNo;
     private String state;
-    private String street_address;
+    private String streetAddress;
     private Integer zip;
 
     public Address() {
@@ -57,19 +57,19 @@ public class Address {
     /**
      *
      * @return
-     * The house_no
+     * The houseNo
      */
-    public Integer getHouse_no() {
-        return house_no;
+    public Integer getHouseNo() {
+        return houseNo;
     }
 
     /**
      *
-     * @param house_no
-     * The house_no
+     * @param houseNo
+     * The houseNo
      */
-    public void setHouse_no(Integer house_no) {
-        this.house_no = house_no;
+    public void setHouseNo(Integer houseNo) {
+        this.houseNo = houseNo;
     }
 
     /**
@@ -93,19 +93,19 @@ public class Address {
     /**
      *
      * @return
-     * The street_address
+     * The streetAddress
      */
-    public String getStreet_address() {
-        return street_address;
+    public String getStreetAddress() {
+        return streetAddress;
     }
 
     /**
      *
-     * @param street_address
-     * The street_address
+     * @param streetAddress
+     * The streetAddress
      */
-    public void setStreet_address(String street_address) {
-        this.street_address = street_address;
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
     }
 
     /**
