@@ -72,11 +72,11 @@ public class AddressFragment
         if (address != null) {
             try {
                 etApt.setText(address.getApt());
-                if(address.getHouse_no() == null)
+                if(address.getHouseNo() == null)
                     etHouseNum.setText("");
                 else
-                    etHouseNum.setText(address.getHouse_no().toString());
-                etStreetAddress.setText(address.getStreet_address());
+                    etHouseNum.setText(address.getHouseNo().toString());
+                etStreetAddress.setText(address.getStreetAddress());
                 etCity.setText(address.getCity());
                 if(address.getZip() == null)
                     etZip.setText("");
@@ -126,10 +126,10 @@ public class AddressFragment
                 address.setApt(apt);
 
             if (!houseNum.isEmpty())
-                address.setHouse_no(Integer.parseInt(houseNum));
+                address.setHouseNo(Integer.parseInt(houseNum));
 
             if (!streetAddress.isEmpty())
-                address.setStreet_address(streetAddress);
+                address.setStreetAddress(streetAddress);
 
             if (!city.isEmpty())
                 address.setCity(city);

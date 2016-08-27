@@ -498,8 +498,8 @@ public class CreateTaskActivity
 
             String filename = getFileName(fileUri);
             if(filename == null || filename.isEmpty()) {
-                Toast
-                        .makeText(CreateTaskActivity.this, "Could not get file name!", Toast.LENGTH_SHORT).show();
+//                Toast
+//                        .makeText(CreateTaskActivity.this, "Could not get file name!", Toast.LENGTH_SHORT).show();
                 return;
             }
             StorageReference imagesStorageReference = storageReference.child("images");
@@ -521,8 +521,8 @@ public class CreateTaskActivity
                     if(downloadUrl != null)
 
                         mediaUrls.add(downloadUrl.toString());
-                        Toast.makeText(CreateTaskActivity.this,
-                            String.format("Image uploaded to : %s", downloadUrl.toString()), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(CreateTaskActivity.this,
+//                            String.format("Image uploaded to : %s", downloadUrl.toString()), Toast.LENGTH_SHORT).show();
 
 
                 }

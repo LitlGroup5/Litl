@@ -14,18 +14,18 @@ import timber.log.Timber;
 @IgnoreExtraProperties
 public class Task {
 
-    private String accepted_offer_id;
+    private String acceptedOfferId;
     private Address address;
-    private Integer bid_by;
+    private Integer bidBy;
     private List<String> categories = new ArrayList<String>();
-    private String deadline_date;
+    private String deadlineDate;
     private String description;
     private List<String> media = new ArrayList<String>();
     private String price;
     private String status;
     private String title;
     private UserSummary user;
-    private Integer viewed_by;
+    private Integer viewedBy;
 
     public Task() {
     }
@@ -33,19 +33,19 @@ public class Task {
     /**
      *
      * @return
-     * The accepted_offer_id
+     * The acceptedOfferId
      */
     public String getAcceptedOfferId() {
-        return accepted_offer_id;
+        return acceptedOfferId;
     }
 
     /**
      *
-     * @param accepted_offer_id
-     * The accepted_offer_id
+     * @param acceptedOfferId
+     * The acceptedOfferId
      */
-    public void setAcceptedOfferId(String accepted_offer_id) {
-        this.accepted_offer_id = accepted_offer_id;
+    public void setAcceptedOfferId(String acceptedOfferId) {
+        this.acceptedOfferId = acceptedOfferId;
     }
 
     /**
@@ -72,16 +72,16 @@ public class Task {
      * The bidBy
      */
     public Integer getBidBy() {
-        return bid_by;
+        return bidBy;
     }
 
     /**
      *
      * @param bidBy
-     * The bid_by
+     * The bidBy
      */
     public void setBidBy(Integer bidBy) {
-        this.bid_by = bidBy;
+        this.bidBy = bidBy;
     }
 
     /**
@@ -108,16 +108,16 @@ public class Task {
      * The deadlineDate
      */
     public String getDeadlineDate() {
-        return deadline_date;
+        return deadlineDate;
     }
 
     /**
      *
-     * @param deadline_date
-     * The deadline_date
+     * @param deadlineDate
+     * The deadlineDate
      */
-    public void setDeadlineDate(String deadline_date) {
-        this.deadline_date = deadline_date;
+    public void setDeadlineDate(String deadlineDate) {
+        this.deadlineDate = deadlineDate;
     }
 
     /**
@@ -231,19 +231,19 @@ public class Task {
     /**
      *
      * @return
-     * The viewed_by
+     * The viewedBy
      */
     public Integer getViewedBy() {
-        return viewed_by;
+        return viewedBy;
     }
 
     /**
      *
-     * @param viewed_by
-     * The viewed_by
+     * @param viewedBy
+     * The viewedBy
      */
-    public void setViewedBy(Integer viewed_by) {
-        this.viewed_by = viewed_by;
+    public void setViewedBy(Integer viewedBy) {
+        this.viewedBy = viewedBy;
     }
 
     public static String getTimestampMillis(String dueDate, String dueTime)
@@ -284,14 +284,14 @@ public class Task {
     public Task(Address address, List<String> categories, String deadline_date, String description, List<String> media, String price, String title, String status) {
         this.address = address;
         this.categories = categories;
-        this.deadline_date = deadline_date;
+        this.deadlineDate = deadline_date;
         this.description = description;
         this.media = media;
         this.price = price;
         this.title = title;
         this.status = status;
-        this.viewed_by = 0;
-        this.bid_by = 0;
-        this.accepted_offer_id = "-1";
+        this.viewedBy = 0;
+        this.bidBy = 0;
+        this.acceptedOfferId = "-1";
     }
 }

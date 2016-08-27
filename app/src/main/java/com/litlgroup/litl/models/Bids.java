@@ -8,7 +8,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class Bids {
 
-    private String created_at;
+    private String createdOn;
     private Float price;
     private String task;
     private String user;
@@ -21,17 +21,17 @@ public class Bids {
      * @return
      * The createdAt
      */
-    public String getCreatedAt() {
-        return created_at;
+    public String getCreatedOn() {
+        return createdOn;
     }
 
     /**
      *
-     * @param created_at
-     * The created_at
+     * @param createdOn
+     * The createdOn
      */
-    public void setCreatedAt(String created_at) {
-        this.created_at = created_at;
+    public void setCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
     }
 
     /**
