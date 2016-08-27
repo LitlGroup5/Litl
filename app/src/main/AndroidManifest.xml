@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.litlgroup.litl">
 
+    <uses-feature android:name="android.hardware.camera" />
     <permission android:name="android.permission.CAMERA"/>
     <permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
