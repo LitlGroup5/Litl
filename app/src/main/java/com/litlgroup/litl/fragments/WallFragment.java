@@ -79,6 +79,5 @@ public class WallFragment extends Fragment {
     {
         Intent intent = new Intent(getActivity(), CreateTaskActivity.class);
         startActivity(intent);
-
     }
 }
