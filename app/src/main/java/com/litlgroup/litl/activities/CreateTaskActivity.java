@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.fragments.DatePickerFragment;
+import com.litlgroup.litl.fragments.TimePickerFragment;
 import com.litlgroup.litl.model.Task;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CameraUtils;
@@ -38,6 +39,7 @@ import pl.aprilapps.easyphotopicker.EasyImage;
 public class CreateTaskActivity
         extends AppCompatActivity
     implements DatePickerFragment.DatePickerDialogListener,
+        TimePickerFragment.TimePickerDialogListener,
         AdvancedMediaPagerAdapter.StartImageCaptureListener,
         AdvancedMediaPagerAdapter.StartImageSelectListener
 
@@ -53,6 +55,9 @@ public class CreateTaskActivity
 
     @BindView(R.id.tvDueDate)
     TextView tvDueDate;
+
+    @BindView(R.id.tvDueTime)
+    TextView tvDueTime;
 
     @BindView(R.id.spCategory)
     Spinner spCategory;
@@ -188,6 +193,51 @@ public class CreateTaskActivity
     }
 
 
+    @OnClick(R.id.tvDueTime)
+    public void launchTimePicker()
+    {
+        try
+        {
+            setTimePickerListener();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    private String completionTime;
+
+    private void setTimePickerListener()
+    {
+        if(completionTime == null)
+            completionTime = tvDueTime.getText().toString();
+
+        if(completionTime.equals("") | !completionTime.contains(":"))
+            return;
+        String[] splitTime = completionTime.split(":");
+        int hour = Integer.parseInt(splitTime[0]);
+        String[] secondSplitString = (splitTime[1].split(" "));
+        int minute = Integer.parseInt(secondSplitString[0]);
+        String amPm = secondSplitString[1];
+        DialogFragment timePickerFragment = TimePickerFragment.newInstance(minute, hour, amPm);
+        timePickerFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    @Override
+    public void onFinishTimePickDialog(int hourOfDay, int minute, String amPm) {
+        try
+        {
+            String time = String.format(Locale.US, "%d:%02d %s", hourOfDay, minute, amPm.toUpperCase(Locale.US));
+            tvDueTime.setText(time);
+            completionTime = time;
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
     private void setupViewPager() {
         mediaPagerAdapter = new AdvancedMediaPagerAdapter(this);
         mVpMedia.setAdapter(mediaPagerAdapter);
@@ -254,19 +304,6 @@ public class CreateTaskActivity
                     // User cancelled the image capture
                 } else { // Result was a failure
                     Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
-                }
-            }
-            else if (requestCode == SELECT_IMAGE_ACTIVITY_REQUEST_CODE)
-            {
-                if(resultCode == RESULT_OK)
-                {
-                    mediaPagerAdapter.insert(fileUri, pageIndex);
-                    mediaPagerAdapter.notifyDataSetChanged();
-                    circleIndicator.refreshIndicator();
-                }else if (resultCode == RESULT_CANCELED) {
-                    // User cancelled the image capture
-                } else { // Result was a failure
-                    Toast.makeText(this, "No image selected!", Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -73,11 +73,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="8/22/2016"
         android:id="@+id/tvDueDate"
-        android:layout_alignBaseline="@+id/etPrice"
-        android:layout_alignBottom="@+id/etPrice"
-        android:layout_alignRight="@+id/spCategory"
-        android:layout_alignEnd="@+id/spCategory"
-        android:layout_marginRight="14dp" />
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/btnPostTask"
+        android:layout_toEndOf="@+id/btnPostTask"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -99,5 +99,16 @@
         android:layout_alignRight="@+id/etDescription"
         android:layout_alignEnd="@+id/etDescription"
         android:layout_marginTop="14dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="9:35 AM"
+            android:id="@+id/tvDueTime"
+            android:layout_alignBottom="@+id/etPrice"
+            android:layout_marginTop="14dp"
+            android:layout_alignRight="@+id/tvDueDate"
+            android:layout_alignEnd="@+id/tvDueDate" />
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
