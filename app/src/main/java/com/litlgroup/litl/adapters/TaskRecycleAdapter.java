@@ -98,7 +98,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         tvAddress.setText(task.getAddress().getFormattedAddress());
 
         TextView tvDeadlineDate = (TextView) taskCardView.findViewById(R.id.tvDeadlineDate);
-        tvDeadlineDate.setText(task.getDeadlineDate());
+        tvDeadlineDate.setText(task.getDeadline_date());
 
         final ImageButton ibBookmark = (ImageButton) taskCardView.findViewById(R.id.ibBookmark);
         if (task.getBookmark().getBookmarked()) {

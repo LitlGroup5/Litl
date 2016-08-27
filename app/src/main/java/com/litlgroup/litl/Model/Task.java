@@ -18,8 +18,8 @@ public class Task {
 
     }
 
-    //private Date deadlineDate;
-    private String deadlineDate;
+    //private Date deadline_date;
+    private String deadline_date;
     private Date createdAt;
     private Address address;
     private String description;
@@ -35,10 +35,10 @@ public class Task {
     private Bookmark bookmark;
     private User user;
 
-//    public Date getDeadlineDate() {
-//        return deadlineDate;
+//    public Date getDeadline_date() {
+//        return deadline_date;
 //    }
-    public String getDeadlineDate() {
+    public String getDeadline_date() {
     return "September 7, 2016";
 }
 
@@ -300,7 +300,7 @@ public class Task {
         if(price.contains("$"))
             price = price.replace("$", "");
         this.price = Float.parseFloat(price);
-        this.deadlineDate = deadlineDate;
+        this.deadline_date = deadlineDate;
         this.categories = new ArrayList<>();
         this.categories.add(categoryValue);
 
@@ -312,7 +312,7 @@ public class Task {
     {
         HashMap<String, Object> result = new HashMap<>();
         result.put("price", String.valueOf(price));
-        result.put("deadline_date", deadlineDate);
+        result.put("deadline_date", deadline_date);
         result.put("address",address);
         result.put("title", title);
         result.put("description", description);

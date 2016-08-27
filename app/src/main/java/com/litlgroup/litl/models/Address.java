@@ -2,6 +2,8 @@ package com.litlgroup.litl.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import timber.log.Timber;
+
 /**
  * Created by monusurana on 8/26/16.
  */
@@ -124,5 +126,41 @@ public class Address {
      */
     public void setZip(Integer zip) {
         this.zip = zip;
+    }
+
+
+    public static String getDisplayString(Address address)
+    {
+        try
+        {
+            String apt = "";
+            if(address.getApt()!=null && !address.getApt().isEmpty())
+                apt = String.format(" Apt %s ", address.getApt());
+
+            if(address.getHouseNo() == null
+                    || address.getStreetAddress() == null
+                    || address.getCity()== null
+                    || address.getState()== null
+                    || address.getZip()== null
+                    )
+                return "";
+
+            String displayString =
+                    String.format("%s %s %s%s %s %s",
+                            address.getHouseNo(),
+                            address.getStreetAddress(),
+                            apt,
+                            address.getCity(),
+                            address.getState(),
+                            address.getZip()
+                    );
+
+            return displayString;
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error generating display string");
+        }
+        return "";
     }
 }

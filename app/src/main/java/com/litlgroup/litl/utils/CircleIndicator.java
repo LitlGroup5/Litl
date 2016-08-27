@@ -42,13 +42,18 @@ public class CircleIndicator {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-
             mLinearLayout.addView(dots[i], params);
         }
 
         dots[mViewPager.getCurrentItem()].setImageDrawable(mDotSelected);
 
         setViewPagerPageListener();
+    }
+
+    public void refreshIndicator()
+    {
+        mLinearLayout.removeAllViews();
+        setViewPagerIndicator();
     }
 
     private void setViewPagerPageListener() {

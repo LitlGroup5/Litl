@@ -46,4 +46,5 @@ public class LitlApplication extends Application {
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
+
 }

@@ -3,7 +3,10 @@ package com.litlgroup.litl.models;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by monusurana on 8/26/16.
@@ -243,4 +246,52 @@ public class Task {
         this.viewedBy = viewedBy;
     }
 
+    public static String getTimestampMillis(String dueDate, String dueTime)
+    {
+        try
+        {
+            if(dueDate.equals("") | !dueDate.contains("/"))
+                return "";
+
+            String[] splitDate = dueDate.split("/");
+            int month = Integer.parseInt(splitDate[0]);
+            int day = Integer.parseInt(splitDate[1]);
+            int year = Integer.parseInt(splitDate[2]);
+
+            Calendar calendar = Calendar.getInstance();
+            if(dueTime.equals("") | !dueTime.contains(":")) {
+
+                calendar.set(year, month, day);
+                return String.valueOf(calendar.getTimeInMillis());
+            }
+            String[] splitTime = dueTime.split(":");
+            int hour = Integer.parseInt(splitTime[0]);
+            String[] secondSplitString = (splitTime[1].split(" "));
+            int minute = Integer.parseInt(secondSplitString[0]);
+
+            calendar.set(year, month, day, hour, minute);
+            String timeStampMS = String.valueOf(calendar.getTimeInMillis());
+
+            return timeStampMS;
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            Timber.e(ex.toString());
+        }
+        return null;
+    }
+
+    public Task(Address address, List<String> categories, String deadline_date, String description, List<String> media, String price, String title, String status) {
+        this.address = address;
+        this.categories = categories;
+        this.deadlineDate = deadline_date;
+        this.description = description;
+        this.media = media;
+        this.price = price;
+        this.title = title;
+        this.status = status;
+        this.viewedBy = 0;
+        this.bidBy = 0;
+        this.acceptedOfferId = "-1";
+    }
 }
