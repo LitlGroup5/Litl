@@ -45,11 +45,11 @@
 
     <EditText
         android:layout_width="180dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:id="@+id/etPrice"
         android:textAlignment="center"
         android:hint="Price"
-        android:layout_below="@+id/etAddress"
+        android:layout_below="@+id/tvAddress"
         android:layout_alignLeft="@+id/spCategory"
         android:layout_alignStart="@+id/spCategory"
         android:layout_marginTop="14dp" />
@@ -70,14 +70,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="8/22/2016"
         android:id="@+id/tvDueDate"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/btnPostTask"
-        android:layout_toEndOf="@+id/btnPostTask"
-        android:layout_marginLeft="14dp"
-        android:layout_marginStart="14dp" />
+        android:layout_alignTop="@+id/etPrice"
+        android:layout_alignRight="@+id/tvAddress"
+        android:layout_alignEnd="@+id/tvAddress" />
 
     <Button
         android:layout_width="wrap_content"
@@ -88,22 +86,24 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="29dp" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/etAddress"
+        android:id="@+id/tvAddress"
         android:hint="Address"
         android:layout_below="@+id/etDescription"
         android:layout_alignLeft="@+id/etDescription"
         android:layout_alignStart="@+id/etDescription"
         android:layout_alignRight="@+id/etDescription"
         android:layout_alignEnd="@+id/etDescription"
-        android:layout_marginTop="14dp" />
+        android:layout_marginTop="14dp"
+        android:paddingLeft="4dp"
+        android:layout_marginBottom="7dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="9:35 AM"
             android:id="@+id/tvDueTime"
             android:layout_alignBottom="@+id/etPrice"

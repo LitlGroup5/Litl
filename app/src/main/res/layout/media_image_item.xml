@@ -9,7 +9,6 @@
         android:id="@+id/ivMediaImage"
         android:layout_gravity="center"
         android:adjustViewBounds="true"
-        android:src="@drawable/ikea_assembly"
         android:scaleType="fitCenter" />
 
 

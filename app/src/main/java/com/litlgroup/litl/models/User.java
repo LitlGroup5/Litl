@@ -1,0 +1,189 @@
+package com.litlgroup.litl.models;
+
+import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by monusurana on 8/26/16.
+ */
+@IgnoreExtraProperties
+public class User {
+
+    private List<String> bookmarks = new ArrayList<String>();
+    private String contact_no;
+    private Float earnings;
+    private String email;
+    private List<String> media = new ArrayList<String>();
+    private String name;
+    private String photo;
+    private Float rating;
+    private List<String> skillset = new ArrayList<String>();
+
+    public User() {
+    }
+
+    /**
+     *
+     * @return
+     * The bookmarks
+     */
+    public List<String> getBookmarks() {
+        return bookmarks;
+    }
+
+    /**
+     *
+     * @param bookmarks
+     * The bookmarks
+     */
+    public void setBookmarks(List<String> bookmarks) {
+        this.bookmarks = bookmarks;
+    }
+
+    /**
+     *
+     * @return
+     * The contact_no
+     */
+    public String getContact_no() {
+        return contact_no;
+    }
+
+    /**
+     *
+     * @param contact_no
+     * The contact_no
+     */
+    public void setContact_no(String contact_no) {
+        this.contact_no = contact_no;
+    }
+
+    /**
+     *
+     * @return
+     * The earnings
+     */
+    public Float getEarnings() {
+        return earnings;
+    }
+
+    /**
+     *
+     * @param earnings
+     * The earnings
+     */
+    public void setEarnings(Float earnings) {
+        this.earnings = earnings;
+    }
+
+    /**
+     *
+     * @return
+     * The email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     *
+     * @param email
+     * The email
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     *
+     * @return
+     * The media
+     */
+    public List<String> getMedia() {
+        return media;
+    }
+
+    /**
+     *
+     * @param media
+     * The media
+     */
+    public void setMedia(List<String> media) {
+        this.media = media;
+    }
+
+    /**
+     *
+     * @return
+     * The name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     *
+     * @param name
+     * The name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     *
+     * @return
+     * The photo
+     */
+    public String getPhoto() {
+        return photo;
+    }
+
+    /**
+     *
+     * @param photo
+     * The photo
+     */
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    /**
+     *
+     * @return
+     * The rating
+     */
+    public Float getRating() {
+        return rating;
+    }
+
+    /**
+     *
+     * @param rating
+     * The rating
+     */
+    public void setRating(Float rating) {
+        this.rating = rating;
+    }
+
+    /**
+     *
+     * @return
+     * The skillset
+     */
+    public List<String> getSkillset() {
+        return skillset;
+    }
+
+    /**
+     *
+     * @param skillset
+     * The skillset
+     */
+    public void setSkillset(List<String> skillset) {
+        this.skillset = skillset;
+    }
+
+}

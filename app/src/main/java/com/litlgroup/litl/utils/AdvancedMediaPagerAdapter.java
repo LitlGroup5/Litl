@@ -45,7 +45,7 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        View itemView = mLayoutInflater.inflate(R.layout.create_task_media_image_item, container, false);
+        View itemView = mLayoutInflater.inflate(R.layout.media_image_item, container, false);
 
         ImageView ivMediaImage = (ImageView) itemView.findViewById(R.id.ivMediaImage);
         String url = mImageUrls.get(position);

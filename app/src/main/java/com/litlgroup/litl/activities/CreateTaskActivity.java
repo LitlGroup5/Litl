@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -14,36 +15,41 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.litlgroup.litl.R;
+import com.litlgroup.litl.fragments.AddressFragment;
 import com.litlgroup.litl.fragments.DatePickerFragment;
 import com.litlgroup.litl.fragments.TimePickerFragment;
-import com.litlgroup.litl.model.Task;
+import com.litlgroup.litl.models.Address;
+import com.litlgroup.litl.models.Task;
+import com.litlgroup.litl.models.UserSummary;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CameraUtils;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Permissions;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
+import timber.log.Timber;
 
 public class CreateTaskActivity
         extends AppCompatActivity
     implements DatePickerFragment.DatePickerDialogListener,
         TimePickerFragment.TimePickerDialogListener,
         AdvancedMediaPagerAdapter.StartImageCaptureListener,
-        AdvancedMediaPagerAdapter.StartImageSelectListener
-
-
+        AdvancedMediaPagerAdapter.StartImageSelectListener,
+        AddressFragment.AddressFragmentListener
 
 {
 
@@ -65,8 +71,8 @@ public class CreateTaskActivity
     @BindView(R.id.btnPostTask)
     Button btnPostTask;
 
-    @BindView(R.id.etAddress)
-    EditText etAddress;
+    @BindView(R.id.tvAddress)
+    TextView tvAddress;
 
     @BindView(R.id.etPrice)
     EditText etPrice;
@@ -83,67 +89,136 @@ public class CreateTaskActivity
 
     Permissions permissions;
 
+    Address address;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task);
 
         ButterKnife.bind(this);
-
         permissions = new Permissions(this);
-
-
+        address = new Address();
         setupViewPager();
     }
-
 
     @OnClick(R.id.btnPostTask)
     public void postTask()
     {
         try
         {
+            Task task = getTask();
 
-            String title = etTitle.getText().toString();
-            String description = etDescription.getText().toString();
-            String date = tvDueDate.getText().toString();
-            String address = etAddress.getText().toString();
-            String price = etPrice.getText().toString();
-            String category = spCategory.getSelectedItem().toString();
+            if(task != null) {
+                writeNewTask(task);
+                Toast.makeText(this, "The task has been posted!", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(this, "The task could not be posted, please try again", Toast.LENGTH_SHORT).show();
+            }
 
-            writeNewTask(title, description, price, date, category);
-
-            Toast.makeText(this, "The task has been posted!", Toast.LENGTH_SHORT).show();
             finish();
         }
         catch (Exception ex)
         {
             ex.printStackTrace();
+            Timber.e("", ex);
         }
     }
 
-    private void writeNewTask(String title, String description, String price,
-                              String date, String category)
+    private Task getTask()
+    {
+        try
+        {
+            String title = etTitle.getText().toString();
+            String description = etDescription.getText().toString();
+            String date = tvDueDate.getText().toString();
+            String time = tvDueTime.getText().toString();
+            String timestampMillis = Task.getTimestampMillis(date, time);
+            Address address = this.address;
+            String price = etPrice.getText().toString();
+            String category = spCategory.getSelectedItem().toString();
+            List<String> categories = new ArrayList<>();
+            categories.add(category);
+            List<String> mediaUrls = new ArrayList<>();
+            mediaUrls.add("gs://litl-40ef9.appspot.com/Tasks/Assembly-the-Splitback-Sofa03.jpg");
+
+            String status = "IN_BID_PROCESS";
+
+            Task task =
+                    new Task(
+                            address,
+                            categories,
+                            timestampMillis,
+                            description,
+                            mediaUrls,
+                            price,
+                            title,
+                            status
+                    );
+
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            if(user != null) {
+                UserSummary userSummary = new UserSummary();
+                if (user.getEmail() != null && !user.getEmail().isEmpty())
+                    userSummary.setEmail(user.getEmail());
+                userSummary.setId("");
+                userSummary.setName(user.getDisplayName());
+                if (user.getPhotoUrl() != null)
+                    userSummary.setPhoto(user.getPhotoUrl().toString());
+                task.setUser(userSummary);
+            }
+            return task;
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            Timber.e("Error constructing task object", ex);
+        }
+        return null;
+    }
+
+//    private void writeNewTask(String title, String description, String price, Address address,
+//                              String date, String category)
+//    {
+//        try {
+//            DatabaseReference mDatabase =
+//                    FirebaseDatabase.getInstance().getReference();
+//            String key = mDatabase.child("Tasks").push().getKey();
+//
+//            Task task = new Task(title, description, price, date, category);
+//            Map<String, Object> taskValues = task.toMap();
+//
+//            Map<String, Object> childUpdates = new HashMap<>();
+//
+//            //update the offers node
+//            childUpdates.put("/Tasks/" + key, taskValues);
+//
+//            mDatabase.updateChildren(childUpdates);
+//        }
+//        catch (Exception ex)
+//        {
+//            ex.printStackTrace();
+//        }
+//    }
+
+    private void writeNewTask(Task task)
     {
         try {
             DatabaseReference mDatabase =
                     FirebaseDatabase.getInstance().getReference();
+
             String key = mDatabase.child("Tasks").push().getKey();
-
-            Task task = new Task(title, description, price, date, category);
-            Map<String, Object> taskValues = task.toMap();
-
-            Map<String, Object> childUpdates = new HashMap<>();
-
-            //update the offers node
-            childUpdates.put("/Tasks/" + key, taskValues);
-
-            mDatabase.updateChildren(childUpdates);
+            mDatabase.child("Tasks").child(key).setValue(task);
         }
         catch (Exception ex)
         {
             ex.printStackTrace();
         }
     }
+
 
     private String dueDate;
 
@@ -235,6 +310,25 @@ public class CreateTaskActivity
         catch (Exception ex)
         {
             ex.printStackTrace();
+        }
+    }
+
+
+    @OnClick(R.id.tvAddress)
+    public void startAddressFragment()
+    {
+        try
+        {
+            FragmentManager fm = getSupportFragmentManager();
+
+            AddressFragment addressFragment =
+                    AddressFragment.newInstance(address);
+
+            addressFragment.show(fm, "fragment_address");
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error in Address fragment");
         }
     }
 
@@ -392,13 +486,24 @@ public class CreateTaskActivity
         try
         {
             pageIndex = position;
-
             startImageSelect();
-
         }
         catch (Exception ex)
         {
             ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onFinishAddressFragment(Address address) {
+        try
+        {
+            this.address = address;
+            tvAddress.setText(Address.getDisplayString(address));
+        }
+        catch (Exception ex)
+        {
+            Timber.e("User entered address could not be parsed");
         }
     }
 }
