@@ -6,6 +6,8 @@
 
     tools:context="com.litlgroup.litl.activities.CreateTaskActivity">
 
+    <include layout="@layout/app_bar_media_pager" />
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -70,19 +72,6 @@
         android:layout_alignRight="@+id/spCategory"
         android:layout_alignEnd="@+id/spCategory"
         android:layout_marginRight="14dp" />
-
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="120dp"
-        android:id="@+id/ivTaskImage"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:src="@drawable/ikea_assembly"
-        android:scaleType="centerCrop"
-        android:adjustViewBounds="true" />
 
     <Button
         android:layout_width="wrap_content"

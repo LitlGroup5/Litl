@@ -5,21 +5,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.fragments.DatePickerFragment;
 import com.litlgroup.litl.model.Task;
+import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CameraUtils;
+import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Permissions;
 
 import java.util.HashMap;
@@ -32,7 +34,9 @@ import butterknife.OnClick;
 
 public class CreateTaskActivity
         extends AppCompatActivity
-    implements DatePickerFragment.DatePickerDialogListener
+    implements DatePickerFragment.DatePickerDialogListener,
+        AdvancedMediaPagerAdapter.StartImageCaptureListener
+
 
 {
 
@@ -57,8 +61,15 @@ public class CreateTaskActivity
     @BindView(R.id.etPrice)
     EditText etPrice;
 
-    @BindView(R.id.ivTaskImage)
-    ImageView ivTaskImage;
+    @BindView(R.id.vpMedia)
+    ViewPager mVpMedia;
+
+    @BindView(R.id.vpIndicator)
+    LinearLayout mViewPagerCountDots;
+
+    CircleIndicator circleIndicator;
+
+    AdvancedMediaPagerAdapter mediaPagerAdapter;
 
     Permissions permissions;
 
@@ -69,14 +80,10 @@ public class CreateTaskActivity
 
         ButterKnife.bind(this);
 
-        Glide.with(this)
-                .load(R.drawable.ikea_assembly)
-                .fitCenter()
-                .centerCrop()
-                .into(ivTaskImage);
-
-
         permissions = new Permissions(this);
+
+
+        setupViewPager();
     }
 
 
@@ -176,8 +183,16 @@ public class CreateTaskActivity
     }
 
 
-    @OnClick(R.id.ivTaskImage)
-    public void startCameraCapture()
+    private void setupViewPager() {
+        mediaPagerAdapter = new AdvancedMediaPagerAdapter(this);
+        mVpMedia.setAdapter(mediaPagerAdapter);
+        circleIndicator = new CircleIndicator(mViewPagerCountDots, mVpMedia);
+        circleIndicator.setViewPagerIndicator();
+    }
+
+    int pageIndex = 0;
+
+    public void startCameraImageCapture()
     {
         try
         {
@@ -191,12 +206,8 @@ public class CreateTaskActivity
                 {
                     permissions.requestPermissionForExternalStorage();
                 }
-
                 launchCamera();
-
             }
-
-
         }
         catch (Exception ex)
         {
@@ -228,14 +239,9 @@ public class CreateTaskActivity
             if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
                 if (resultCode == RESULT_OK) {
 
-                    // by this point we have the camera photo on disk
-
-                    // Load the taken image into a preview
-                    Glide.with(this)
-                            .load(fileUri)
-                            .fitCenter()
-                            .centerCrop()
-                            .into(ivTaskImage);
+                    mediaPagerAdapter.insert(fileUri, pageIndex);
+                    mediaPagerAdapter.notifyDataSetChanged();
+                    circleIndicator.refreshIndicator();
 
                 } else if (resultCode == RESULT_CANCELED) {
                     // User cancelled the image capture
@@ -249,7 +255,6 @@ public class CreateTaskActivity
             ex.printStackTrace();
         }
     }
-
 
     /**
      * store the file url as it could be null after returning from camera
@@ -272,5 +277,15 @@ public class CreateTaskActivity
         fileUri = savedInstanceState.getParcelable("file_uri");
     }
 
-
+    @Override
+    public void onStartImageCapture(int position) {
+        try {
+            pageIndex = position;
+            startCameraImageCapture();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
 }
