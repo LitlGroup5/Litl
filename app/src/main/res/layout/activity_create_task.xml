@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     tools:context="com.litlgroup.litl.activities.CreateTaskActivity">
 
-    <include layout="@layout/app_bar_media_pager" />
+    <include layout="@layout/app_bar_media_pager"
+        android:id="@+id/include" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +22,6 @@
         android:layout_marginTop="14dp"
         android:hint="Title"
 
-        android:layout_below="@+id/ivTaskImage"
         android:layout_alignLeft="@+id/etDescription"
         android:layout_alignStart="@+id/etDescription"
         android:layout_alignRight="@+id/etDescription"
@@ -54,12 +60,12 @@
         android:id="@+id/spCategory"
         android:layout_below="@+id/etPrice"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="21dp"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
         android:spinnerMode="dropdown"
         android:entries="@array/categories_array_values"
-        />
+        android:textAlignment="center" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -86,11 +92,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/etAddress"
-        android:layout_centerVertical="true"
+        android:hint="Address"
+        android:layout_below="@+id/etDescription"
         android:layout_alignLeft="@+id/etDescription"
         android:layout_alignStart="@+id/etDescription"
         android:layout_alignRight="@+id/etDescription"
         android:layout_alignEnd="@+id/etDescription"
-        android:layout_marginTop="14dp"
-        android:hint="Address" />
-</RelativeLayout>
+        android:layout_marginTop="14dp" />
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -1,7 +1,6 @@
 package com.litlgroup.litl.utils;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -69,16 +68,28 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
         }
         else {
 
-            ibCaptureImage.setVisibility(View.VISIBLE);
             ibSelectImage.setVisibility(View.VISIBLE);
+
+            ibSelectImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ibSelectImage.setAlpha(0.3f);
+                    StartImageSelectListener listener = (StartImageSelectListener) mContext;
+                    listener.onStartImageSelect(position);
+                    ibSelectImage.setAlpha(1f);
+                }
+            });
+
+            ibCaptureImage.setVisibility(View.VISIBLE);
 
             ibCaptureImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     try {
-                        ibCaptureImage.setBackgroundColor(Color.BLUE);
+                        ibCaptureImage.setAlpha(0.3f);
                         StartImageCaptureListener listener = (StartImageCaptureListener) mContext;
                         listener.onStartImageCapture(position);
+                        ibCaptureImage.setAlpha(1f);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -119,7 +130,12 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
 
     public interface StartImageCaptureListener
     {
-        void onStartImageCapture(int tabIndex);
+        void onStartImageCapture(int pageIndex);
+    }
+
+    public interface StartImageSelectListener
+    {
+        void onStartImageSelect(int pageIndex);
     }
 
 }

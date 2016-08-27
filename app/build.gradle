@@ -60,6 +60,8 @@ dependencies {
     compile 'org.parceler:parceler-api:1.1.1'
     apt 'org.parceler:parceler:1.1.1'
 
+    compile 'com.github.jkwiecien:EasyImage:1.2.3'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

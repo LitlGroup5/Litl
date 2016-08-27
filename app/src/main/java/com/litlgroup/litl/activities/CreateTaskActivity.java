@@ -24,6 +24,7 @@ import com.litlgroup.litl.utils.CameraUtils;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Permissions;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -31,11 +32,15 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pl.aprilapps.easyphotopicker.DefaultCallback;
+import pl.aprilapps.easyphotopicker.EasyImage;
 
 public class CreateTaskActivity
         extends AppCompatActivity
     implements DatePickerFragment.DatePickerDialogListener,
-        AdvancedMediaPagerAdapter.StartImageCaptureListener
+        AdvancedMediaPagerAdapter.StartImageCaptureListener,
+        AdvancedMediaPagerAdapter.StartImageSelectListener
+
 
 
 {
@@ -216,6 +221,8 @@ public class CreateTaskActivity
     }
 
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    public final static int SELECT_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
+
     private Uri fileUri;
 
     public void launchCamera() {
@@ -249,6 +256,60 @@ public class CreateTaskActivity
                     Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
                 }
             }
+            else if (requestCode == SELECT_IMAGE_ACTIVITY_REQUEST_CODE)
+            {
+                if(resultCode == RESULT_OK)
+                {
+                    mediaPagerAdapter.insert(fileUri, pageIndex);
+                    mediaPagerAdapter.notifyDataSetChanged();
+                    circleIndicator.refreshIndicator();
+                }else if (resultCode == RESULT_CANCELED) {
+                    // User cancelled the image capture
+                } else { // Result was a failure
+                    Toast.makeText(this, "No image selected!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
+                @Override
+                public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
+                    //Some error handling
+                }
+
+                @Override
+                public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {
+                    //Handle the image
+                    mediaPagerAdapter.insert(Uri.parse(imageFile.getAbsolutePath()), pageIndex);
+                    mediaPagerAdapter.notifyDataSetChanged();
+                    circleIndicator.refreshIndicator();
+                }
+
+                @Override
+                public void onCanceled(EasyImage.ImageSource source, int type) {
+                    //Cancel handling, you might wanna remove taken photo if it was canceled
+                    if (source == EasyImage.ImageSource.CAMERA) {
+                        File photoFile = EasyImage.lastlyTakenButCanceledPhoto(CreateTaskActivity.this);
+                        if (photoFile != null) photoFile.delete();
+                    }
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+
+    private void startImageSelect()
+    {
+        try
+        {
+            if(!permissions.checkPermissionForExternalStorage())
+            {
+                permissions.requestPermissionForExternalStorage();
+            }
+            EasyImage.openGallery(this, SELECT_IMAGE_ACTIVITY_REQUEST_CODE);
         }
         catch (Exception ex)
         {
@@ -282,6 +343,21 @@ public class CreateTaskActivity
         try {
             pageIndex = position;
             startCameraImageCapture();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStartImageSelect(int position) {
+        try
+        {
+            pageIndex = position;
+
+            startImageSelect();
+
         }
         catch (Exception ex)
         {
