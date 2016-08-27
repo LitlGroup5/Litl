@@ -17,6 +17,7 @@ android {
         versionName "1.0"
         buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+
     }
     buildTypes {
         release {
@@ -58,6 +59,8 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'org.parceler:parceler-api:1.1.1'
     apt 'org.parceler:parceler:1.1.1'
+
+
 }
 
 apply plugin: 'com.google.gms.google-services'
