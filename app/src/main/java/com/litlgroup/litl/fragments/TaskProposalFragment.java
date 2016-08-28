@@ -1,5 +1,6 @@
 package com.litlgroup.litl.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
@@ -16,12 +17,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.R;
+import com.litlgroup.litl.activities.BidSelectScreenActivity;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
@@ -31,6 +34,7 @@ import com.litlgroup.litl.utils.MediaPagerAdapter;
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 public class TaskProposalFragment extends Fragment {
@@ -121,6 +125,12 @@ public class TaskProposalFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Glide.clear(mIvProfileImage);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.task_proposal_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -191,5 +201,13 @@ public class TaskProposalFragment extends Fragment {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+
+    @OnClick({R.id.tvBidBy, R.id.tvBidByCount})
+    public void bidBy() {
+        Intent i = new Intent(getActivity(), BidSelectScreenActivity.class);
+        i.putExtra(Constants.TASK_ID, mTaskId);
+        startActivity(i);
     }
 }

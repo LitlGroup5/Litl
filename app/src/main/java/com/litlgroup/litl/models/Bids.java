@@ -11,7 +11,7 @@ public class Bids {
     private String createdOn;
     private Float price;
     private String task;
-    private String user;
+    private UserSummary user;
 
     public Bids() {
     }
@@ -75,7 +75,7 @@ public class Bids {
      * @return
      * The user
      */
-    public String getUser() {
+    public UserSummary getUser() {
         return user;
     }
 
@@ -84,7 +84,7 @@ public class Bids {
      * @param user
      * The user
      */
-    public void setUser(String user) {
+    public void setUser(UserSummary user) {
         this.user = user;
     }
 

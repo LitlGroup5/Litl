@@ -10,9 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.litlgroup.litl.model.Offer;
-import com.litlgroup.litl.model.User;
 import com.litlgroup.litl.R;
+import com.litlgroup.litl.models.Bids;
+import com.litlgroup.litl.models.UserSummary;
 
 import java.util.List;
 
@@ -24,13 +24,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by Hari on 8/18/2016.
  */
 public class OffersAdapter
-    extends RecyclerView.Adapter<OffersAdapter.ViewHolder>
-{
+        extends RecyclerView.Adapter<OffersAdapter.ViewHolder> {
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
-    {
-
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tvUsername)
         TextView tvUsername;
@@ -53,18 +50,16 @@ public class OffersAdapter
         }
     }
 
-    private List<Offer> mOffers;
+    private List<Bids> mBids;
 
     private Context mContext;
 
-    public OffersAdapter(Context context, List<Offer> offers)
-    {
-        mOffers = offers;
+    public OffersAdapter(Context context, List<Bids> offers) {
+        mBids = offers;
         mContext = context;
     }
 
-    private Context getContext()
-    {
+    private Context getContext() {
         return mContext;
     }
 
@@ -85,20 +80,19 @@ public class OffersAdapter
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         try {
-            final Offer offer = mOffers.get(position);
-            holder.tvOfferValue.setText(String.valueOf(offer.getPriceFormatted()));
+            final Bids offer = mBids.get(position);
+            holder.tvOfferValue.setText(String.valueOf(offer.getPrice()));
 
-            User user = offer.getUserObject();
-            holder.tvUsername.setText(user.getUserName());
+            UserSummary user = offer.getUser();
+            holder.tvUsername.setText(user.getName());
 
-            String profileImageUrl = user.getProfileImageURL();
+            String profileImageUrl = user.getPhoto();
 
             if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
                 Glide.with(getContext())
                         .load(profileImageUrl)
                         .placeholder(R.drawable.offer_profile_image)
                         .into(holder.ivProfileImage);
-
             }
 
             holder.ibOfferAccept.setOnClickListener(new View.OnClickListener() {
@@ -119,28 +113,25 @@ public class OffersAdapter
                 }
             });
 
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     @Override
     public int getItemCount() {
-        return mOffers.size();
+        return mBids.size();
     }
 
 
-    public void addAll (List<Offer> list)
-    {
-        mOffers.addAll(list);
+    public void addAll(List<Bids> list) {
+        mBids = null;
+        mBids = list;
         notifyDataSetChanged();
     }
 
-    public void clear()
-    {
-        mOffers.clear();
+    public void clear() {
+        mBids.clear();
         notifyDataSetChanged();
     }
 }
