@@ -35,7 +35,7 @@ public class ProposalsFragment extends TaskFragment {
         if (chosenCategory == null) {
             addAll(Task.getFakeTaskDataProposals(), isRefresh);
         } else {
-
+            addAll(Task.getSortedTasks(chosenCategory, "proposal"), isRefresh);
         }
     }
 }

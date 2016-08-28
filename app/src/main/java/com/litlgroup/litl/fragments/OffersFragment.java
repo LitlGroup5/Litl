@@ -35,7 +35,7 @@ public class OffersFragment extends TaskFragment {
         if (chosenCategory == null) {
             addAll(Task.getFakeTaskDataOfferss(), isRefresh);
         } else {
-
+            addAll(Task.getSortedTasks(chosenCategory, "offers"), isRefresh);
         }
     }
 }
