@@ -16,8 +16,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.R;
+import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ImageUtils;
@@ -26,6 +31,7 @@ import com.litlgroup.litl.utils.MediaPagerAdapter;
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class TaskProposalFragment extends Fragment {
 
@@ -69,6 +75,10 @@ public class TaskProposalFragment extends Fragment {
 
     private DatabaseReference mDatabase;
 
+    private MediaPagerAdapter mMediaPagerAdapter;
+
+    private CircleIndicator mCircleIndicator;
+
     public TaskProposalFragment() {
     }
 
@@ -88,6 +98,7 @@ public class TaskProposalFragment extends Fragment {
         setHasOptionsMenu(true);
 
         mTaskId = getArguments().getString(Constants.TASK_ID);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
@@ -102,10 +113,9 @@ public class TaskProposalFragment extends Fragment {
         mCollapsingToolbar.setStatusBarScrimColor(mPrimaryDark);
 
         initToolbar();
-
-        ImageUtils.setCircularImage(mIvProfileImage, "https://lh4.googleusercontent.com/-WdAdZiM6sKg/AAAAAAAAAAI/AAAAAAAAAAA/AGNl-OrDerqmVUzgAncF_UGH3YIIMV6Izw/s96-c/photo.jpg%22");
-
         setupViewPager();
+
+        getTaskData();
 
         return view;
     }
@@ -116,17 +126,62 @@ public class TaskProposalFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    private void getTaskData() {
+        mDatabase.child(Constants.TABLE_TASKS).child(mTaskId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Timber.d("Key: " + dataSnapshot.getKey());
+                Timber.d("Value: " + String.valueOf(dataSnapshot.getValue()));
+
+                Task task = dataSnapshot.getValue(Task.class);
+                setData(task);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void setData(Task task) {
+
+        if (task.getTitle() != null)
+            mTvTitle.setText(task.getTitle());
+
+        if (task.getDescription() != null)
+            mTvDescription.setText(task.getDescription());
+
+        if (task.getUser() != null && task.getUser().getPhoto() != null)
+            ImageUtils.setCircularImage(mIvProfileImage, task.getUser().getPhoto());
+
+        if (task.getBidBy() != null)
+            mTvBidByCount.setText(String.valueOf(task.getBidBy()));
+        else
+            mTvBidByCount.setText("0");
+
+        if (task.getViewedBy() != null)
+            mTvViewedByCount.setText(String.valueOf(task.getViewedBy()));
+        else
+            mTvViewedByCount.setText("0");
+
+        if (task.getPrice() != null)
+            mTvPrice.setText(task.getPrice());
+
+        if (task.getMedia() != null) {
+            for (String url : task.getMedia()) {
+                mMediaPagerAdapter.addImage(url);
+                mMediaPagerAdapter.notifyDataSetChanged();
+            }
+
+            mCircleIndicator.refreshIndicator();
+        }
+    }
+
     private void setupViewPager() {
-        final MediaPagerAdapter adapter = new MediaPagerAdapter(getActivity());
-        adapter.addImage("https://firebasestorage.googleapis.com/v0/b/litl-40ef9.appspot.com/o/Tasks%2FAssembly-the-Splitback-Sofa03.jpg?alt=media&token=23f9b9b2-11f8-4423-bc28-1bd75bcfc4ae");
-        adapter.addImage("https://firebasestorage.googleapis.com/v0/b/litl-40ef9.appspot.com/o/Tasks%2Fsofa1.jpeg?alt=media&token=6a748cf5-c447-4916-afaf-91eeed86a8d6");
-        adapter.addImage("https://firebasestorage.googleapis.com/v0/b/litl-40ef9.appspot.com/o/Tasks%2Fsofa1.jpeg?alt=media&token=6a748cf5-c447-4916-afaf-91eeed86a8d6");
-        adapter.addImage("https://firebasestorage.googleapis.com/v0/b/litl-40ef9.appspot.com/o/Tasks%2Fsofa1.jpeg?alt=media&token=6a748cf5-c447-4916-afaf-91eeed86a8d6");
-
-        mVpMedia.setAdapter(adapter);
-
-        CircleIndicator circleIndicator = new CircleIndicator(mViewPagerCountDots, mVpMedia);
-        circleIndicator.setViewPagerIndicator();
+        mMediaPagerAdapter = new MediaPagerAdapter(getActivity());
+        mVpMedia.setAdapter(mMediaPagerAdapter);
+        mCircleIndicator = new CircleIndicator(mViewPagerCountDots, mVpMedia);
     }
 
     private void initToolbar() {
