@@ -15,6 +15,7 @@ public class Constants {
     public static final String TABLE_BIDS = "Bids";
 
     public static final String TABLE_TASKS_COLUMN_BID_BY = "bidBy";
+    public static final String TABLE_BIDS_COLUMN_TASK = "task";
 
     public static final String BID_NOW_FRAGMENT = "BidNow";
 }

@@ -10,11 +10,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.models.Bids;
+import com.litlgroup.litl.models.UserSummary;
 import com.litlgroup.litl.utils.Constants;
 
 import butterknife.BindView;
@@ -81,7 +83,7 @@ public class PlaceBidFragment extends BottomSheetDialogFragment {
             float price = Float.parseFloat(bidPriceText);
 
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                writeNewOffer(price, taskKey, FirebaseAuth.getInstance().getCurrentUser().getUid(), bidBy);
+                writeNewOffer(price, taskKey, FirebaseAuth.getInstance().getCurrentUser(), bidBy);
                 Toast.makeText(getActivity(), "The bid has been placed!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getActivity(), "User not logged in!", Toast.LENGTH_SHORT).show();
@@ -93,18 +95,31 @@ public class PlaceBidFragment extends BottomSheetDialogFragment {
         }
     }
 
-    private void writeNewOffer(float price, String taskId, String userId, Integer bidBy) {
+    private void writeNewOffer(float price, String taskId, FirebaseUser user, Integer bidBy) {
         try {
             String key = mDatabase.child(Constants.TABLE_BIDS).push().getKey();
 
             Bids bid = new Bids();
             bid.setPrice(price);
             bid.setTask(taskId);
-            bid.setUser(userId);
             bid.setCreatedOn(ServerValue.TIMESTAMP.toString());
 
-            mDatabase.child(Constants.TABLE_BIDS).child(key).setValue(bid);
+            if (user != null) {
+                UserSummary userSummary = new UserSummary();
 
+                if (user.getEmail() != null && !user.getEmail().isEmpty())
+                    userSummary.setEmail(user.getEmail());
+
+                userSummary.setId(user.getUid());
+                userSummary.setName(user.getDisplayName());
+
+                if (user.getPhotoUrl() != null)
+                    userSummary.setPhoto(user.getPhotoUrl().toString());
+
+                bid.setUser(userSummary);
+            }
+
+            mDatabase.child(Constants.TABLE_BIDS).child(key).setValue(bid);
             mDatabase.child(Constants.TABLE_TASKS).child(taskId).child(Constants.TABLE_TASKS_COLUMN_BID_BY).setValue(bidBy.intValue() + 1);
 
         } catch (Exception ex) {

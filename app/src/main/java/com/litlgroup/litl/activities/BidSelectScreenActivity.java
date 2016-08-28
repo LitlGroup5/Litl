@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -14,8 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.adapters.OffersAdapter;
-import com.litlgroup.litl.model.Offer;
-import com.litlgroup.litl.model.User;
+import com.litlgroup.litl.models.Bids;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.SpacesItemDecoration;
 
@@ -23,28 +21,30 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class BidSelectScreenActivity extends AppCompatActivity {
 
-    ArrayList<Offer> offers;
+    ArrayList<Bids> mBids;
 
     OffersAdapter adapter;
 
     @BindView(R.id.rvOffers)
     RecyclerView rvOffers;
 
-    private int thisTaskId;
+    private String thisTaskId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bid_select_screen);
 
-        thisTaskId = getIntent().getIntExtra(Constants.TASK_ID, 0);
+        thisTaskId = getIntent().getStringExtra(Constants.TASK_ID);
 
         ButterKnife.bind(this);
-        offers = new ArrayList<>();
-        adapter = new OffersAdapter(this, offers);
+        mBids = new ArrayList<>();
+
+        adapter = new OffersAdapter(this, mBids);
         rvOffers.setAdapter(adapter);
         rvOffers.setLayoutManager(new LinearLayoutManager(this));
 
@@ -54,38 +54,26 @@ public class BidSelectScreenActivity extends AppCompatActivity {
         GetData();
     }
 
-
-    private void GetData()
-    {
+    private void GetData() {
         try {
-
             final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-            database.addValueEventListener(new ValueEventListener() {
+
+            database.child(Constants.TABLE_BIDS)
+                    .orderByChild(Constants.TABLE_BIDS_COLUMN_TASK)
+                    .startAt(thisTaskId)
+                    .endAt(thisTaskId)
+                    .addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    adapter.clear();
-                    ArrayList<Offer> offersList = Offer.fromDataSnapshot(dataSnapshot.child("Offers"));
-                    Log.d("Fetch Offers", dataSnapshot.toString());
+                    Timber.d(dataSnapshot.toString());
 
-                    if(offersList == null || offersList.isEmpty())
-                        return;
-                    ArrayList<Offer> filteredOffers = new ArrayList<Offer>();
-                    for (Offer offer : offersList) {
+                    mBids.clear();
 
-                        try {
-                            if (offer.getUser() != null) {
-                                User user = dataSnapshot.child("Users").child(offer.getUser()).getValue(User.class);
-                                offer.setUserObject(user);
-                                if(offer.getTask().equals(thisTaskId))
-                                    filteredOffers.add(offer);
-                            }
-                        }
-                        catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        mBids.add(snapshot.getValue(Bids.class));
                     }
-                    adapter.addAll(filteredOffers);
 
+                    adapter.addAll(mBids);
                 }
 
                 @Override
@@ -93,11 +81,8 @@ public class BidSelectScreenActivity extends AppCompatActivity {
                     Toast.makeText(BidSelectScreenActivity.this, "There was an error when fetching Offers data", Toast.LENGTH_SHORT).show();
                 }
             });
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 }
