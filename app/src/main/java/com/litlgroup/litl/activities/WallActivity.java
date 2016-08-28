@@ -16,8 +16,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -25,13 +28,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.litlgroup.litl.R;
-import com.litlgroup.litl.fragments.OffersFragment;
 import com.litlgroup.litl.fragments.PlaceBidFragment;
-import com.litlgroup.litl.fragments.ProposalsFragment;
 import com.litlgroup.litl.fragments.TaskOffersFragment;
 import com.litlgroup.litl.fragments.TaskProposalFragment;
 import com.litlgroup.litl.fragments.WallFragment;
+import com.litlgroup.litl.model.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +49,6 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    private NavigationView navigationView;
     private ActionBarDrawerToggle drawerToggle;
 
     @BindView(R.id.fabCreateTask)
@@ -102,12 +105,32 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        navigationView = (NavigationView) findViewById(R.id.nvView);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(navigationView);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = setupDrawerToggle();
         drawerLayout.addDrawerListener(drawerToggle);
+
+        View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
+        setupHeaderDrawerLayout(headerLayout);
+    }
+
+    private void setupHeaderDrawerLayout(View headerLayout) {
+        User user = User.getFakeUser();
+
+        ImageView ivProfileImage = (ImageView) headerLayout.findViewById(R.id.ivProfileImage_header);
+        Glide.with(this).load(user.getProfileImageURL()).diskCacheStrategy(DiskCacheStrategy.ALL).into(ivProfileImage);
+
+        TextView userName = (TextView) headerLayout.findViewById(R.id.userName);
+        String fullName = user.getFirstName() + user.getLastName();
+        userName.setText(fullName);
+
+        TextView email = (TextView) headerLayout.findViewById(R.id.tvUserEmail);
+        email.setText(user.getEmail());
+
+        TextView cityState = (TextView) headerLayout.findViewById(R.id.userCityState);
+        cityState.setText("San Diego, CA");
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -134,7 +157,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         Fragment fragment = null;
         Class fragmentClass;
 
-        switch(menuItem.getItemId()) {
+        switch (menuItem.getItemId()) {
             case R.id.nav_first_fragment:
                 fragmentClass = PlaceBidFragment.class;
                 break;
