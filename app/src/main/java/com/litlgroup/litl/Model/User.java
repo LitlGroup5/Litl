@@ -1,9 +1,18 @@
 package com.litlgroup.litl.model;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.litlgroup.litl.utils.Constants;
+
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import timber.log.Timber;
 
 /**
  * Created by andrj148 on 8/16/16.
@@ -100,7 +109,7 @@ public class User {
         fakeUser.lastName = "Lemon";
         fakeUser.biography = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
         fakeUser.profileImageURL = "http://yourblackworld.net/wp-content/uploads/2013/06/21/afro-puffs.jpg";
-
+        User.getData();
         return fakeUser;
     }
     public User() {
@@ -123,6 +132,26 @@ public class User {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static void getData() {
+        try {
+            final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+            database.child(Constants.TABLE_TASKS).orderByChild("user/id")
+                    .equalTo("GrEBJRMGyWdbONUBeUfsBDhgzd53")
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Timber.d(dataSnapshot.toString());
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
 }

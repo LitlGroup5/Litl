@@ -2,7 +2,9 @@ package com.litlgroup.litl.model;
 
 import org.parceler.Parcel;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -131,6 +133,7 @@ public class Task {
         task1.favorPoints = 7;
         task1.user = User.getFakeUser();
         task1.bookmark = getBookmark(true);
+        task1.categories = new ArrayList<>(Arrays.asList("Gardening", "House Cleaning"));
 
         Task task2 = new Task();
         task2.address = address1;
@@ -143,6 +146,7 @@ public class Task {
         task2.favorPoints = 10;
         task2.user = User.getFakeUser();
         task2.bookmark = getBookmark(false);
+        task2.categories = new ArrayList<>(Arrays.asList("Plumbing", "House Cleaning"));
 
         Task task3 = new Task();
         task3.address = address1;
@@ -155,6 +159,7 @@ public class Task {
         task3.favorPoints = 1000;
         task3.user = User.getFakeUser();
         task3.bookmark = getBookmark(false);
+        task3.categories = new ArrayList<>(Arrays.asList("Random"));
 
         Task task4 = new Task();
         task4.address = address1;
@@ -167,6 +172,7 @@ public class Task {
         task4.favorPoints = 4;
         task4.user = User.getFakeUser();
         task4.bookmark = getBookmark(true);
+        task1.categories = new ArrayList<>(Arrays.asList("Automotive"));
 
         Task task5 = new Task();
         task5.address = address1;
@@ -179,6 +185,7 @@ public class Task {
         task5.favorPoints = 1;
         task5.user = User.getFakeUser();
         task5.bookmark = getBookmark(true);
+        task5.categories = new ArrayList<>(Arrays.asList("Automotive"));
 
         taskList.add(task1);
         taskList.add(task2);
@@ -209,6 +216,7 @@ public class Task {
         task1.favorPoints = 17;
         task1.user = User.getFakeUser();
         task1.bookmark = getBookmark(true);
+        task1.categories = new ArrayList<>(Arrays.asList("Gardening", "House Cleaning"));
 
         Task task2 = new Task();
         task2.address = address1;
@@ -221,6 +229,7 @@ public class Task {
         task2.favorPoints = 20;
         task2.user = User.getFakeUser();
         task2.bookmark = getBookmark(true);
+        task2.categories = new ArrayList<>(Arrays.asList("Plumbing", "House Cleaning"));
 
         Task task3 = new Task();
         task3.address = address1;
@@ -233,6 +242,7 @@ public class Task {
         task3.favorPoints = 3000;
         task3.user = User.getFakeUser();
         task3.bookmark = getBookmark(false);
+        task3.categories = new ArrayList<>(Arrays.asList("Random"));
 
         Task task4 = new Task();
         task4.address = address1;
@@ -245,6 +255,7 @@ public class Task {
         task4.favorPoints = 4;
         task4.user = User.getFakeUser();
         task4.bookmark = getBookmark(false);
+        task4.categories = new ArrayList<>(Arrays.asList("Groceries"));
 
         Task task5 = new Task();
         task5.address = address1;
@@ -257,6 +268,7 @@ public class Task {
         task5.favorPoints = 2;
         task5.user = User.getFakeUser();
         task5.bookmark = getBookmark(true);
+        task5.categories = new ArrayList<>(Arrays.asList("Decorating/Painting", "House Cleaning"));
 
         taskList.add(task1);
         taskList.add(task2);
