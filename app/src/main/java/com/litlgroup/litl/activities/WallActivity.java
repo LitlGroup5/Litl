@@ -86,7 +86,7 @@ public class WallActivity extends AppCompatActivity implements
     }
 
     public class TaskPagerAdapter extends FragmentPagerAdapter {
-        private String tabTitles[] = {"Proposals", "Offers" };
+        private String tabTitles[] = {"Proposals", "Offers"};
 
         public TaskPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -113,9 +113,11 @@ public class WallActivity extends AppCompatActivity implements
     }
 
     @OnClick(R.id.fabCreateTask)
-    public void launchCreateTaskActivity()
-    {
+    public void launchCreateTaskActivity() {
         Intent intent = new Intent(WallActivity.this, CreateTaskActivity.class);
+        String taskId = "-KQDFGDe3w3fQAT_CE63";
+
+        intent.putExtra("taskId", taskId);
         startActivity(intent);
 
     }
