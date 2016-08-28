@@ -8,4 +8,8 @@
     <string name="bid_now">BID NOW</string>
     <string name="viewed_by">VIEWED BY</string>
     <string name="storage_reference_url">gs://litl-40ef9.appspot.com</string>
+    <string name="storage_reference_tasks_child">Tasks</string>
+    <string name="parcel_extra_task_name">task</string>
+    <string name="firebase_tasks_table">Tasks</string>
+    <string name="task_in_bid_process">IN_BID_PROCESS</string>
 </resources>
