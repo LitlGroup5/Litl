@@ -8,4 +8,9 @@ public class Constants {
     public static final String TASK_ID = "TaskID";
     public static final String SELECTED_TASK = "SelectedTask";
     public static final String TASK_TYPE = "TaskType";
+
+    public static final String TABLE_TASKS = "Tasks";
+    public static final String TABLE_USERS = "Users";
+    public static final String TABLE_REVIEWS = "Reviews";
+    public static final String TABLE_BIDS = "Bids";
 }
