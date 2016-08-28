@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
@@ -51,9 +53,6 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
 
-    @BindView(R.id.fabCreateTask)
-    android.support.design.widget.FloatingActionButton fabCreateTask;
-
     private String mUsername;
     private String mPhotoUrl;
 
@@ -69,31 +68,32 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wall);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
+//        mFirebaseAuth = FirebaseAuth.getInstance();
+//        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+//
+//        if (mFirebaseUser == null) {
+//            // Not signed in, launch the Sign In activity
+//            startActivity(new Intent(this, SignInActivity.class));
+//            finish();
+//            return;
+//        } else {
+//            mUsername = mFirebaseUser.getDisplayName();
+//            mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
+//
+//            Map<String, Object> userDetails = new HashMap<>();
+//            userDetails.put("email", mFirebaseUser.getEmail());
+//            userDetails.put("name", mFirebaseUser.getDisplayName());
+//            userDetails.put("photo", mFirebaseUser.getPhotoUrl().toString());
+//
+//            mDatabase.child("Users").child(mFirebaseUser.getUid()).setValue(userDetails);
+//        }
+//
+//        mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                .enableAutoManage(this /* WallActivity */, this /* OnConnectionFailedListener */)
+//                .addApi(Auth.GOOGLE_SIGN_IN_API)
+//                .build();
 
-        if (mFirebaseUser == null) {
-            // Not signed in, launch the Sign In activity
-            startActivity(new Intent(this, SignInActivity.class));
-            finish();
-            return;
-        } else {
-            mUsername = mFirebaseUser.getDisplayName();
-            mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
-
-            Map<String, Object> userDetails = new HashMap<>();
-            userDetails.put("email", mFirebaseUser.getEmail());
-            userDetails.put("name", mFirebaseUser.getDisplayName());
-            userDetails.put("photo", mFirebaseUser.getPhotoUrl().toString());
-
-            mDatabase.child("Users").child(mFirebaseUser.getUid()).setValue(userDetails);
-        }
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* WallActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API)
-                .build();
 
         ButterKnife.bind(this);
 
@@ -158,15 +158,15 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         Class fragmentClass;
 
         switch (menuItem.getItemId()) {
-            case R.id.nav_first_fragment:
-                fragmentClass = PlaceBidFragment.class;
-                break;
-            case R.id.nav_second_fragment:
+            case R.id.nav_create_Task:
+                launchCreateTaskActivity();
+                return;
+            case R.id.nav_categories:
                 fragmentClass = TaskOffersFragment.class;
                 break;
-            case R.id.nav_third_fragment:
-                fragmentClass = TaskProposalFragment.class;
-                break;
+            case R.id.nav_profile:
+                Toast.makeText(WallActivity.this, "User Profile is coming!", Toast.LENGTH_SHORT).show();
+                return;
             default:
                 fragmentClass = WallFragment.class;
         }
@@ -190,6 +190,11 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         drawerLayout.closeDrawers();
     }
 
+    public void launchCreateTaskActivity() {
+        Intent intent = new Intent(WallActivity.this, CreateTaskActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
@@ -209,5 +214,10 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Timber.d("onConnectionFailed:" + connectionResult);
     }
 }

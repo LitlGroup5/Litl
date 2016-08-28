@@ -2,24 +2,51 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_first_fragment"
-            android:title="First" />
+            android:id="@+id/nav_create_Task"
+            android:title="@string/create_task" />
         <item
-            android:id="@+id/nav_second_fragment"
-            android:title="Second" />
-        <item
-            android:id="@+id/nav_third_fragment"
-            android:title="Third">
-        <menu>
-            <item
-                android:id="@+id/drawer_favourite"
-                android:title="favourite"/>
+            android:id="@+id/nav_categories"
+            android:title="@string/categories">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/automotive"
+                        android:title="@string/automotive"/>
 
-            <item
-                android:id="@+id/drawer_downloaded"
-                android:title="downloaded"/>
-        </menu>
-    </item>
+                    <item
+                        android:id="@+id/decorating"
+                        android:title="@string/decorating" />
+
+                    <item
+                        android:id="@+id/electronics"
+                        android:title="@string/electronics" />
+
+                    <item
+                        android:id="@+id/arts_crafts"
+                        android:title="@string/arts_and_crafts" />
+                    <item
+                        android:id="@+id/gardening"
+                        android:title="@string/gardening" />
+
+                    <item
+                        android:id="@+id/woodworking"
+                        android:title="@string/woodworking" />
+                    <item
+                        android:id="@+id/house_cleaning"
+                        android:title="@string/house_cleaning" />
+
+                    <item
+                        android:id="@+id/recreation"
+                        android:title="@string/recreation" />
+                    <item
+                        android:id="@+id/plumbing"
+                        android:title="@string/plumbing" />
+                </group>
+            </menu>
+        </item>
     </group>
 
+    <item
+        android:id="@+id/nav_profile"
+        android:title="@string/profile"/>
 </menu>

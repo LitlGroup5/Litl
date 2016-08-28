@@ -15,6 +15,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.CreateTaskActivity;
 
+import butterknife.ButterKnife;
 import butterknife.BindView;
 import butterknife.OnClick;
 
