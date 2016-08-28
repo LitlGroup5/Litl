@@ -12,6 +12,13 @@ import com.litlgroup.litl.model.Task;
  */
 public class OffersFragment extends TaskFragment {
 
+    public static OffersFragment newInstance(String category) {
+        OffersFragment fragment = new OffersFragment();
+        fragment.chosenCategory = category;
+
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +32,10 @@ public class OffersFragment extends TaskFragment {
     }
 
     public void setupFakeData(boolean isRefresh) {
-        addAll(Task.getFakeTaskDataOfferss(), isRefresh);
+        if (chosenCategory == null) {
+            addAll(Task.getFakeTaskDataOfferss(), isRefresh);
+        } else {
+
+        }
     }
 }

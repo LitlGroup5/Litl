@@ -279,6 +279,14 @@ public class Task {
         return  taskList;
     }
 
+    public static ArrayList<Task> getSortedTasks(String sortByCategory) {
+        ArrayList<Task> taskList = new ArrayList<>();
+        
+
+
+        return taskList;
+    }
+
     private static Bookmark getBookmark(boolean exists) {
         Bookmark bookmark = new Bookmark();
         bookmark.setBookmarked(exists);

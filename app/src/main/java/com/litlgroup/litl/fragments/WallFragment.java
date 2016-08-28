@@ -3,6 +3,7 @@ package com.litlgroup.litl.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -15,6 +16,8 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.CreateTaskActivity;
 
+import java.util.Date;
+
 import butterknife.ButterKnife;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -23,6 +26,7 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass.
  */
 public class WallFragment extends Fragment {
+    private String chosenCategory;
 
     @BindView(R.id.fabCreateTask)
     android.support.design.widget.FloatingActionButton fabCreateTask;
@@ -31,7 +35,13 @@ public class WallFragment extends Fragment {
         // Required empty public constructor
     }
 
-    
+    public static WallFragment newInstance(String category) {
+
+        WallFragment wallFragment = new WallFragment();
+        wallFragment.chosenCategory = category;
+
+        return wallFragment;
+    }
 
 
     @Override
@@ -43,7 +53,7 @@ public class WallFragment extends Fragment {
 
     private void setupViewPagerAndSlidingTabs(View v) {
         ViewPager viewPager = (ViewPager) v.findViewById(R.id.viewpager);
-        viewPager.setAdapter(new TaskPagerAdapter(getActivity().getSupportFragmentManager()));
+        viewPager.setAdapter(new TaskPagerAdapter(getActivity().getSupportFragmentManager(), chosenCategory));
 
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) v.findViewById(R.id.tabs);
         tabStrip.setViewPager(viewPager);
@@ -57,17 +67,20 @@ public class WallFragment extends Fragment {
 
     public class TaskPagerAdapter extends FragmentPagerAdapter {
         private String tabTitles[] = {"Proposals", "Offers" };
+        private String chosenCategory;
 
-        public TaskPagerAdapter(FragmentManager fm) {
+
+        public TaskPagerAdapter(FragmentManager fm, String category) {
             super(fm);
+            chosenCategory = category;
         }
 
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                return new ProposalsFragment();
+                return ProposalsFragment.newInstance(chosenCategory);
             } else {
-                return new OffersFragment();
+                return OffersFragment.newInstance(chosenCategory);
             }
         }
 

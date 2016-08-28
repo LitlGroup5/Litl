@@ -36,6 +36,7 @@ public class TaskFragment extends Fragment {
     private TaskRecycleAdapter taskRecycleAdapter;
     private ArrayList<Task> tasks;
     private SwipeRefreshLayout swipeContainer;
+    public String chosenCategory;
     public InfiniteScrollListener infiniteScrollListener;
     public SwipeToRefreshListener swipeToRefreshListener;
 

@@ -19,12 +19,23 @@ public class ProposalsFragment extends TaskFragment {
         setupBehaviors();
     }
 
+    public static ProposalsFragment newInstance(String category) {
+        ProposalsFragment fragment = new ProposalsFragment();
+        fragment.chosenCategory = category;
+
+        return fragment;
+    }
+
     private void setupBehaviors() {
         infiniteScrollListener = new ProposalWallScrolling();
         swipeToRefreshListener = new ProposalsPullDownToRefresh();
     }
 
     public void setupFakeData(boolean isRefresh) {
-        addAll(Task.getFakeTaskDataProposals(), isRefresh);
+        if (chosenCategory == null) {
+            addAll(Task.getFakeTaskDataProposals(), isRefresh);
+        } else {
+
+        }
     }
 }
