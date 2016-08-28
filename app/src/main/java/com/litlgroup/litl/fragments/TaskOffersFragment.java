@@ -1,9 +1,9 @@
 package com.litlgroup.litl.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.R;
-import com.litlgroup.litl.activities.BidSelectScreenActivity;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
@@ -34,6 +32,7 @@ import com.litlgroup.litl.utils.MediaPagerAdapter;
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 public class TaskOffersFragment extends Fragment {
@@ -82,6 +81,8 @@ public class TaskOffersFragment extends Fragment {
 
     private CircleIndicator mCircleIndicator;
 
+    private Task mTask;
+
     public TaskOffersFragment() {
     }
 
@@ -120,14 +121,6 @@ public class TaskOffersFragment extends Fragment {
 
         getTaskData();
 
-        Button bidNowButton = (Button) view.findViewById(R.id.btnBidNow);
-        bidNowButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navigateToBidActivity();
-            }
-        });
-
         return view;
     }
 
@@ -144,8 +137,8 @@ public class TaskOffersFragment extends Fragment {
                 Timber.d("Key: " + dataSnapshot.getKey());
                 Timber.d("Value: " + String.valueOf(dataSnapshot.getValue()));
 
-                Task task = dataSnapshot.getValue(Task.class);
-                setData(task);
+                mTask = dataSnapshot.getValue(Task.class);
+                setData(mTask);
 
             }
 
@@ -205,9 +198,13 @@ public class TaskOffersFragment extends Fragment {
         }
     }
 
-    private void navigateToBidActivity() {
-        Intent i = new Intent(getActivity(), BidSelectScreenActivity.class);
-        i.putExtra(Constants.TASK_ID, mTaskId);
-        startActivity(i);
+    @OnClick(R.id.btnBidNow)
+    public void bidNow() {
+        Timber.d("Bid Now Clicked");
+
+        PlaceBidFragment myDialog = PlaceBidFragment.newInstance(mTaskId, mTask.getBidBy());
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        myDialog.show(fm, Constants.BID_NOW_FRAGMENT);
     }
 }
