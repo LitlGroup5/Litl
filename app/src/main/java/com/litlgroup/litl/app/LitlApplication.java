@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
 
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Logger;
 import com.litlgroup.litl.BuildConfig;
 
 import timber.log.Timber;
@@ -41,5 +43,8 @@ public class LitlApplication extends Application {
                         .build());
             }
         }
+
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
+
 }
