@@ -12,7 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.R;
-import com.litlgroup.litl.adapters.OffersAdapter;
+import com.litlgroup.litl.adapters.BidsAdapter;
 import com.litlgroup.litl.models.Bids;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.SpacesItemDecoration;
@@ -23,16 +23,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class BidSelectScreenActivity extends AppCompatActivity {
+public class BidSelectScreenActivity
+        extends AppCompatActivity
+    implements BidsAdapter.AcceptBidListener
+{
 
     ArrayList<Bids> mBids;
-
-    OffersAdapter adapter;
+    ArrayList<String> bidIds;
+    BidsAdapter adapter;
 
     @BindView(R.id.rvOffers)
     RecyclerView rvOffers;
 
     private String thisTaskId;
+    DatabaseReference database;
+
+    boolean isTaskBidAccepted = false;
+    String acceptedBidId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,20 +50,54 @@ public class BidSelectScreenActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         mBids = new ArrayList<>();
+        bidIds = new ArrayList<>();
 
-        adapter = new OffersAdapter(this, mBids);
+        adapter = new BidsAdapter(this, mBids);
         rvOffers.setAdapter(adapter);
         rvOffers.setLayoutManager(new LinearLayoutManager(this));
 
         SpacesItemDecoration decoration = new SpacesItemDecoration(20);
         rvOffers.addItemDecoration(decoration);
+        database = FirebaseDatabase.getInstance().getReference();
 
-        GetData();
+        GetThisTaskData();
+        GetBidsData();
     }
 
-    private void GetData() {
+
+    private void GetThisTaskData()
+    {
+        try
+        {
+            database.child(Constants.TABLE_TASKS)
+                    .child(thisTaskId)
+                    .child(getString(R.string.accepted_offer_id))
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String bidId = dataSnapshot.getValue().toString();
+                            if(!bidId.equals("-1")) {
+                                isTaskBidAccepted = true;
+                                acceptedBidId = bidId;
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error getting current task's data");
+        }
+
+    }
+
+    private void GetBidsData() {
         try {
-            final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
             database.child(Constants.TABLE_BIDS)
                     .orderByChild(Constants.TABLE_BIDS_COLUMN_TASK)
@@ -66,11 +107,22 @@ public class BidSelectScreenActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Timber.d(dataSnapshot.toString());
-
                     mBids.clear();
-
+                    bidIds.clear();
+                    int index = 0;
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                        String bidId = snapshot.getKey();
+                        if(isTaskBidAccepted)
+                        {
+                            if(bidId.equals(acceptedBidId))
+                            {
+                                adapter.acceptedBidListIndex = index;
+                            }
+                        }
                         mBids.add(snapshot.getValue(Bids.class));
+                        bidIds.add(bidId);
+                        index++;
                     }
 
                     adapter.addAll(mBids);
@@ -78,11 +130,47 @@ public class BidSelectScreenActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    Toast.makeText(BidSelectScreenActivity.this, "There was an error when fetching Offers data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BidSelectScreenActivity.this, "There was an error when fetching bids data", Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    private void updateAcceptedBidId(int bidIndex)
+    {
+        try
+        {
+            String bidId = bidIds.get(bidIndex);
+
+            database.child(Constants.TABLE_TASKS)
+                    .child(thisTaskId)
+                    .child(getString(R.string.accepted_offer_id))
+                    .setValue(bidId);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error writing accepted bid id to firebase",ex);
+        }
+    }
+
+    @Override
+    public void onAcceptBidListener(int bidIndex) {
+        try
+        {
+            updateAcceptedBidId(bidIndex);
+            finish();
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error in onAcceptBidListener", ex);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        database.onDisconnect();
     }
 }
