@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         app:layout_anchorGravity="bottom|right|end"
         android:layout_gravity="bottom|end"
-        app:layout_behavior="com.codepath.apps.tweettrove.helpers.ScrollAwareFABBehavior"
+        app:layout_behavior="com.litlgroup.litl.behaviors.ScrollAwareFABBehavior"
         android:id="@+id/fabCreateTask"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
@@ -42,4 +42,4 @@
         app:backgroundTint="@color/colorPrimary"
         android:src="@android:drawable/ic_input_add" />
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
