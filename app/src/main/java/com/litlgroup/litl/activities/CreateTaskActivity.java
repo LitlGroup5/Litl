@@ -38,6 +38,7 @@ import com.litlgroup.litl.models.UserSummary;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CameraUtils;
 import com.litlgroup.litl.utils.CircleIndicator;
+import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.DateUtils;
 import com.litlgroup.litl.utils.Permissions;
 
@@ -145,8 +146,8 @@ public class CreateTaskActivity
             Intent intent = getIntent();
             if (intent != null) {
                 Timber.d("Checking for task data in intent");
-                if (intent.getStringExtra("taskId") != null) {
-                    String taskId = intent.getStringExtra("taskId");
+                if (intent.getStringExtra(Constants.TASK_ID) != null) {
+                    String taskId = intent.getStringExtra(Constants.TASK_ID);
                     existingTaskId = taskId;
                     isEditMode = true;
                     btnPostTask.setText("Save");

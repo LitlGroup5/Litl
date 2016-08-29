@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.BidSelectScreenActivity;
+import com.litlgroup.litl.activities.CreateTaskActivity;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
@@ -163,6 +164,12 @@ public class TaskProposalFragment extends Fragment {
                 getActivity().finish();
 
                 break;
+            }
+
+            case R.id.action_edit: {
+                Intent i = new Intent(getActivity(), CreateTaskActivity.class);
+                i.putExtra(Constants.TASK_ID, mTaskId);
+                startActivity(i);
             }
         }
 
