@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +50,7 @@ public class WallFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wall, container, false);
         setupViewPagerAndSlidingTabs(view);
+
         return view;
     }
 
@@ -65,8 +68,8 @@ public class WallFragment extends Fragment {
         startActivity(intent);
     }
 
-    public class TaskPagerAdapter extends FragmentPagerAdapter {
-        private String tabTitles[] = {"Proposals", "Offers" };
+    public class TaskPagerAdapter extends FragmentStatePagerAdapter {
+        private String tabTitles[] = {"Proposals", "Offers"};
         private String chosenCategory;
 
 
@@ -92,6 +95,11 @@ public class WallFragment extends Fragment {
         @Override
         public CharSequence getPageTitle(int position) {
             return tabTitles[position];
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return PagerAdapter.POSITION_NONE;
         }
     }
 }

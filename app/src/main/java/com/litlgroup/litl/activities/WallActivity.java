@@ -155,7 +155,6 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
-        Class fragmentClass;
 
         switch (menuItem.getItemId()) {
             case R.id.nav_create_Task:
@@ -177,13 +176,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
                 Toast.makeText(WallActivity.this, "Logout just needs t be plugged up!", Toast.LENGTH_SHORT).show();
                 return;
             default:
-                fragmentClass = WallFragment.class;
-        }
-
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
+                fragment = WallFragment.newInstance(menuItem.toString());
         }
 
         // Insert the fragment by replacing any existing fragment
