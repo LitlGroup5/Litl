@@ -11,11 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -83,6 +85,22 @@ public class TaskProposalFragment extends Fragment {
 
     private CircleIndicator mCircleIndicator;
 
+    private ValueEventListener valueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            Timber.d("Key: " + dataSnapshot.getKey());
+            Timber.d("Value: " + String.valueOf(dataSnapshot.getValue()));
+
+            Task task = dataSnapshot.getValue(Task.class);
+            setData(task);
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
+
     public TaskProposalFragment() {
     }
 
@@ -131,60 +149,69 @@ public class TaskProposalFragment extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_delete: {
+                mDatabase.removeEventListener(valueEventListener);
+                valueEventListener = null;
+
+                mDatabase.child(Constants.TABLE_TASKS).child(mTaskId).removeValue();
+                Toast.makeText(getActivity(), "Task Deleted", Toast.LENGTH_SHORT).show();
+
+                getActivity().finish();
+
+                break;
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.task_proposal_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void getTaskData() {
-        mDatabase.child(Constants.TABLE_TASKS).child(mTaskId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Timber.d("Key: " + dataSnapshot.getKey());
-                Timber.d("Value: " + String.valueOf(dataSnapshot.getValue()));
-
-                Task task = dataSnapshot.getValue(Task.class);
-                setData(task);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        mDatabase.child(Constants.TABLE_TASKS).child(mTaskId).addValueEventListener(valueEventListener);
     }
 
     private void setData(Task task) {
 
-        if (task.getTitle() != null)
-            mTvTitle.setText(task.getTitle());
+        if (task != null) {
+            if (task.getTitle() != null)
+                mTvTitle.setText(task.getTitle());
 
-        if (task.getDescription() != null)
-            mTvDescription.setText(task.getDescription());
+            if (task.getDescription() != null)
+                mTvDescription.setText(task.getDescription());
 
-        if (task.getUser() != null && task.getUser().getPhoto() != null)
-            ImageUtils.setCircularImage(mIvProfileImage, task.getUser().getPhoto());
+            if (task.getUser() != null && task.getUser().getPhoto() != null)
+                ImageUtils.setCircularImage(mIvProfileImage, task.getUser().getPhoto());
 
-        if (task.getBidBy() != null)
-            mTvBidByCount.setText(String.valueOf(task.getBidBy()));
-        else
-            mTvBidByCount.setText("0");
+            if (task.getBidBy() != null)
+                mTvBidByCount.setText(String.valueOf(task.getBidBy()));
+            else
+                mTvBidByCount.setText("0");
 
-        if (task.getViewedBy() != null)
-            mTvViewedByCount.setText(String.valueOf(task.getViewedBy()));
-        else
-            mTvViewedByCount.setText("0");
+            if (task.getViewedBy() != null)
+                mTvViewedByCount.setText(String.valueOf(task.getViewedBy()));
+            else
+                mTvViewedByCount.setText("0");
 
-        if (task.getPrice() != null)
-            mTvPrice.setText(task.getPrice());
+            if (task.getPrice() != null)
+                mTvPrice.setText(task.getPrice());
 
-        if (task.getMedia() != null) {
-            for (String url : task.getMedia()) {
-                mMediaPagerAdapter.addImage(url);
-                mMediaPagerAdapter.notifyDataSetChanged();
+            if (task.getMedia() != null) {
+                for (String url : task.getMedia()) {
+                    mMediaPagerAdapter.addImage(url);
+                    mMediaPagerAdapter.notifyDataSetChanged();
+                }
+
+                mCircleIndicator.refreshIndicator();
             }
-
-            mCircleIndicator.refreshIndicator();
         }
     }
 
@@ -202,7 +229,6 @@ public class TaskProposalFragment extends Fragment {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
-
 
     @OnClick({R.id.tvBidBy, R.id.tvBidByCount})
     public void bidBy() {
