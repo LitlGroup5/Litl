@@ -80,28 +80,28 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
-        if (mFirebaseUser == null) {
-            // Not signed in, launch the Sign In activity
-            startActivity(new Intent(this, SignInActivity.class));
-            finish();
-            return;
-        } else {
-            mUsername = mFirebaseUser.getDisplayName();
-            mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
-
-            Map<String, Object> userDetails = new HashMap<>();
-            userDetails.put("email", mFirebaseUser.getEmail());
-            userDetails.put("name", mFirebaseUser.getDisplayName());
-            userDetails.put("photo", mFirebaseUser.getPhotoUrl().toString());
-
-            mDatabase.child("Users").child(mFirebaseUser.getUid())
-                    .updateChildren(userDetails);
-        }
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* WallActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API)
-                .build();
+//        if (mFirebaseUser == null) {
+//            // Not signed in, launch the Sign In activity
+//            startActivity(new Intent(this, SignInActivity.class));
+//            finish();
+//            return;
+//        } else {
+//            mUsername = mFirebaseUser.getDisplayName();
+//            mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
+//
+//            Map<String, Object> userDetails = new HashMap<>();
+//            userDetails.put("email", mFirebaseUser.getEmail());
+//            userDetails.put("name", mFirebaseUser.getDisplayName());
+//            userDetails.put("photo", mFirebaseUser.getPhotoUrl().toString());
+//
+//            mDatabase.child("Users").child(mFirebaseUser.getUid())
+//                    .updateChildren(userDetails);
+//        }
+//
+//        mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                .enableAutoManage(this /* WallActivity */, this /* OnConnectionFailedListener */)
+//                .addApi(Auth.GOOGLE_SIGN_IN_API)
+//                .build();
 
 
         ButterKnife.bind(this);
