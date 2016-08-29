@@ -1,27 +1,22 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar"/>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!-- android:textColorPrimary is the color of the title text in the Toolbar  -->
+        <item name="android:textColorPrimary">@color/colorLight</item>
+        <!-- actionMenuTextColor is the color of the text of action (menu) items  -->
+        <item name="actionMenuTextColor">@color/colorSkyBlue</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="ToolbarThemeProfile" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="colorControlNormal">@android:color/white</item>
-
-        <item name="colorPrimary">#7ECEFD</item>
-        <item name="colorPrimaryDark">#3E454C</item>
-        <item name="colorAccent">#FF7F66</item>
-
+    <style name="BookmarkButton" parent="@android:style/Widget.ImageButton">
+        <item name="android:gravity">top|center_horizontal</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
     </style>
 
 </resources>

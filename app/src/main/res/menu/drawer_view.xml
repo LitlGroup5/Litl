@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_create_Task"
+            android:title="@string/create_task" />
+        <item
+            android:id="@+id/nav_profile"
+            android:title="@string/profile"/>
+        <item
+            android:id="@+id/nav_bookmarks"
+            android:title="@string/bookmarks"/>
+        <item
+            android:id="@+id/nav_history"
+            android:title="@string/history"/>
+        <item
+            android:id="@+id/nav_settings"
+            android:title="@string/settings"/>
+        <item
+            android:id="@+id/nav_logout"
+            android:title="@string/logout"/>
+        <item
+            android:id="@+id/nav_categories"
+            android:title="@string/categories">
+            <!--app:actionLayout="@layout/spinner_category"  this displays spinner in Navigation Drawer Layout-->
+
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/automotive"
+                        android:title="@string/automotive"/>
+
+                    <item
+                        android:id="@+id/decorating"
+                        android:title="@string/decorating" />
+
+                    <item
+                        android:id="@+id/electronics"
+                        android:title="@string/electronics" />
+
+                    <item
+                        android:id="@+id/arts_crafts"
+                        android:title="@string/arts_and_crafts" />
+                    <item
+                        android:id="@+id/gardening"
+                        android:title="@string/gardening" />
+
+                    <item
+                        android:id="@+id/woodworking"
+                        android:title="@string/woodworking" />
+                    <item
+                        android:id="@+id/house_cleaning"
+                        android:title="@string/house_cleaning" />
+
+                    <item
+                        android:id="@+id/recreation"
+                        android:title="@string/recreation" />
+                    <item
+                        android:id="@+id/plumbing"
+                        android:title="@string/plumbing" />
+                    <item
+                        android:id="@+id/groceries"
+                        android:title="@string/groceries" />
+                    <item
+                        android:id="@+id/random"
+                        android:title="@string/random" />
+                </group>
+            </menu>
+        </item>
+    </group>
+
+</menu>
