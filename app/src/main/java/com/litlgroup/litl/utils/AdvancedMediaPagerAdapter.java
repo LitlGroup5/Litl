@@ -117,6 +117,15 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
         }
     }
 
+    public void insertUri(Uri uri, int index)
+    {
+        mImageUrls.add(index, uri.toString());
+        if(index == mImageUrls.size() - 1)
+        {
+            mImageUrls.add(null);
+        }
+    }
+
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((FrameLayout) object);

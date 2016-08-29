@@ -115,6 +115,7 @@ public class WallActivity extends AppCompatActivity implements
     @OnClick(R.id.fabCreateTask)
     public void launchCreateTaskActivity() {
         Intent intent = new Intent(WallActivity.this, CreateTaskActivity.class);
+
         startActivity(intent);
 
     }
