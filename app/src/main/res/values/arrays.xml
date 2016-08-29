@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="categories_array_values">
-        <item>Home Improvement</item>
-        <item>Grocery</item>
-        <item>Car ride</item>
-        <item>Misc</item>
+        <item>@string/all_categories</item>
+        <item>@string/automotive</item>
+        <item>@string/groceries</item>
+        <item>@string/random</item>
+        <item>@string/house_cleaning</item>
+        <item>@string/electronics</item>
+        <item>@string/arts_and_crafts</item>
+        <item>@string/gardening</item>
+        <item>@string/woodworking</item>
+        <item>@string/house_cleaning</item>
+        <item>@string/recreation</item>
+        <item>@string/plumbing</item>
     </string-array>
 
 

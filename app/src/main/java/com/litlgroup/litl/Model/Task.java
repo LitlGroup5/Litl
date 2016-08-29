@@ -2,7 +2,9 @@ package com.litlgroup.litl.model;
 
 import org.parceler.Parcel;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +29,7 @@ public class Task {
     private State state;
     private String workImageURL;
     private String workVideoURL;
+    private String category;
     private ArrayList<String> categories;
     private String title;
     private double price;
@@ -70,8 +73,10 @@ public class Task {
         return workVideoURL;
     }
 
-    public ArrayList<String> getCategories() {
-        return categories;
+    public ArrayList<String> getCategories() {return categories;}
+
+    public String getCategory() {
+        return category;
     }
 
     public Bookmark getBookmark() {
@@ -131,6 +136,7 @@ public class Task {
         task1.favorPoints = 7;
         task1.user = User.getFakeUser();
         task1.bookmark = getBookmark(true);
+        task1.category = "Gardening";
 
         Task task2 = new Task();
         task2.address = address1;
@@ -143,6 +149,7 @@ public class Task {
         task2.favorPoints = 10;
         task2.user = User.getFakeUser();
         task2.bookmark = getBookmark(false);
+        task2.category = "Plumbing";
 
         Task task3 = new Task();
         task3.address = address1;
@@ -155,6 +162,7 @@ public class Task {
         task3.favorPoints = 1000;
         task3.user = User.getFakeUser();
         task3.bookmark = getBookmark(false);
+        task3.category = "Random";
 
         Task task4 = new Task();
         task4.address = address1;
@@ -167,11 +175,12 @@ public class Task {
         task4.favorPoints = 4;
         task4.user = User.getFakeUser();
         task4.bookmark = getBookmark(true);
+        task4.category = "Automotive";
 
         Task task5 = new Task();
         task5.address = address1;
         task5.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
-        task5.type = Type.PROPOSAL;
+        task5.type = Type.CLOSED;
         task5.state = State.SUCCESSFULLY_ACCEPTED;
         task5.workImageURL = "http://www.dpccars.com/gallery/var/albums/Car-Wash-Fail/Car%20Wash%20Fail%20-%2030.jpg";
         task5.title = "Car Wash";
@@ -179,6 +188,7 @@ public class Task {
         task5.favorPoints = 1;
         task5.user = User.getFakeUser();
         task5.bookmark = getBookmark(true);
+        task5.category ="Automotive";
 
         taskList.add(task1);
         taskList.add(task2);
@@ -209,6 +219,7 @@ public class Task {
         task1.favorPoints = 17;
         task1.user = User.getFakeUser();
         task1.bookmark = getBookmark(true);
+        task1.category = "Gardening";
 
         Task task2 = new Task();
         task2.address = address1;
@@ -221,6 +232,7 @@ public class Task {
         task2.favorPoints = 20;
         task2.user = User.getFakeUser();
         task2.bookmark = getBookmark(true);
+        task2.category = "Plumbing";
 
         Task task3 = new Task();
         task3.address = address1;
@@ -233,6 +245,7 @@ public class Task {
         task3.favorPoints = 3000;
         task3.user = User.getFakeUser();
         task3.bookmark = getBookmark(false);
+        task3.category = "Random";
 
         Task task4 = new Task();
         task4.address = address1;
@@ -245,11 +258,12 @@ public class Task {
         task4.favorPoints = 4;
         task4.user = User.getFakeUser();
         task4.bookmark = getBookmark(false);
+        task4.category = "Groceries";
 
         Task task5 = new Task();
         task5.address = address1;
         task5.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
-        task5.type = Type.PROPOSAL;
+        task5.type = Type.CLOSED;
         task5.state = State.SUCCESSFULLY_ACCEPTED;
         task5.workImageURL = "http://cdn.skim.gs/image/upload/c_fill,dpr_1.0,w_940/v1456338269/msi/woman-cleaning-kitchen-horiz_nrzwt6.jpg";
         task5.title = "Clean Kitchen";
@@ -257,6 +271,7 @@ public class Task {
         task5.favorPoints = 2;
         task5.user = User.getFakeUser();
         task5.bookmark = getBookmark(true);
+        task5.category ="Decorating/Painting";
 
         taskList.add(task1);
         taskList.add(task2);
@@ -265,6 +280,24 @@ public class Task {
         taskList.add(task5);
 
         return  taskList;
+    }
+
+    public static ArrayList<Task> getSortedTasks(String sortByCategory, String type) {
+        ArrayList<Task> taskList = new ArrayList<>();
+        ArrayList<Task> allTaskList;
+
+        if (type.equalsIgnoreCase("proposal")) {
+             allTaskList = Task.getFakeTaskDataProposals();
+        } else {
+            allTaskList = Task.getFakeTaskDataOfferss();
+        }
+
+        for (final Task sortedTask: allTaskList) {
+            if (sortedTask.category.equalsIgnoreCase(sortByCategory)) {
+                taskList.add(sortedTask);
+            }
+        }
+        return taskList;
     }
 
     private static Bookmark getBookmark(boolean exists) {

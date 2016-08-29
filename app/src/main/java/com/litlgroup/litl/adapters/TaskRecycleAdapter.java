@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -64,12 +66,16 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         return tasks.size();
     }
 
+
+
     private void setSubviews(ViewHolder viewHolder, final Task task, final int position) {
         final CardView taskCardView = viewHolder.cardView;
         taskCardView.setTag(position);
 
         ImageView ivBackground = (ImageView) taskCardView.findViewById(R.id.ivBackground);
         Glide.with(taskCardView.getContext()).load(task.getWorkImageURL()).diskCacheStrategy(DiskCacheStrategy.ALL).into(ivBackground);
+        convertClosedTaskBackgroundImageToBlackAndWhite(ivBackground, task.getType());
+
 
         final ImageView ivAvatar = (ImageView) taskCardView.findViewById(R.id.ivAvatar);
         Glide.with(taskCardView.getContext()).load(task.getUser().getProfileImageURL()).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(new BitmapImageViewTarget(ivAvatar){
@@ -100,26 +106,42 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         TextView tvDeadlineDate = (TextView) taskCardView.findViewById(R.id.tvDeadlineDate);
         tvDeadlineDate.setText(task.getDeadline_date());
 
-        final ImageButton ibBookmark = (ImageButton) taskCardView.findViewById(R.id.ibBookmark);
-        if (task.getBookmark().getBookmarked()) {
-            ibBookmark.setBackgroundColor(ContextCompat.getColor(thisContext, R.color.colorAccent));
+            ImageButton ibBookmark = (ImageButton) taskCardView.findViewById(R.id.ibBookmark);
+        setUpAndManageBookmarkButtonState(ibBookmark, task, position);
+    }
+
+    private void setUpAndManageBookmarkButtonState(final ImageButton bookmarkButton, Task task, final int position) {
+        if (task.getBookmark().getBookmarked() && task.getType() != Task.Type.CLOSED) {
+            bookmarkButton.setImageResource(R.drawable.ic_bookmark_filled);
         } else {
-            ibBookmark.setBackgroundColor(Color.TRANSPARENT);
+            bookmarkButton.setImageResource(R.drawable.ic_bookmark_border);
         }
-        ibBookmark.setOnClickListener(new View.OnClickListener() {
+        bookmarkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ImageButton tappedButton = (ImageButton) view;
                 Task selectedTask = tasks.get(position);
 
                 if (selectedTask.getBookmark().getBookmarked()) {
-                    tappedButton.setBackgroundColor(Color.TRANSPARENT);
+                    bookmarkButton.setImageResource(R.drawable.ic_bookmark_border);
                     selectedTask.getBookmark().setBookmarked(false);
                 } else {
-                    tappedButton.setBackgroundColor(ContextCompat.getColor(thisContext, R.color.colorAccent));
+                    bookmarkButton.setImageResource(R.drawable.ic_bookmark_filled);
                     selectedTask.getBookmark().setBookmarked(true);
                 }
             }
         });
     }
+
+    private void convertClosedTaskBackgroundImageToBlackAndWhite(ImageView closedTaskImageView, Task.Type type) {
+        ColorMatrix matrix = new ColorMatrix();
+
+        if (type == Task.Type.CLOSED) {
+            matrix.setSaturation(0);
+        } else {
+            matrix.setSaturation(1);
+        }
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+        closedTaskImageView.setColorFilter(filter);
+    }
+
 }
