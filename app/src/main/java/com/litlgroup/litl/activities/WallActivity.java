@@ -204,7 +204,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_wall, menu);
-        MenuItem spinnerItem = menu.findItem(R.layout.spinner_category);
+        MenuItem spinnerItem = menu.findItem(R.id.spinner_wall);
         Spinner categorySpinner = (Spinner) MenuItemCompat.getActionView(spinnerItem);
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
