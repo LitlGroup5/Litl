@@ -218,6 +218,8 @@ public class Task {
             }
             String[] splitTime = dueTime.split(":");
             int hour = Integer.parseInt(splitTime[0]);
+            if(dueTime.contains("pm"))
+                hour += 12;
             String[] secondSplitString = (splitTime[1].split(" "));
             int minute = Integer.parseInt(secondSplitString[0]);
 

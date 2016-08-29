@@ -219,6 +219,11 @@ public class CreateTaskActivity
 
             mediaUrls = (ArrayList) existingTask.getMedia();
 
+            for (int i =0 ; i  < mediaUrls.size(); i++) {
+                mediaPagerAdapter.insertUri(Uri.parse(mediaUrls.get(i)), i);
+                mediaPagerAdapter.notifyDataSetChanged();
+                circleIndicator.refreshIndicator();
+            }
         } catch (Exception ex) {
             Timber.e("Error populating task data");
         }
@@ -369,14 +374,6 @@ public class CreateTaskActivity
 
             mDatabase.child(getString(R.string.firebase_tasks_table)).child(key).setValue(task);
 
-//            Map<String, Object> taskValues = task.toMap();
-//
-//            Map<String, Object> childUpdates = new HashMap<>();
-//            childUpdates.put(
-//                    getString(R.string.firebase_tasks_table) + key,
-//                    taskValues);
-//
-//            mDatabase.updateChildren(childUpdates);
         } catch (Exception ex) {
             Timber.e("Error saving task", ex);
         }
@@ -433,18 +430,29 @@ public class CreateTaskActivity
     private String completionTime;
 
     private void setTimePickerListener() {
-        if (completionTime == null)
-            completionTime = tvDueTime.getText().toString();
+        try {
+            if (completionTime == null)
+                completionTime = tvDueTime.getText().toString();
 
-        if (completionTime.equals("") | !completionTime.contains(":"))
-            return;
-        String[] splitTime = completionTime.split(":");
-        int hour = Integer.parseInt(splitTime[0]);
-        String[] secondSplitString = (splitTime[1].split(" "));
-        int minute = Integer.parseInt(secondSplitString[0]);
-        String amPm = secondSplitString[1];
-        DialogFragment timePickerFragment = TimePickerFragment.newInstance(minute, hour, amPm);
-        timePickerFragment.show(getSupportFragmentManager(), "timePicker");
+            if (completionTime.equals("") | !completionTime.contains(":"))
+                return;
+            String[] splitTime = completionTime.split(":");
+            int hour = Integer.parseInt(splitTime[0]);
+            String[] secondSplitString = (splitTime[1].split(" "));
+            int minute = Integer.parseInt(secondSplitString[0]);
+            String amPm;
+            if (secondSplitString.length == 1)
+                amPm = "";
+            else
+                amPm = secondSplitString[1];
+            DialogFragment timePickerFragment = TimePickerFragment.newInstance(minute, hour, amPm);
+            timePickerFragment.show(getSupportFragmentManager(), "timePicker");
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error launching time picker");
+            ex.printStackTrace();
+        }
     }
 
     @Override

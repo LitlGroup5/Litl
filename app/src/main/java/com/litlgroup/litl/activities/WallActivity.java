@@ -115,9 +115,7 @@ public class WallActivity extends AppCompatActivity implements
     @OnClick(R.id.fabCreateTask)
     public void launchCreateTaskActivity() {
         Intent intent = new Intent(WallActivity.this, CreateTaskActivity.class);
-        String taskId = "-KQDFGDe3w3fQAT_CE63";
 
-        intent.putExtra("taskId", taskId);
         startActivity(intent);
 
     }
