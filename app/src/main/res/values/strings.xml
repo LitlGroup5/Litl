@@ -13,4 +13,5 @@
     <string name="firebase_tasks_table">Tasks</string>
     <string name="task_in_bid_process">IN_BID_PROCESS</string>
     <string name="accepted_offer_id">acceptedOfferId</string>
+    <string name="user_id">userId</string>
 </resources>

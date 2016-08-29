@@ -3,12 +3,14 @@
     package="com.litlgroup.litl">
 
     <uses-feature android:name="android.hardware.camera" />
-    <permission android:name="android.permission.CAMERA"/>
-    <permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <permission android:name="android.permission.CAMERA" />
+    <permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".app.LitlApplication"
@@ -27,11 +29,13 @@
         <activity
             android:name=".activities.TaskDetailActivity"
             android:parentActivityName=".activities.WallActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.BidSelectScreenActivity" />
-        <activity android:name=".activities.CreateTaskActivity"></activity>
-        <activity android:name=".activities.SignInActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".activities.CreateTaskActivity" />
+        <activity
+            android:name=".activities.SignInActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.ProfileActivity"></activity>
     </application>
 
 </manifest>

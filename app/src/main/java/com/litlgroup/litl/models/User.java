@@ -20,6 +20,8 @@ public class User {
     private String photo;
     private Float rating;
     private List<String> skillSet = new ArrayList<String>();
+    private Address address;
+    private String biography;
 
     public User() {
     }
@@ -185,5 +187,37 @@ public class User {
     public void setSkillSet(List<String> skillSet) {
         this.skillSet = skillSet;
     }
+
+
+    /**
+     * @return The address
+     */
+    public Address getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address The address
+     */
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+
+    /**
+     * @return The biography
+     */
+    public String getbiography() {
+        return biography;
+    }
+
+    /**
+     * @param biography
+     * The biography
+     */
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
 
 }
