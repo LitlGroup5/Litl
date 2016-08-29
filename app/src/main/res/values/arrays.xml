@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="categories_array_values">
-        <item>Choose Category</item>
+        <item>@string/all_categories</item>
         <item>@string/automotive</item>
         <item>@string/groceries</item>
         <item>@string/random</item>
