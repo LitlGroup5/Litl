@@ -31,7 +31,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp">
+                android:layout_height="50dp">
 
             <EditText
                 android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
                 android:id="@+id/etProfileName"
                 android:layout_alignParentTop="true"
                 android:background="@color/colorTransparent"
-                />
+                android:textStyle="bold" />
 
 
                 <FrameLayout
@@ -50,6 +50,9 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true">
+
+
+
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -73,7 +76,18 @@
                         android:adjustViewBounds="true"
                         android:src="@android:drawable/ic_menu_edit"
                         android:background="@color/colorTransparent"
-                        android:visibility="visible"
+                        android:visibility="invisible"
+                        />
+
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/ibRemoveConnection"
+                        android:layout_gravity="fill"
+                        android:src="@drawable/ic_connection_added"
+                        android:background="@color/colorTransparent"
+                        android:visibility="invisible"
                         />
 
                     <ImageButton
@@ -81,12 +95,12 @@
                         android:layout_height="match_parent"
                         android:id="@+id/ibProfileSave"
                         android:layout_gravity="fill"
+                        android:adjustViewBounds="true"
                         android:src="@android:drawable/ic_menu_save"
                         android:background="@color/colorTransparent"
                         android:visibility="invisible"
 
                         />
-
 
                 </FrameLayout>
 
@@ -100,7 +114,9 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:background="@color/colorTransparent"
-                    />
+                    android:layout_marginTop="7dp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="2dp" />
 
 
             </RelativeLayout>
@@ -122,7 +138,8 @@
                 android:layout_marginTop="14dp"
                 android:background="@color/colorTransparent"
                 tools:text="I&apos;m a freelance carpenter who enjoys giving woodwork an artistic touch that suits not just your needds but also your room."
-                android:layout_marginBottom="14dp" />
+                android:layout_marginBottom="14dp"
+                android:hint="Say something about yourself" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -177,6 +194,7 @@
 
 
             </LinearLayout>
+
         </LinearLayout>
 
 

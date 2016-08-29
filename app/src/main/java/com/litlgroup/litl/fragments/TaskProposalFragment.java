@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.BidSelectScreenActivity;
 import com.litlgroup.litl.activities.CreateTaskActivity;
+import com.litlgroup.litl.activities.ProfileActivity;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
@@ -242,5 +243,23 @@ public class TaskProposalFragment extends Fragment {
         Intent i = new Intent(getActivity(), BidSelectScreenActivity.class);
         i.putExtra(Constants.TASK_ID, mTaskId);
         startActivity(i);
+    }
+
+    @OnClick(R.id.ivProfileImage)
+    public void startUserProfileScreen()
+    {
+        try
+        {
+            Intent intent = new Intent(getActivity(), ProfileActivity.class);
+            intent.putExtra(getString(R.string.user_id), "GiJcFd59PlMK31bV17w6qV0GDn93");
+            intent.putExtra("profileMode", ProfileActivity.ProfileMode.OTHER);
+
+            startActivity(intent);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error launching user profile screen",ex);
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 package com.litlgroup.litl.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,7 +26,8 @@ import timber.log.Timber;
 
 public class BidSelectScreenActivity
         extends AppCompatActivity
-    implements BidsAdapter.AcceptBidListener
+    implements BidsAdapter.AcceptBidListener,
+        BidsAdapter.LaunchProfileListener
 {
 
     ArrayList<Bids> mBids;
@@ -75,10 +77,12 @@ public class BidSelectScreenActivity
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            String bidId = dataSnapshot.getValue().toString();
-                            if(!bidId.equals("-1")) {
-                                isTaskBidAccepted = true;
-                                acceptedBidId = bidId;
+                            if(dataSnapshot.getValue() != null) {
+                                String bidId = dataSnapshot.getValue().toString();
+                                if (!bidId.equals("-1")) {
+                                    isTaskBidAccepted = true;
+                                    acceptedBidId = bidId;
+                                }
                             }
                         }
 
@@ -172,5 +176,21 @@ public class BidSelectScreenActivity
     protected void onDestroy() {
         super.onDestroy();
         database.onDisconnect();
+    }
+
+    @Override
+    public void onLaunchProfileListener(String userId) {
+
+        try
+        {
+            Intent intent = new Intent(BidSelectScreenActivity.this, ProfileActivity.class);
+            intent.putExtra(getString(R.string.user_id), userId);
+            intent.putExtra("profileMode", ProfileActivity.ProfileMode.OTHER);
+            startActivity(intent);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 }

@@ -344,7 +344,7 @@ public class CreateTaskActivity
                 UserSummary userSummary = new UserSummary();
                 if (user.getEmail() != null && !user.getEmail().isEmpty())
                     userSummary.setEmail(user.getEmail());
-                userSummary.setId("");
+                userSummary.setId(user.getUid());
                 userSummary.setName(user.getDisplayName());
                 if (user.getPhotoUrl() != null)
                     userSummary.setPhoto(user.getPhotoUrl().toString());
