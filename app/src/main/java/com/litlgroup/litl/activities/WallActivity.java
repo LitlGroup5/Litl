@@ -43,7 +43,10 @@ import com.litlgroup.litl.fragments.TaskProposalFragment;
 import com.litlgroup.litl.fragments.WallFragment;
 import com.litlgroup.litl.model.User;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -56,6 +59,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
+    private Spinner categorySpinner;
 
     private String mUsername;
     private String mPhotoUrl;
@@ -100,9 +104,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
 
 
         ButterKnife.bind(this);
-
         setupNavigationDrawerLayout();
-        loadFragmentIntoFrameLayout(new WallFragment());
     }
 
     private void setupNavigationDrawerLayout() {
@@ -156,6 +158,14 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         fragmentManager.beginTransaction().replace(R.id.flContent, displayFragment).commit();
     }
 
+    private void setSpinnerSelectedItem(CharSequence title) {
+        String selectedTitle = (String) title;
+
+        List<String> categoryStrings = Arrays.asList(getResources().getStringArray(R.array.categories_array_values));
+        int selectedCategoryIndex = categoryStrings.indexOf(selectedTitle);
+        categorySpinner.setSelection(selectedCategoryIndex);
+    }
+
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
@@ -189,8 +199,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
 
-        // Set action bar title
-        setTitle(menuItem.getTitle());
+        // Set spinner category
+        setSpinnerSelectedItem(menuItem.getTitle());
 
         // Close the navigation drawer
         drawerLayout.closeDrawers();
@@ -205,17 +215,19 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_wall, menu);
         MenuItem spinnerItem = menu.findItem(R.id.spinner_wall);
-        Spinner categorySpinner = (Spinner) MenuItemCompat.getActionView(spinnerItem);
+        categorySpinner = (Spinner) MenuItemCompat.getActionView(spinnerItem);
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Timber.d("spinner selected, gotta get string");
+                String selectedCategory = categorySpinner.getSelectedItem().toString();
+                if (selectedCategory.equalsIgnoreCase("All Categories")) {
+                    selectedCategory = null;
+                }
+                loadFragmentIntoFrameLayout(WallFragment.newInstance(selectedCategory));
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
         return true;
