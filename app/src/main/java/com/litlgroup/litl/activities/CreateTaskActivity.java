@@ -49,6 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -344,7 +345,7 @@ public class CreateTaskActivity
                 UserSummary userSummary = new UserSummary();
                 if (user.getEmail() != null && !user.getEmail().isEmpty())
                     userSummary.setEmail(user.getEmail());
-                userSummary.setId("");
+                userSummary.setId(user.getUid());
                 userSummary.setName(user.getDisplayName());
                 if (user.getPhotoUrl() != null)
                     userSummary.setPhoto(user.getPhotoUrl().toString());
@@ -364,6 +365,11 @@ public class CreateTaskActivity
 
             String key = mDatabase.child(getString(R.string.firebase_tasks_table)).push().getKey();
             mDatabase.child(getString(R.string.firebase_tasks_table)).child(key).setValue(task);
+
+            HashMap<String, Object> usermap = new HashMap<>();
+            usermap.put(task.getUser().getId(), true);
+            mDatabase.child(getString(R.string.firebase_tasks_table)).child(key).child("user").updateChildren(usermap);
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -374,6 +380,10 @@ public class CreateTaskActivity
             String key = existingTaskId;
 
             mDatabase.child(getString(R.string.firebase_tasks_table)).child(key).setValue(task);
+
+            HashMap<String, Object> usermap = new HashMap<>();
+            usermap.put(task.getUser().getId(), true);
+            mDatabase.child(getString(R.string.firebase_tasks_table)).child(key).child("user").updateChildren(usermap);
 
         } catch (Exception ex) {
             Timber.e("Error saving task", ex);
