@@ -27,10 +27,22 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
     private LayoutInflater mLayoutInflater;
     private List<String> mImageUrls = new ArrayList<>();
 
+    StartImageCaptureListener startImageCaptureListener;
+
+    StartImageSelectListener startImageSelectListener;
+
     public AdvancedMediaPagerAdapter(Context context) {
         mContext = context;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mImageUrls.add(null);
+    }
+
+    public AdvancedMediaPagerAdapter(Context context, StartImageCaptureListener startImageCaptureListener, StartImageSelectListener startImageSelectListener) {
+        mContext = context;
+        mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mImageUrls.add(null);
+        this.startImageCaptureListener = startImageCaptureListener;
+        this.startImageSelectListener =  startImageSelectListener;
     }
 
     @Override
@@ -74,8 +86,14 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
                 @Override
                 public void onClick(View view) {
                     ibSelectImage.setAlpha(0.3f);
-                    StartImageSelectListener listener = (StartImageSelectListener) mContext;
-                    listener.onStartImageSelect(position);
+                    if(startImageSelectListener != null)
+                    {
+                        startImageSelectListener.onStartImageSelect(position);
+                    }
+                    else {
+                        StartImageSelectListener listener = (StartImageSelectListener) mContext;
+                        listener.onStartImageSelect(position);
+                    }
                     ibSelectImage.setAlpha(1f);
                 }
             });
@@ -87,8 +105,14 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
                 public void onClick(View view) {
                     try {
                         ibCaptureImage.setAlpha(0.3f);
-                        StartImageCaptureListener listener = (StartImageCaptureListener) mContext;
-                        listener.onStartImageCapture(position);
+                        if(startImageCaptureListener != null)
+                        {
+                            startImageCaptureListener.onStartImageCapture(position);
+                        }
+                        else {
+                            StartImageCaptureListener listener = (StartImageCaptureListener) mContext;
+                            listener.onStartImageCapture(position);
+                        }
                         ibCaptureImage.setAlpha(1f);
                     } catch (Exception ex) {
                         ex.printStackTrace();

@@ -83,7 +83,7 @@ public class BidsAdapter
             final Bids bid = mBids.get(position);
             holder.tvOfferValue.setText(String.valueOf(bid.getPrice()));
 
-            UserSummary user = bid.getUser();
+            final UserSummary user = bid.getUser();
             holder.tvUsername.setText(user.getName());
 
             String profileImageUrl = user.getPhoto();
@@ -115,6 +115,21 @@ public class BidsAdapter
                         holder.ibOfferAccept.setAlpha(0.3f);
                         holder.ibOfferReject.setAlpha(1f);
                         Toast.makeText(getContext(), "Offer rejected!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try
+                        {
+                            LaunchProfileListener launchProfileListener = (LaunchProfileListener) mContext;
+                            launchProfileListener.onLaunchProfileListener(user.getId());
+                        }
+                        catch (Exception ex)
+                        {
+                            ex.printStackTrace();
+                        }
                     }
                 });
             }
@@ -160,5 +175,10 @@ public class BidsAdapter
     public interface RejectBidListener
     {
         void onRejectBidListener(int position);
+    }
+
+    public interface LaunchProfileListener
+    {
+        void onLaunchProfileListener(String userId);
     }
 }

@@ -94,7 +94,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
             userDetails.put("name", mFirebaseUser.getDisplayName());
             userDetails.put("photo", mFirebaseUser.getPhotoUrl().toString());
 
-            mDatabase.child("Users").child(mFirebaseUser.getUid()).setValue(userDetails);
+            mDatabase.child("Users").child(mFirebaseUser.getUid())
+                    .updateChildren(userDetails);
         }
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -207,6 +208,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     public void launchCreateTaskActivity() {
+
         Intent intent = new Intent(WallActivity.this, CreateTaskActivity.class);
         startActivity(intent);
     }

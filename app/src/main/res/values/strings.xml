@@ -15,6 +15,9 @@
     <string name="firebase_tasks_table">Tasks</string>
     <string name="task_in_bid_process">IN_BID_PROCESS</string>
     <string name="accepted_offer_id">acceptedOfferId</string>
+    <string name="user_id">userId</string>
+    <string name="default_contact_no">777.888.9999</string>
+    <string name="child_connections">connections</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

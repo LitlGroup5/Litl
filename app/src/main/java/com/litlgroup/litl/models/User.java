@@ -20,6 +20,9 @@ public class User {
     private String photo;
     private Float rating;
     private List<String> skillSet = new ArrayList<String>();
+    private Address address;
+    private String biography;
+    private List<String> connections = new ArrayList<String>();
 
     public User() {
     }
@@ -184,6 +187,85 @@ public class User {
      */
     public void setSkillSet(List<String> skillSet) {
         this.skillSet = skillSet;
+    }
+
+
+    /**
+     * @return The address
+     */
+    public Address getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address The address
+     */
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+
+    /**
+     * @return The biography
+     */
+    public String getbiography() {
+        return biography;
+    }
+
+    /**
+     * @param biography
+     * The biography
+     */
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+
+    /**
+     *
+     * @return
+     * The Connections
+     */
+    public List<String> getConnections() {
+        return connections;
+    }
+
+    /**
+     *
+     * @param connections
+     * The Connections
+     */
+    public void setConnections(List<String> connections) {
+        this.connections = connections;
+    }
+
+
+    public User(
+            List<String> bookmarks,
+            String contactNo,
+            Float earnings,
+            String email,
+            List<String> media,
+            String name,
+            String photo,
+            Float rating,
+            List<String> skillSet,
+            Address address,
+            String biography,
+            List<String> connections)
+    {
+        this.contactNo = contactNo;
+        this.bookmarks = bookmarks;
+        this.earnings = earnings;
+        this.email = email;
+        this.media = media;
+        this.name = name;
+        this.photo = photo;
+        this.rating = rating;
+        this.skillSet = skillSet;
+        this.address = address;
+        this.biography = biography;
+        this.connections = connections;
     }
 
 }

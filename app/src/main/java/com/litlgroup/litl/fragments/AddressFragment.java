@@ -140,7 +140,13 @@ public class AddressFragment
             if (!state.isEmpty())
                 address.setState(state);
 
-            AddressFragmentListener listener = (AddressFragmentListener)getActivity();
+            AddressFragmentListener listener;
+
+            if (getTargetFragment() == null)
+                listener = (AddressFragmentListener) getActivity();
+            else
+                listener = (AddressFragmentListener) getTargetFragment();
+
             listener.onFinishAddressFragment(address);
 
             dismiss();
