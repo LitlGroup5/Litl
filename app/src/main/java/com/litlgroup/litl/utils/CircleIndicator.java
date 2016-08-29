@@ -32,22 +32,26 @@ public class CircleIndicator {
 
     public void setViewPagerIndicator() {
         mCount = mViewPager.getAdapter().getCount();
-        dots = new ImageView[mCount];
 
-        for (int i = 0; i < mCount; i++) {
-            dots[i] = new ImageView(mLinearLayout.getContext());
-            dots[i].setImageDrawable(mDotUnselected);
+        if (mCount > 0) {
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            mLinearLayout.addView(dots[i], params);
+            dots = new ImageView[mCount];
+
+            for (int i = 0; i < mCount; i++) {
+                dots[i] = new ImageView(mLinearLayout.getContext());
+                dots[i].setImageDrawable(mDotUnselected);
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+                mLinearLayout.addView(dots[i], params);
+            }
+
+            dots[mViewPager.getCurrentItem()].setImageDrawable(mDotSelected);
+
+            setViewPagerPageListener();
         }
-
-        dots[mViewPager.getCurrentItem()].setImageDrawable(mDotSelected);
-
-        setViewPagerPageListener();
     }
 
     public void refreshIndicator()
