@@ -135,6 +135,7 @@ public class TaskOffersFragment extends Fragment {
     }
 
     private void getTaskData() {
+        mTaskId = "-KPohHI-G_bvzxrmO9qL";
         mDatabase.child(Constants.TABLE_TASKS).child(mTaskId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
