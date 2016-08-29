@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_create_Task"
@@ -22,6 +23,8 @@
         <item
             android:id="@+id/nav_categories"
             android:title="@string/categories">
+            <!--app:actionLayout="@layout/spinner_category"  this displays spinner in Navigation Drawer Layout-->
+
             <menu>
                 <group android:checkableBehavior="single">
                     <item
