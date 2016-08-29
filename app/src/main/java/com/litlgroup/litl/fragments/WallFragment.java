@@ -4,6 +4,7 @@ package com.litlgroup.litl.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -30,9 +31,6 @@ import butterknife.OnClick;
 public class WallFragment extends Fragment {
     private String chosenCategory;
 
-    @BindView(R.id.fabCreateTask)
-    android.support.design.widget.FloatingActionButton fabCreateTask;
-
     public WallFragment() {
         // Required empty public constructor
     }
@@ -50,7 +48,7 @@ public class WallFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wall, container, false);
         setupViewPagerAndSlidingTabs(view);
-
+        setupFloatingActionButton(view);
         return view;
     }
 
@@ -62,7 +60,16 @@ public class WallFragment extends Fragment {
         tabStrip.setViewPager(viewPager);
     }
 
-    @OnClick(R.id.fabCreateTask)
+    private void setupFloatingActionButton(View view) {
+        FloatingActionButton fabCreateTask = (FloatingActionButton) view.findViewById(R.id.fabCreateTask);
+        fabCreateTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchCreateTaskActivity();
+            }
+        });
+    }
+
     public void launchCreateTaskActivity() {
         Intent intent = new Intent(getActivity(), CreateTaskActivity.class);
         startActivity(intent);
