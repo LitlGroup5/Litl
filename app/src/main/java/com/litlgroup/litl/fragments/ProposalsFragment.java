@@ -67,7 +67,7 @@ public class ProposalsFragment extends TaskFragment {
                                 mProposals.add(task);
                             }
 
-                            addAll(mProposals, isRefresh);
+                            setupData(isRefresh);
                         }
 
                         @Override
@@ -76,6 +76,14 @@ public class ProposalsFragment extends TaskFragment {
                     });
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public void setupData(boolean isRefresh) {
+        if (chosenCategory == null) {
+            addAll(mProposals, isRefresh);
+        } else {
+            addAll(Task.getSortedTasks(mProposals, chosenCategory), isRefresh);
         }
     }
 }
