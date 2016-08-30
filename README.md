@@ -69,9 +69,10 @@ http://i.imgur.com/nmv1eKr.gif
 
 http://imgur.com/a/HEDxD
 
+http://i.imgur.com/p5cmgGC.gif
 
 Here's a walkthrough of implemented user stories:
 
-![](http://imgur.com/fH3yJju.gif)
+![](http://imgur.com/fH3yJju.gif) 
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
