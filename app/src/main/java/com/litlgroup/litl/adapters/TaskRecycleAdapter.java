@@ -69,7 +69,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
         if (task.getMedia().size() > 0) {
             Glide.with(taskCardView.getContext()).load(task.getMedia().get(0)).diskCacheStrategy(DiskCacheStrategy.ALL).into(ivBackground);
-            convertClosedTaskBackgroundImageToBlackAndWhite(ivBackground, Task.Type.CLOSED);
+            convertClosedTaskBackgroundImageToBlackAndWhite(ivBackground, task.getType());
         }
 
         final ImageView ivAvatar = (ImageView) taskCardView.findViewById(R.id.ivAvatar);
