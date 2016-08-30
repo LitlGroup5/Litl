@@ -6,8 +6,8 @@ Marketplace that matches tasks with people by earning money or favor points
 
 Required:
 
-* [ ] Users can view a launch screen where they can sign up or sign in.
-* [ ] Users can sign in using thir social media accounts (Facebook / Google) or using their email address and Litl password.
+* [x] Users can view a launch screen where they can sign up or sign in.
+* [x] Users can sign in using thir social media accounts (Facebook / Google) or using their email address and Litl password.
 * [ ] A new user can sign up with their name, email address and password.
 * [ ] The user profile screen should display information about a registered Litl user - 
       
@@ -19,10 +19,10 @@ Required:
       - Tabbed Reviews (Reviews by the user and of the user)
 * [x] User should be able to look at the detail view of the Tasks in Proposals/Offers 
 * [x] User should be able to create new Proposals 
-* [ ] User should be able to edit existing Proposals 
+* [x] User should be able to edit existing Proposals 
 * [x] User should be able to accept/reject the offers by the other users
 * [x] User should be to Bid for the offers by other users 
-* [ ] User can access a drawer layout menu with following options - 
+* [x] User can access a drawer layout menu with following options - 
       - Profile
       - Connections
       - History
@@ -30,7 +30,7 @@ Required:
       - Settings
       - Logout
       - Contact Us
-* [ ] Signed in user will be taken to initial screen of wall
+* [x] Signed in user will be taken to initial screen of wall
    * [x] Wall will display tabbed navigation of **Proposals** and **Offers**
    * [x] User can take bookmark (and unbookmark) tasks they like
    * [ ] User can filter proposals or offers by the following
@@ -65,6 +65,6 @@ Stretch:
 
 Here's a walkthrough of implemented user stories:
 
-![](http://imgur.com/fH3yJju.gif)
+![](http://imgur.com/nmv1eKr.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
