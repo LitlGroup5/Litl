@@ -10,10 +10,7 @@
         <item>@string/arts_and_crafts</item>
         <item>@string/gardening</item>
         <item>@string/woodworking</item>
-        <item>@string/house_cleaning</item>
         <item>@string/recreation</item>
         <item>@string/plumbing</item>
     </string-array>
-
-
 </resources>

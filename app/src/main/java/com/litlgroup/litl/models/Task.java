@@ -226,6 +226,7 @@ public class Task {
         OFFER,
         CLOSED
     }
+
     public enum State {
         IN_BIDDING_PROCESS,
         SUCCESSFULLY_ACCEPTED,
@@ -251,7 +252,7 @@ public class Task {
             }
             String[] splitTime = dueTime.split(":");
             int hour = Integer.parseInt(splitTime[0]);
-            if(dueTime.contains("pm"))
+            if (dueTime.contains("pm"))
                 hour += 12;
             String[] secondSplitString = (splitTime[1].split(" "));
             int minute = Integer.parseInt(secondSplitString[0]);
@@ -319,5 +320,18 @@ public class Task {
             Timber.e("Error creating map", ex);
         }
         return null;
+    }
+
+    public static ArrayList<Task> getSortedTasks(ArrayList<Task> tasks, String sortByCategory) {
+        ArrayList<Task> taskList = new ArrayList<>();
+
+        // Only getting the first item for now, as there would not be multiple categories
+        for (final Task sortedTask : tasks) {
+            if (sortedTask.getCategories().get(0).equalsIgnoreCase(sortByCategory)) {
+                taskList.add(sortedTask);
+            }
+        }
+
+        return taskList;
     }
 }
