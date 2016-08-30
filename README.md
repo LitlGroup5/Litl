@@ -65,6 +65,6 @@ Stretch:
 
 Here's a walkthrough of implemented user stories:
 
-![](http://imgur.com/nmv1eKr.gif)
+![](http://imgur.com/0CDUNgD.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
