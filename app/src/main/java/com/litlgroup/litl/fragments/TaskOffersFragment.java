@@ -87,6 +87,22 @@ public class TaskOffersFragment extends Fragment {
 
     private Task mTask;
 
+    private ValueEventListener valueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            Timber.d("Key: " + dataSnapshot.getKey());
+            Timber.d("Value: " + String.valueOf(dataSnapshot.getValue()));
+
+            Task task = dataSnapshot.getValue(Task.class);
+            setData(task);
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
+
     public TaskOffersFragment() {
     }
 
@@ -135,55 +151,42 @@ public class TaskOffersFragment extends Fragment {
     }
 
     private void getTaskData() {
-        mDatabase.child(Constants.TABLE_TASKS).child(mTaskId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Timber.d("Key: " + dataSnapshot.getKey());
-                Timber.d("Value: " + String.valueOf(dataSnapshot.getValue()));
-
-                mTask = dataSnapshot.getValue(Task.class);
-                setData(mTask);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        mDatabase.child(Constants.TABLE_TASKS).child(mTaskId).addValueEventListener(valueEventListener);
     }
 
     private void setData(Task task) {
 
-        if (task.getTitle() != null)
-            mTvTitle.setText(task.getTitle());
+        if (task != null) {
+            if (task.getTitle() != null)
+                mTvTitle.setText(task.getTitle());
 
-        if (task.getDescription() != null)
-            mTvDescription.setText(task.getDescription());
+            if (task.getDescription() != null)
+                mTvDescription.setText(task.getDescription());
 
-        if (task.getUser() != null && task.getUser().getPhoto() != null)
-            ImageUtils.setCircularImage(mIvProfileImage, task.getUser().getPhoto());
+            if (task.getUser() != null && task.getUser().getPhoto() != null)
+                ImageUtils.setCircularImage(mIvProfileImage, task.getUser().getPhoto());
 
-        if (task.getBidBy() != null)
-            mTvBidByCount.setText(String.valueOf(task.getBidBy()));
-        else
-            mTvBidByCount.setText("0");
+            if (task.getBidBy() != null)
+                mTvBidByCount.setText(String.valueOf(task.getBidBy()));
+            else
+                mTvBidByCount.setText("0");
 
-        if (task.getViewedBy() != null)
-            mTvViewedByCount.setText(String.valueOf(task.getViewedBy()));
-        else
-            mTvViewedByCount.setText("0");
+            if (task.getViewedBy() != null)
+                mTvViewedByCount.setText(String.valueOf(task.getViewedBy()));
+            else
+                mTvViewedByCount.setText("0");
 
-        if (task.getPrice() != null)
-            mTvPrice.setText(task.getPrice());
+            if (task.getPrice() != null)
+                mTvPrice.setText(task.getPrice());
 
-        if (task.getMedia() != null) {
-            for (String url : task.getMedia()) {
-                mMediaPagerAdapter.addImage(url);
-                mMediaPagerAdapter.notifyDataSetChanged();
+            if (task.getMedia() != null) {
+                for (String url : task.getMedia()) {
+                    mMediaPagerAdapter.addImage(url);
+                    mMediaPagerAdapter.notifyDataSetChanged();
+                }
+
+                mCircleIndicator.refreshIndicator();
             }
-
-            mCircleIndicator.refreshIndicator();
         }
     }
 
@@ -240,6 +243,5 @@ public class TaskOffersFragment extends Fragment {
         {
             Timber.e("Error launching user profile screen",ex);
         }
-
     }
 }
