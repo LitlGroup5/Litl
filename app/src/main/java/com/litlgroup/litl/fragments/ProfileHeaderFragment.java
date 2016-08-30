@@ -60,6 +60,7 @@ public class ProfileHeaderFragment
         extends Fragment
     implements AddressFragment.AddressFragmentListener,
         AdvancedMediaPagerAdapter.StartImageCaptureListener,
+        AdvancedMediaPagerAdapter.StartVideoCaptureListener,
         AdvancedMediaPagerAdapter.StartImageSelectListener
 {
 
@@ -600,7 +601,7 @@ public class ProfileHeaderFragment
 
 
     private void setupViewPager() {
-        mediaPagerAdapter = new AdvancedMediaPagerAdapter(getActivity(), this, this);
+        mediaPagerAdapter = new AdvancedMediaPagerAdapter(getActivity(), this, this, this);
 
         mVpMedia.setAdapter(mediaPagerAdapter);
         circleIndicator = new CircleIndicator(mViewPagerCountDots, mVpMedia);
@@ -740,6 +741,18 @@ public class ProfileHeaderFragment
     }
 
     @Override
+    public void onStartVideoCapture(int pageIndex) {
+        try
+        {
+
+        }
+        catch (Exception ex)
+        {
+
+        }
+    }
+
+    @Override
     public void onStartImageSelect(int position) {
         try {
             pageIndex = position;
@@ -800,7 +813,4 @@ public class ProfileHeaderFragment
         }
         return "";
     }
-
-
-
 }

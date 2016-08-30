@@ -1,6 +1,7 @@
 package com.litlgroup.litl.activities;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -65,6 +66,7 @@ public class CreateTaskActivity
         implements DatePickerFragment.DatePickerDialogListener,
         TimePickerFragment.TimePickerDialogListener,
         AdvancedMediaPagerAdapter.StartImageCaptureListener,
+        AdvancedMediaPagerAdapter.StartVideoCaptureListener,
         AdvancedMediaPagerAdapter.StartImageSelectListener,
         AddressFragment.AddressFragmentListener
 
@@ -509,7 +511,32 @@ public class CreateTaskActivity
                 if (!permissions.checkPermissionForExternalStorage()) {
                     permissions.requestPermissionForExternalStorage();
                 }
-                launchCamera();
+                if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT))
+                    launchCameraForImage();
+                else
+                {
+                    Toast.makeText(this, "No camera on device", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void startCameraVideoCapture() {
+        try {
+            if (!permissions.checkPermissionForCamera()) {
+                permissions.requestPermissionForCamera();
+            } else {
+                if (!permissions.checkPermissionForExternalStorage()) {
+                    permissions.requestPermissionForExternalStorage();
+                }
+                if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT))
+                    launchCameraForVideo();
+                else
+                {
+                    Toast.makeText(this, "No camera on device", Toast.LENGTH_SHORT).show();
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -517,11 +544,12 @@ public class CreateTaskActivity
     }
 
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
-    public final static int SELECT_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
+    public final static int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 1035;
+    public final static int SELECT_IMAGE_ACTIVITY_REQUEST_CODE = 1036;
 
     private Uri fileUri;
 
-    public void launchCamera() {
+    public void launchCameraForImage() {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -536,13 +564,28 @@ public class CreateTaskActivity
         }
     }
 
+    public void launchCameraForVideo() {
+        // create Intent to capture a video and return control to the calling application
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+        fileUri = CameraUtils.getOutputMediaFileUri(CameraUtils.MEDIA_TYPE_VIDEO);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the video file name
+
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        // So as long as the result is not null, it's safe to use the intent.
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            // Start the image capture intent to capture video
+            startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
             if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
                 if (resultCode == RESULT_OK) {
 
-                    startImageUpload(fileUri);
+                    startFileUpload(fileUri, true);
 
                     mediaPagerAdapter.insert(fileUri, pageIndex);
                     mediaPagerAdapter.notifyDataSetChanged();
@@ -552,6 +595,21 @@ public class CreateTaskActivity
                     // User cancelled the image capture
                 } else { // Result was a failure
                     Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else if(requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE)
+            {
+                if (resultCode == RESULT_OK) {
+                    startFileUpload(fileUri, false);
+
+                    mediaPagerAdapter.insert(fileUri, pageIndex);
+                    mediaPagerAdapter.notifyDataSetChanged();
+                    circleIndicator.refreshIndicator();
+
+                } else if (resultCode == RESULT_CANCELED) {
+                    // User cancelled the video capture
+                } else {
+                    Toast.makeText(this, "Failed to record video",  Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -564,7 +622,7 @@ public class CreateTaskActivity
                 @Override
                 public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {
                     Uri fileUri = Uri.fromFile(imageFile);
-                    startImageUpload(fileUri);
+                    startFileUpload(fileUri, true);
                     //Handle the image
                     mediaPagerAdapter.insert(Uri.parse(imageFile.getAbsolutePath()), pageIndex);
                     mediaPagerAdapter.notifyDataSetChanged();
@@ -629,6 +687,16 @@ public class CreateTaskActivity
     }
 
     @Override
+    public void onStartVideoCapture(int position) {
+        try {
+            pageIndex = position;
+            startCameraVideoCapture();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
     public void onStartImageSelect(int position) {
         try {
             pageIndex = position;
@@ -638,25 +706,31 @@ public class CreateTaskActivity
         }
     }
 
-    private void startImageUpload(final Uri fileUri) {
+    private void startFileUpload(final Uri fileUri, boolean isImage) {
         try {
 
             String filename = getFileName(fileUri);
             if (filename == null || filename.isEmpty()) {
-//                Toast
-//                        .makeText(CreateTaskActivity.this, "Could not get file name!", Toast.LENGTH_SHORT).show();
                 return;
             }
             StorageReference imagesStorageReference = storageReference.child("images");
-            StorageReference imageStorageReference = imagesStorageReference.child(filename);
+            StorageReference videosStorageReference = storageReference.child("videos");
+            StorageReference fileStorageReference;
+            if(isImage) {
+                fileStorageReference = imagesStorageReference.child(filename);
+            }
+            else
+            {
+                fileStorageReference = videosStorageReference.child(filename);
+            }
+
             InputStream stream = new FileInputStream(new File(fileUri.getPath()));
 
-            UploadTask uploadTask = imageStorageReference.putStream(stream);
+            UploadTask uploadTask = fileStorageReference.putStream(stream);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-
-                    Toast.makeText(CreateTaskActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateTaskActivity.this, "file upload failed", Toast.LENGTH_SHORT).show();
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -666,15 +740,12 @@ public class CreateTaskActivity
                     if (downloadUrl != null)
 
                         mediaUrls.add(downloadUrl.toString());
-//                        Toast.makeText(CreateTaskActivity.this,
-//                            String.format("Image uploaded to : %s", downloadUrl.toString()), Toast.LENGTH_SHORT).show();
-
 
                 }
             });
 
         } catch (Exception ex) {
-            Timber.e("Error uploading image", ex);
+            Timber.e("Error uploading file", ex);
             ex.printStackTrace();
         }
     }
@@ -698,4 +769,5 @@ public class CreateTaskActivity
             Timber.e("User entered address could not be parsed");
         }
     }
+
 }
