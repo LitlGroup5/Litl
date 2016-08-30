@@ -65,7 +65,7 @@ Stretch:
 
 Sprint-2:
 
-
+http://i.imgur.com/nmv1eKr.gif
 
 http://imgur.com/a/HEDxD
 
