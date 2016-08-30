@@ -18,7 +18,7 @@ import com.litlgroup.litl.adapters.TaskRecycleAdapter;
 import com.litlgroup.litl.behaviors.EndlessRecyclerViewScrollListener;
 import com.litlgroup.litl.interfaces.InfiniteScrollListener;
 import com.litlgroup.litl.interfaces.SwipeToRefreshListener;
-import com.litlgroup.litl.model.Task;
+import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ItemClickSupport;
 

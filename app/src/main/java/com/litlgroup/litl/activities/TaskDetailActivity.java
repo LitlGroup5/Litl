@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.fragments.TaskOffersFragment;
 import com.litlgroup.litl.fragments.TaskProposalFragment;
-import com.litlgroup.litl.model.Task;
+import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.Constants;
 
 import org.parceler.Parcels;
@@ -19,7 +19,7 @@ public class TaskDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
 
-        Task selectedTask = (Task) Parcels.unwrap(getIntent().getParcelableExtra(Constants.SELECTED_TASK));
+        Task selectedTask = Parcels.unwrap(getIntent().getParcelableExtra(Constants.SELECTED_TASK));
         loadFragment(selectedTask);
     }
 
@@ -29,7 +29,7 @@ public class TaskDetailActivity extends AppCompatActivity {
         if (selectedTask.getType() == Task.Type.PROPOSAL) {
             TaskProposalFragment fragmentDemo = TaskProposalFragment.newInstance(selectedTask.getId());
             ft.replace(R.id.fragment_placeholder, fragmentDemo);
-        } else if (selectedTask.getType() == Task.Type.OFFER){
+        } else if (selectedTask.getType() == Task.Type.OFFER) {
             TaskOffersFragment fragmentDemo = TaskOffersFragment.newInstance(selectedTask.getId());
             ft.replace(R.id.fragment_placeholder, fragmentDemo);
         }

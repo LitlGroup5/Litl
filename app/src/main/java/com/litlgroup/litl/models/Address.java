@@ -2,11 +2,14 @@ package com.litlgroup.litl.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import org.parceler.Parcel;
+
 import timber.log.Timber;
 
 /**
  * Created by monusurana on 8/26/16.
  */
+@Parcel
 @IgnoreExtraProperties
 public class Address {
 

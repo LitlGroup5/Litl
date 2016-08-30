@@ -11,6 +11,6 @@ public class ProposalWallScrolling implements InfiniteScrollListener {
     @Override
     public void userScrolledPastBenchmark(TaskFragment taskFragment, int startingPosition) {
         ProposalsFragment proposalsFragment = (ProposalsFragment) taskFragment;
-        proposalsFragment.setupFakeData(false);
+        proposalsFragment.getData(false);
     }
 }

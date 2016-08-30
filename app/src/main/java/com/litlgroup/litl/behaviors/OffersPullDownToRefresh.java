@@ -11,6 +11,6 @@ public class OffersPullDownToRefresh implements SwipeToRefreshListener {
     @Override
     public void userPulledDownRecycleViewToRefresh(TaskFragment taskFragment) {
         OffersFragment offersFragment = (OffersFragment) taskFragment;
-        offersFragment.setupFakeData(true);
+        offersFragment.getData(true);
     }
 }

@@ -2,6 +2,8 @@ package com.litlgroup.litl.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -13,6 +15,7 @@ import timber.log.Timber;
 /**
  * Created by monusurana on 8/26/16.
  */
+@Parcel
 @IgnoreExtraProperties
 public class Task {
 
@@ -28,6 +31,8 @@ public class Task {
     private String title;
     private UserSummary user;
     private Integer viewedBy;
+    private String id;
+    private Type type;
 
     public Task() {
     }
@@ -198,6 +203,34 @@ public class Task {
      */
     public void setViewedBy(Integer viewedBy) {
         this.viewedBy = viewedBy;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public enum Type {
+        PROPOSAL,
+        OFFER,
+        CLOSED
+    }
+    public enum State {
+        IN_BIDDING_PROCESS,
+        SUCCESSFULLY_ACCEPTED,
+        NOT_ACCEPTED,
+        EXPIRED
     }
 
     public static String getTimestampMillis(String dueDate, String dueTime) {
