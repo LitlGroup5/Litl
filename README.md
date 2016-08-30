@@ -63,6 +63,13 @@ Stretch:
 
 ## Video Walkthrough
 
+Sprint-2:
+
+
+
+http://imgur.com/a/HEDxD
+
+
 Here's a walkthrough of implemented user stories:
 
 ![](http://imgur.com/fH3yJju.gif)
