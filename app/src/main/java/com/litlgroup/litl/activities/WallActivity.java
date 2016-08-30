@@ -3,16 +3,11 @@ package com.litlgroup.litl.activities;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -34,24 +28,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.litlgroup.litl.R;
-import com.litlgroup.litl.fragments.PlaceBidFragment;
-import com.litlgroup.litl.fragments.TaskOffersFragment;
-import com.litlgroup.litl.fragments.TaskProposalFragment;
 import com.litlgroup.litl.fragments.WallFragment;
-import com.litlgroup.litl.model.User;
+import com.litlgroup.litl.utils.ImageUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import timber.log.Timber;
 
 public class WallActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -124,17 +110,15 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void setupHeaderDrawerLayout(View headerLayout) {
-        User user = User.getFakeUser();
-
         ImageView ivProfileImage = (ImageView) headerLayout.findViewById(R.id.ivProfileImage_header);
-        Glide.with(this).load(user.getProfileImageURL()).diskCacheStrategy(DiskCacheStrategy.ALL).into(ivProfileImage);
+        ImageUtils.setCircularImage(ivProfileImage, mFirebaseUser.getPhotoUrl().toString());
 
         TextView userName = (TextView) headerLayout.findViewById(R.id.userName);
-        String fullName = user.getFirstName() + user.getLastName();
+        String fullName = mFirebaseUser.getDisplayName();
         userName.setText(fullName);
 
         TextView email = (TextView) headerLayout.findViewById(R.id.tvUserEmail);
-        email.setText(user.getEmail());
+        email.setText(mFirebaseUser.getEmail());
 
         TextView cityState = (TextView) headerLayout.findViewById(R.id.userCityState);
         cityState.setText("San Diego, CA");
@@ -229,7 +213,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
         return true;

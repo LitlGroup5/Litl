@@ -3,6 +3,7 @@ package com.litlgroup.litl.utils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.litlgroup.litl.R;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
@@ -16,6 +17,7 @@ public class ImageUtils {
         Glide.with(imageView.getContext())
                 .load(url)
                 .placeholder(R.drawable.ic_profile_placeholder)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .bitmapTransform(new CropCircleTransformation(imageView.getContext()))
                 .into(imageView);
     }
