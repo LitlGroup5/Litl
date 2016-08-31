@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+
+    <!--<include layout="@layout/app_bar_media_pager"-->
+        <!--android:id="@+id/include"-->
+        <!--/>-->
+
+
+    <FrameLayout
+        android:id="@+id/vpframe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vpMedia"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/vpIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom|center"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_general" />
+
+    </FrameLayout>
+
+</android.support.design.widget.CoordinatorLayout>

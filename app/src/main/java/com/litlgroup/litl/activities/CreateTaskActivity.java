@@ -68,6 +68,7 @@ public class CreateTaskActivity
         AdvancedMediaPagerAdapter.StartImageCaptureListener,
         AdvancedMediaPagerAdapter.StartVideoCaptureListener,
         AdvancedMediaPagerAdapter.StartImageSelectListener,
+        AdvancedMediaPagerAdapter.StartOnItemViewClickListener,
         AddressFragment.AddressFragmentListener
 
 {
@@ -119,6 +120,8 @@ public class CreateTaskActivity
 
     Boolean isEditMode = false;
 
+    ArrayList<String> fileLocalUris;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,7 +142,7 @@ public class CreateTaskActivity
                         getReferenceFromUrl(getString(R.string.storage_reference_url))
                         .child(getString(R.string.storage_reference_tasks_child));
         mediaUrls = new ArrayList<>();
-
+        fileLocalUris = new ArrayList<>();
         checkForExistingTaskData();
 
     }
@@ -501,6 +504,21 @@ public class CreateTaskActivity
         circleIndicator.setViewPagerIndicator();
     }
 
+    public void startFullScreenMedia()
+    {
+        try
+        {
+            Intent intent = new Intent(CreateTaskActivity.this, MediaFullScreenActivity.class);
+            intent.putExtra("urls", fileLocalUris);
+            startActivity(intent);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error starting full screen media");
+        }
+    }
+
+
     int pageIndex = 0;
 
     public void startCameraImageCapture() {
@@ -579,12 +597,14 @@ public class CreateTaskActivity
         }
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
             if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
                 if (resultCode == RESULT_OK) {
 
+                    fileLocalUris.add(fileUri.toString());
                     startFileUpload(fileUri, true);
 
                     mediaPagerAdapter.insert(fileUri, pageIndex);
@@ -600,7 +620,10 @@ public class CreateTaskActivity
             else if(requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE)
             {
                 if (resultCode == RESULT_OK) {
+
+                    fileLocalUris.add(fileUri.toString());
                     startFileUpload(fileUri, false);
+
 
                     mediaPagerAdapter.insert(fileUri, pageIndex);
                     mediaPagerAdapter.notifyDataSetChanged();
@@ -622,6 +645,8 @@ public class CreateTaskActivity
                 @Override
                 public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {
                     Uri fileUri = Uri.fromFile(imageFile);
+                    fileLocalUris.add(fileUri.toString());
+
                     startFileUpload(fileUri, true);
                     //Handle the image
                     mediaPagerAdapter.insert(Uri.parse(imageFile.getAbsolutePath()), pageIndex);
@@ -730,7 +755,7 @@ public class CreateTaskActivity
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(CreateTaskActivity.this, "file upload failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateTaskActivity.this, "File upload failed", Toast.LENGTH_SHORT).show();
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -761,6 +786,28 @@ public class CreateTaskActivity
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        try {
+            if (fileLocalUris.size() > 0) {
+                for (String fileName : fileLocalUris) {
+                    File file = new File(fileName);
+                    if (file.exists())
+                        if(!file.delete())
+                        {
+                            Timber.e(String.format("file %s could not be deleted", fileName));
+                        }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error deleting captured files");
+        }
+    }
+
+    @Override
     public void onFinishAddressFragment(Address address) {
         try {
             this.address = address;
@@ -770,4 +817,8 @@ public class CreateTaskActivity
         }
     }
 
+    @Override
+    public void onStartItemViewCicked(int pageIndex) {
+        startFullScreenMedia();
+    }
 }

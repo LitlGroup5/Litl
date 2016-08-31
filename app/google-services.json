@@ -15,15 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "213843224741-4ohtjlfagn4igfmdddqvvht6tgf8amt0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.litlgroup.litl",
-            "certificate_hash": "1F77292421F332253475B4CC74B8002B0EA1815E"
-          }
-        },
-        {
-          "client_id": "213843224741-9l9n53bppqqtra9ifhr5pkn3tn258tkn.apps.googleusercontent.com",
+          "client_id": "213843224741-7r1qlcbnhu6cmd8bu28tvd4hsh1knk7b.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.litlgroup.litl",
@@ -31,7 +23,7 @@
           }
         },
         {
-          "client_id": "213843224741-pferca3k9pt8ka2c44reg02phb1pve7b.apps.googleusercontent.com",
+          "client_id": "213843224741-im3sqho89hqemki1er2tio2eo2mhqmof.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.litlgroup.litl",
@@ -39,13 +31,13 @@
           }
         },
         {
-          "client_id": "213843224741-jucqum4671i8o1kcegb02nilp4g5f4g9.apps.googleusercontent.com",
+          "client_id": "213843224741-i0c6k90vjqd30cdq7899vv378rkjgfn9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAanYKwkK2YinUss9m8zxhoSlF0RnBU3tE"
+          "current_key": "AIzaSyCq2fdDcQMd3itgeydcrNSLiKbJ9sRN30w"
         }
       ],
       "services": {
@@ -56,7 +48,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "213843224741-jucqum4671i8o1kcegb02nilp4g5f4g9.apps.googleusercontent.com",
+              "client_id": "213843224741-i0c6k90vjqd30cdq7899vv378rkjgfn9.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,6 +1,7 @@
 package com.litlgroup.litl.fragments;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -30,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.litlgroup.litl.R;
+import com.litlgroup.litl.activities.MediaFullScreenActivity;
 import com.litlgroup.litl.activities.ProfileActivity;
 import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.User;
@@ -61,7 +63,8 @@ public class ProfileHeaderFragment
     implements AddressFragment.AddressFragmentListener,
         AdvancedMediaPagerAdapter.StartImageCaptureListener,
         AdvancedMediaPagerAdapter.StartVideoCaptureListener,
-        AdvancedMediaPagerAdapter.StartImageSelectListener
+        AdvancedMediaPagerAdapter.StartImageSelectListener,
+        AdvancedMediaPagerAdapter.StartOnItemViewClickListener
 {
 
     @BindView(R.id.etProfileName)
@@ -121,6 +124,8 @@ public class ProfileHeaderFragment
 
     String currentAuthorizedUId;
 
+    ArrayList<String> fileLocalUris;
+
     public static ProfileHeaderFragment newInstance(String userId, ProfileActivity.ProfileMode profileMode) {
         Bundle args = new Bundle();
         ProfileHeaderFragment fragment = new ProfileHeaderFragment();
@@ -138,8 +143,6 @@ public class ProfileHeaderFragment
         View view = inflater.inflate(R.layout.fragment_profile_header, container, false);
         unbinder = ButterKnife.bind(this, view);
         try {
-
-
             setupViewPager();
             profileModeLayoutChanges();
         }
@@ -154,19 +157,43 @@ public class ProfileHeaderFragment
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        try {
+            if (fileLocalUris.size() > 0) {
+                for (String fileName : fileLocalUris) {
+                    File file = new File(fileName);
+                    if (file.exists())
+                        if(!file.delete())
+                        {
+                            Timber.e(String.format("file %s could not be deleted", fileName));
+                        }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error deleting captured files");
+        }
+
     }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(savedInstanceState!=null)
+        {
+            fileUri = savedInstanceState.getParcelable("file_uri");
+        }
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
         FirebaseStorage storage = FirebaseStorage.getInstance();
         storageReference =
                 storage.
                         getReferenceFromUrl(getString(R.string.storage_reference_url))
-                        .child(getString(R.string.storage_reference_tasks_child));
+                        .child(getString(R.string.storage_reference_users_child));
         mediaUrls = new ArrayList<>();
+        fileLocalUris = new ArrayList<>();
         permissions = new Permissions(getActivity());
 
         try {
@@ -305,6 +332,7 @@ public class ProfileHeaderFragment
             if(user.getMedia() != null) {
                 media = (ArrayList<String>) user.getMedia();
                 mediaUrls = media;
+                fileLocalUris = media;
                 for (int i =0 ; i  < mediaUrls.size(); i++) {
                     mediaPagerAdapter.insertUri(Uri.parse(mediaUrls.get(i)), i);
                     mediaPagerAdapter.notifyDataSetChanged();
@@ -381,6 +409,10 @@ public class ProfileHeaderFragment
         try
         {
             setEditModeFieldsState(true);
+
+            mediaPagerAdapter.setAllowCapture(true);
+            mediaPagerAdapter.notifyDataSetChanged();//to force capture controls to be displayed
+
             ibProfileEdit.setVisibility(View.GONE);
             ibProfileSave.setVisibility(View.VISIBLE);
             ibAddConnection.setVisibility(View.GONE);
@@ -601,14 +633,20 @@ public class ProfileHeaderFragment
 
 
     private void setupViewPager() {
-        mediaPagerAdapter = new AdvancedMediaPagerAdapter(getActivity(), this, this, this);
+
+        if(profileMode == ProfileActivity.ProfileMode.ME_EDIT ||
+                profileMode == ProfileActivity.ProfileMode.ME_CREATE) {
+            mediaPagerAdapter = new AdvancedMediaPagerAdapter(getActivity(), this, this, this, this, true, true);
+        }
+        else
+        {
+            mediaPagerAdapter = new AdvancedMediaPagerAdapter(getActivity(), this, this, this, this, false, true);
+        }
 
         mVpMedia.setAdapter(mediaPagerAdapter);
         circleIndicator = new CircleIndicator(mViewPagerCountDots, mVpMedia);
         circleIndicator.setViewPagerIndicator();
     }
-
-
 
     int pageIndex = 0;
 
@@ -620,19 +658,41 @@ public class ProfileHeaderFragment
                 if (!permissions.checkPermissionForExternalStorage()) {
                     permissions.requestPermissionForExternalStorage();
                 }
-                launchCamera();
+                launchCameraForImage();
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
+    public void startCameraVideoCapture() {
+        try {
+            if (!permissions.checkPermissionForCamera()) {
+                permissions.requestPermissionForCamera();
+            } else {
+                if (!permissions.checkPermissionForExternalStorage()) {
+                    permissions.requestPermissionForExternalStorage();
+                }
+                if (getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT))
+                    launchCameraForVideo();
+                else
+                {
+                    Toast.makeText(getActivity(), "No camera on device", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
-    public final static int SELECT_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
+    public final static int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 1035;
+    public final static int SELECT_IMAGE_ACTIVITY_REQUEST_CODE = 1036;
 
     private Uri fileUri;
 
-    public void launchCamera() {
+    public void launchCameraForImage() {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -647,13 +707,30 @@ public class ProfileHeaderFragment
         }
     }
 
+    public void launchCameraForVideo() {
+        // create Intent to capture a video and return control to the calling application
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+        fileUri = CameraUtils.getOutputMediaFileUri(CameraUtils.MEDIA_TYPE_VIDEO);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the video file name
+
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        // So as long as the result is not null, it's safe to use the intent.
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Start the image capture intent to capture video
+            startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+        }
+    }
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
             if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
                 if (resultCode == getActivity().RESULT_OK) {
 
-                    startImageUpload(fileUri);
+                    fileLocalUris.add(fileUri.toString());
+                    startFileUpload(fileUri, true);
 
                     mediaPagerAdapter.insert(fileUri, pageIndex);
                     mediaPagerAdapter.notifyDataSetChanged();
@@ -663,6 +740,24 @@ public class ProfileHeaderFragment
                     // User cancelled the image capture
                 } else { // Result was a failure
                     Toast.makeText(getActivity(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else if(requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE)
+            {
+                if (resultCode == getActivity().RESULT_OK) {
+
+                    fileLocalUris.add(fileUri.toString());
+                    startFileUpload(fileUri, false);
+
+
+                    mediaPagerAdapter.insert(fileUri, pageIndex);
+                    mediaPagerAdapter.notifyDataSetChanged();
+                    circleIndicator.refreshIndicator();
+
+                } else if (resultCode == getActivity().RESULT_CANCELED) {
+                    // User cancelled the video capture
+                } else {
+                    Toast.makeText(getActivity(), "Failed to record video",  Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -675,7 +770,8 @@ public class ProfileHeaderFragment
                 @Override
                 public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {
                     Uri fileUri = Uri.fromFile(imageFile);
-                    startImageUpload(fileUri);
+                    fileLocalUris.add(fileUri.toString());
+                    startFileUpload(fileUri, true);
                     //Handle the image
                     mediaPagerAdapter.insert(Uri.parse(imageFile.getAbsolutePath()), pageIndex);
                     mediaPagerAdapter.notifyDataSetChanged();
@@ -721,15 +817,6 @@ public class ProfileHeaderFragment
         outState.putParcelable("file_uri", fileUri);
     }
 
-
-//    @Override
-//    public void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//
-//        // get the file url
-//        fileUri = savedInstanceState.getParcelable("file_uri");
-//    }
-
     @Override
     public void onStartImageCapture(int position) {
         try {
@@ -741,14 +828,12 @@ public class ProfileHeaderFragment
     }
 
     @Override
-    public void onStartVideoCapture(int pageIndex) {
-        try
-        {
-
-        }
-        catch (Exception ex)
-        {
-
+    public void onStartVideoCapture(int position) {
+        try {
+            pageIndex = position;
+            startCameraVideoCapture();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -763,25 +848,32 @@ public class ProfileHeaderFragment
     }
 
 
-    private void startImageUpload(final Uri fileUri) {
+    private void startFileUpload(final Uri fileUri, boolean isImage) {
         try {
 
             String filename = getFileName(fileUri);
             if (filename == null || filename.isEmpty()) {
-//                Toast
-//                        .makeText(CreateTaskActivity.this, "Could not get file name!", Toast.LENGTH_SHORT).show();
                 return;
             }
             StorageReference imagesStorageReference = storageReference.child("images");
-            StorageReference imageStorageReference = imagesStorageReference.child(filename);
+            StorageReference videosStorageReference = storageReference.child("videos");
+            StorageReference fileStorageReference;
+            if(isImage) {
+                fileStorageReference = imagesStorageReference.child(filename);
+            }
+            else
+            {
+                fileStorageReference = videosStorageReference.child(filename);
+            }
+
             InputStream stream = new FileInputStream(new File(fileUri.getPath()));
 
-            UploadTask uploadTask = imageStorageReference.putStream(stream);
+            UploadTask uploadTask = fileStorageReference.putStream(stream);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
 
-                    Toast.makeText(getActivity(), "Image upload failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "File upload failed", Toast.LENGTH_SHORT).show();
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -791,15 +883,12 @@ public class ProfileHeaderFragment
                     if (downloadUrl != null)
 
                         mediaUrls.add(downloadUrl.toString());
-//                        Toast.makeText(CreateTaskActivity.this,
-//                            String.format("Image uploaded to : %s", downloadUrl.toString()), Toast.LENGTH_SHORT).show();
-
 
                 }
             });
 
         } catch (Exception ex) {
-            Timber.e("Error uploading image", ex);
+            Timber.e("Error uploading file", ex);
             ex.printStackTrace();
         }
     }
@@ -813,4 +902,25 @@ public class ProfileHeaderFragment
         }
         return "";
     }
+
+    @Override
+    public void onStartItemViewCicked(int pageIndex) {
+        startFullScreenMedia();
+    }
+
+
+    public void startFullScreenMedia()
+    {
+        try
+        {
+            Intent intent = new Intent(getActivity(), MediaFullScreenActivity.class);
+            intent.putExtra("urls", fileLocalUris);
+            startActivity(intent);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error starting full screen media");
+        }
+    }
+
 }

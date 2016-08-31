@@ -35,6 +35,10 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
     StartImageCaptureListener startImageCaptureListener;
     StartVideoCaptureListener startVideoCaptureListener;
     StartImageSelectListener startImageSelectListener;
+    StartOnItemViewClickListener startOnItemViewClickListener;
+
+    boolean allowCapture = true;
+    boolean allowTabClickListener = true;
 
     public AdvancedMediaPagerAdapter(Context context) {
         mContext = context;
@@ -42,17 +46,55 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
         mImageUrls.add(null);
     }
 
+
+    public AdvancedMediaPagerAdapter(Context context, boolean allowCapture, boolean allowTabClickListener) {
+        mContext = context;
+        mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mImageUrls.add(null);
+        this.allowCapture = allowCapture;
+        this.allowTabClickListener = allowTabClickListener;
+    }
+
     public AdvancedMediaPagerAdapter(Context context,
                                      StartImageCaptureListener startImageCaptureListener,
                                      StartVideoCaptureListener startVideoCaptureListener,
-                                     StartImageSelectListener startImageSelectListener) {
+                                     StartImageSelectListener startImageSelectListener,
+                                     boolean allowCapture,
+                                     boolean allowTabClickListener
+
+    ) {
         mContext = context;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mImageUrls.add(null);
         this.startImageCaptureListener = startImageCaptureListener;
         this.startVideoCaptureListener = startVideoCaptureListener;
         this.startImageSelectListener =  startImageSelectListener;
+
+        this.allowCapture = allowCapture;
+        this.allowTabClickListener = allowTabClickListener;
     }
+
+    public AdvancedMediaPagerAdapter(Context context,
+                                     StartImageCaptureListener startImageCaptureListener,
+                                     StartVideoCaptureListener startVideoCaptureListener,
+                                     StartImageSelectListener startImageSelectListener,
+                                     StartOnItemViewClickListener startOnItemViewClickListener,
+                                     boolean allowCapture,
+                                     boolean allowTabClickListener
+
+    ) {
+        mContext = context;
+        mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mImageUrls.add(null);
+        this.startImageCaptureListener = startImageCaptureListener;
+        this.startVideoCaptureListener = startVideoCaptureListener;
+        this.startImageSelectListener =  startImageSelectListener;
+        this.startOnItemViewClickListener = startOnItemViewClickListener;
+
+        this.allowCapture = allowCapture;
+        this.allowTabClickListener = allowTabClickListener;
+    }
+
 
     @Override
     public int getCount() {
@@ -68,6 +110,7 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
         View itemView = mLayoutInflater.inflate(R.layout.media_image_item, container, false);
 
+        setupViewClickListener(itemView, position);
         ImageView ivMediaImage = (ImageView) itemView.findViewById(R.id.ivMediaImage);
         final ScalableVideoView mVideoView = (ScalableVideoView) itemView.findViewById(R.id.video_view);
         String url = mImageUrls.get(position);
@@ -95,7 +138,6 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
             {
                 try {
                     mVideoView.setDataSource(url);
-                    mVideoView.setLooping(true);
                     ibCaptureImage.setVisibility(View.INVISIBLE);
                     ibSelectImage.setVisibility(View.INVISIBLE);
 
@@ -113,66 +155,69 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
         }
         else {
 
-            ibSelectImage.setVisibility(View.VISIBLE);
+            if(allowCapture) {
 
-            ibSelectImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ibSelectImage.setAlpha(0.3f);
-                    if(startImageSelectListener != null)
-                    {
-                        startImageSelectListener.onStartImageSelect(position);
-                    }
-                    else {
-                        StartImageSelectListener listener = (StartImageSelectListener) mContext;
-                        listener.onStartImageSelect(position);
-                    }
-                    ibSelectImage.setAlpha(1f);
-                }
-            });
+                ibSelectImage.setVisibility(View.VISIBLE);
 
-            ibCaptureImage.setVisibility(View.VISIBLE);
-
-            ibCaptureImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        ibCaptureImage.setAlpha(0.3f);
-                        if(startImageCaptureListener != null)
-                        {
-                            startImageCaptureListener.onStartImageCapture(position);
+                ibSelectImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ibSelectImage.setAlpha(0.3f);
+                        if (startImageSelectListener != null) {
+                            startImageSelectListener.onStartImageSelect(position);
+                        } else {
+                            StartImageSelectListener listener = (StartImageSelectListener) mContext;
+                            listener.onStartImageSelect(position);
                         }
-                        else {
-                            StartImageCaptureListener listener = (StartImageCaptureListener) mContext;
-                            listener.onStartImageCapture(position);
-                        }
-                        ibCaptureImage.setAlpha(1f);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                        ibSelectImage.setAlpha(1f);
                     }
-                }
-            });
+                });
+
+                ibCaptureImage.setVisibility(View.VISIBLE);
+
+                ibCaptureImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            ibCaptureImage.setAlpha(0.3f);
+                            if (startImageCaptureListener != null) {
+                                startImageCaptureListener.onStartImageCapture(position);
+                            } else {
+                                StartImageCaptureListener listener = (StartImageCaptureListener) mContext;
+                                listener.onStartImageCapture(position);
+                            }
+                            ibCaptureImage.setAlpha(1f);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                });
 
 
-            ibCaptureVideo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        ibCaptureVideo.setAlpha(0.3f);
-                        if(startImageCaptureListener != null)
-                        {
-                            startVideoCaptureListener.onStartVideoCapture(position);
+                ibCaptureVideo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            ibCaptureVideo.setAlpha(0.3f);
+                            if (startImageCaptureListener != null) {
+                                startVideoCaptureListener.onStartVideoCapture(position);
+                            } else {
+                                StartVideoCaptureListener listener = (StartVideoCaptureListener) mContext;
+                                listener.onStartVideoCapture(position);
+                            }
+                            ibCaptureVideo.setAlpha(1f);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
-                        else {
-                            StartVideoCaptureListener listener = (StartVideoCaptureListener) mContext;
-                            listener.onStartVideoCapture(position);
-                        }
-                        ibCaptureVideo.setAlpha(1f);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
                     }
-                }
-            });
+                });
+            }
+            else
+            {
+                ibSelectImage.setVisibility(View.GONE);
+                ibCaptureImage.setVisibility(View.GONE);
+                ibCaptureVideo.setVisibility(View.GONE);
+            }
         }
 
         ButterKnife.bind(this, itemView);
@@ -181,8 +226,36 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
         return itemView;
     }
 
+    private void setupViewClickListener(View itemView, final int position)
+    {
+        if(allowTabClickListener)
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mImageUrls != null && mImageUrls.get(position) != null && !mImageUrls.get(position).isEmpty()) {
+
+                    if(startOnItemViewClickListener != null)
+                    {
+                        startOnItemViewClickListener.onStartItemViewCicked(position);
+
+                    }
+                    else {
+                        StartOnItemViewClickListener listener = (StartOnItemViewClickListener) mContext;
+                        listener.onStartItemViewCicked(position);
+                    }
+                }
+            }
+        });
+    }
+
     public void addImage(String url) {
         mImageUrls.add(url);
+        mImageUrls.add(null);
+    }
+
+    public void addAll(List<String> urls)
+    {
+        mImageUrls.addAll(urls);
         mImageUrls.add(null);
     }
 
@@ -201,6 +274,14 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
         if(index == mImageUrls.size() - 1)
         {
             mImageUrls.add(null);
+        }
+    }
+
+    public void removeAll()
+    {
+        for(int i = 0; i < mImageUrls.size(); i++)
+        {
+            mImageUrls.remove(0);
         }
     }
 
@@ -225,6 +306,11 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
         return POSITION_NONE;
     }
 
+    public void setAllowCapture(boolean state)
+    {
+        allowCapture = state;
+    }
+
     public interface StartImageCaptureListener
     {
         void onStartImageCapture(int pageIndex);
@@ -238,6 +324,11 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
     public interface StartImageSelectListener
     {
         void onStartImageSelect(int pageIndex);
+    }
+
+    public interface StartOnItemViewClickListener
+    {
+        void onStartItemViewCicked(int pageIndex);
     }
 
 }

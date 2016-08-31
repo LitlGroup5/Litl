@@ -53,6 +53,6 @@
             android:id="@+id/ibCaptureVideo"
             android:alpha="1"
             android:background="#00ffffff"
-            android:src="@drawable/ic_media_capture_video" />
+            android:src="@drawable/ic_media_video_capture" />
     </LinearLayout>
 </FrameLayout>
