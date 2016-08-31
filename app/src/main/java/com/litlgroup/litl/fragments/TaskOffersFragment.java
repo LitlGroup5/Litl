@@ -28,6 +28,7 @@ import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.BidSelectScreenActivity;
 import com.litlgroup.litl.activities.ProfileActivity;
 import com.litlgroup.litl.models.Task;
+import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ImageUtils;
@@ -82,6 +83,8 @@ public class TaskOffersFragment extends Fragment {
     private DatabaseReference mDatabase;
 
     private MediaPagerAdapter mMediaPagerAdapter;
+    AdvancedMediaPagerAdapter mediaPagerAdapter;
+
 
     private CircleIndicator mCircleIndicator;
 
@@ -181,8 +184,10 @@ public class TaskOffersFragment extends Fragment {
 
             if (task.getMedia() != null) {
                 for (String url : task.getMedia()) {
-                    mMediaPagerAdapter.addImage(url);
-                    mMediaPagerAdapter.notifyDataSetChanged();
+                    mediaPagerAdapter.addImage(url);
+                    mediaPagerAdapter.notifyDataSetChanged();
+//                    mMediaPagerAdapter.addImage(url);
+//                    mMediaPagerAdapter.notifyDataSetChanged();
                 }
 
                 mCircleIndicator.refreshIndicator();
@@ -191,8 +196,9 @@ public class TaskOffersFragment extends Fragment {
     }
 
     private void setupViewPager() {
-        mMediaPagerAdapter = new MediaPagerAdapter(getActivity());
-        mVpMedia.setAdapter(mMediaPagerAdapter);
+//        mMediaPagerAdapter = new MediaPagerAdapter(getActivity());
+        mediaPagerAdapter = new AdvancedMediaPagerAdapter(getActivity(), false, true);
+        mVpMedia.setAdapter(mediaPagerAdapter);
         mCircleIndicator = new CircleIndicator(mViewPagerCountDots, mVpMedia);
     }
 
