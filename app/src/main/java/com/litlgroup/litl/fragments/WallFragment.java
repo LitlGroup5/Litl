@@ -72,7 +72,7 @@ public class WallFragment extends Fragment {
     }
 
     public class TaskPagerAdapter extends FragmentStatePagerAdapter {
-        private String tabTitles[] = {"Proposals", "Offers"};
+        private String tabTitles[] = {"Offers", "Proposals"};
         private String chosenCategory;
 
 
@@ -84,9 +84,9 @@ public class WallFragment extends Fragment {
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                return ProposalsFragment.newInstance(chosenCategory);
-            } else {
                 return OffersFragment.newInstance(chosenCategory);
+            } else {
+                return ProposalsFragment.newInstance(chosenCategory);
             }
         }
 
