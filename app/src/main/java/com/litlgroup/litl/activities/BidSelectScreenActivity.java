@@ -159,11 +159,28 @@ public class BidSelectScreenActivity
         }
     }
 
+    private void updateBidStatus(String status)
+    {
+        try
+        {
+
+            database.child(Constants.TABLE_TASKS)
+                    .child(thisTaskId)
+                    .child(getString(R.string.task_status_child))
+                    .setValue(status);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error writing accepted bid id to firebase",ex);
+        }
+    }
+
     @Override
     public void onAcceptBidListener(int bidIndex) {
         try
         {
             updateAcceptedBidId(bidIndex);
+            updateBidStatus(getString(R.string.task_status_bid_accepted));
             finish();
         }
         catch (Exception ex)

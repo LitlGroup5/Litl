@@ -43,4 +43,6 @@
     <string name="logout">Log Out</string>
     <string name="all_categories">All Categories</string>
     <string name="storage_reference_users_child">Users</string>
+    <string name="task_status_child">status</string>
+    <string name="task_status_bid_accepted">BID_ACCEPTED</string>
 </resources>
