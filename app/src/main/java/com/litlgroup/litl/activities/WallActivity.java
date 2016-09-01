@@ -172,7 +172,10 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
                 Toast.makeText(WallActivity.this, "Settings is coming!", Toast.LENGTH_SHORT).show();
                 return;
             case R.id.nav_logout:
-                Toast.makeText(WallActivity.this, "Logout just needs to be plugged up!", Toast.LENGTH_SHORT).show();
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(this, SignInActivity.class));
+                finish();
+                Toast.makeText(WallActivity.this, "Signed Out!", Toast.LENGTH_SHORT).show();
                 return;
             default:
                 fragment = WallFragment.newInstance(menuItem.toString());
