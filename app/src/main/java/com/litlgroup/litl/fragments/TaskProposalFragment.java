@@ -28,12 +28,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.BidSelectScreenActivity;
 import com.litlgroup.litl.activities.CreateTaskActivity;
+import com.litlgroup.litl.activities.MediaFullScreenActivity;
 import com.litlgroup.litl.activities.ProfileActivity;
 import com.litlgroup.litl.models.Task;
+import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ImageUtils;
-import com.litlgroup.litl.utils.MediaPagerAdapter;
+
+import java.util.ArrayList;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -41,7 +44,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
 
-public class TaskProposalFragment extends Fragment {
+public class TaskProposalFragment
+
+        extends Fragment
+        implements AdvancedMediaPagerAdapter.StartOnItemViewClickListener
+
+{
 
     @BindView(R.id.tvTitle)
     TextView mTvTitle;
@@ -83,7 +91,8 @@ public class TaskProposalFragment extends Fragment {
 
     private DatabaseReference mDatabase;
 
-    private MediaPagerAdapter mMediaPagerAdapter;
+//    private MediaPagerAdapter mMediaPagerAdapter;
+    private AdvancedMediaPagerAdapter mMediaPagerAdapter;
 
     private CircleIndicator mCircleIndicator;
 
@@ -224,7 +233,7 @@ public class TaskProposalFragment extends Fragment {
     }
 
     private void setupViewPager() {
-        mMediaPagerAdapter = new MediaPagerAdapter(getActivity());
+        mMediaPagerAdapter = new AdvancedMediaPagerAdapter(getActivity(), false, true, this);
         mVpMedia.setAdapter(mMediaPagerAdapter);
         mCircleIndicator = new CircleIndicator(mViewPagerCountDots, mVpMedia);
     }
@@ -261,5 +270,33 @@ public class TaskProposalFragment extends Fragment {
             Timber.e("Error launching user profile screen",ex);
         }
 
+    }
+
+
+    public void startFullScreenMedia()
+    {
+        try
+        {
+            Intent intent = new Intent(getActivity(), MediaFullScreenActivity.class);
+            intent.putExtra("urls", (ArrayList)mMediaPagerAdapter.getUrls());
+            startActivity(intent);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error starting full screen media");
+        }
+    }
+
+
+    @Override
+    public void onStartItemViewClicked(int pageIndex) {
+        try
+        {
+            startFullScreenMedia();
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error launching full screen media", ex);
+        }
     }
 }

@@ -17,9 +17,18 @@
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:scalableType="fitCenter"
+        android:background="@android:drawable/ic_media_play" />
 
-        app:scalableType="fitCenter" />
-
+    <com.wang.avi.AVLoadingIndicatorView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:indicatorName="LineSpinFadeLoaderIndicator"
+        android:layout_gravity="center"
+        android:id="@+id/avi"
+        android:visibility="visible"
+        app:indicatorColor="@color/colorPrimary"
+        />
 
     <LinearLayout
         android:layout_width="wrap_content"

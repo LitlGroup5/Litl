@@ -544,6 +544,7 @@ public class ProfileHeaderFragment
     {
         try
         {
+            mediaPagerAdapter.setAllowCapture(false);
             User user;
             if(profileMode == ProfileActivity.ProfileMode.ME_CREATE
                     || profileMode == ProfileActivity.ProfileMode.ME_EDIT
@@ -904,7 +905,7 @@ public class ProfileHeaderFragment
     }
 
     @Override
-    public void onStartItemViewCicked(int pageIndex) {
+    public void onStartItemViewClicked(int pageIndex) {
         startFullScreenMedia();
     }
 

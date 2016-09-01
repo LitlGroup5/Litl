@@ -818,7 +818,7 @@ public class CreateTaskActivity
     }
 
     @Override
-    public void onStartItemViewCicked(int pageIndex) {
+    public void onStartItemViewClicked(int pageIndex) {
         startFullScreenMedia();
     }
 }
