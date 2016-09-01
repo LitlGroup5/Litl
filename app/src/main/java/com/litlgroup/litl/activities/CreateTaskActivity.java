@@ -1,6 +1,7 @@
 package com.litlgroup.litl.activities;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -65,7 +66,9 @@ public class CreateTaskActivity
         implements DatePickerFragment.DatePickerDialogListener,
         TimePickerFragment.TimePickerDialogListener,
         AdvancedMediaPagerAdapter.StartImageCaptureListener,
+        AdvancedMediaPagerAdapter.StartVideoCaptureListener,
         AdvancedMediaPagerAdapter.StartImageSelectListener,
+        AdvancedMediaPagerAdapter.StartOnItemViewClickListener,
         AddressFragment.AddressFragmentListener
 
 {
@@ -117,6 +120,8 @@ public class CreateTaskActivity
 
     Boolean isEditMode = false;
 
+    ArrayList<String> fileLocalUris;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,7 +142,7 @@ public class CreateTaskActivity
                         getReferenceFromUrl(getString(R.string.storage_reference_url))
                         .child(getString(R.string.storage_reference_tasks_child));
         mediaUrls = new ArrayList<>();
-
+        fileLocalUris = new ArrayList<>();
         checkForExistingTaskData();
 
     }
@@ -499,6 +504,21 @@ public class CreateTaskActivity
         circleIndicator.setViewPagerIndicator();
     }
 
+    public void startFullScreenMedia()
+    {
+        try
+        {
+            Intent intent = new Intent(CreateTaskActivity.this, MediaFullScreenActivity.class);
+            intent.putExtra("urls", fileLocalUris);
+            startActivity(intent);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error starting full screen media");
+        }
+    }
+
+
     int pageIndex = 0;
 
     public void startCameraImageCapture() {
@@ -509,7 +529,32 @@ public class CreateTaskActivity
                 if (!permissions.checkPermissionForExternalStorage()) {
                     permissions.requestPermissionForExternalStorage();
                 }
-                launchCamera();
+                if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT))
+                    launchCameraForImage();
+                else
+                {
+                    Toast.makeText(this, "No camera on device", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void startCameraVideoCapture() {
+        try {
+            if (!permissions.checkPermissionForCamera()) {
+                permissions.requestPermissionForCamera();
+            } else {
+                if (!permissions.checkPermissionForExternalStorage()) {
+                    permissions.requestPermissionForExternalStorage();
+                }
+                if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT))
+                    launchCameraForVideo();
+                else
+                {
+                    Toast.makeText(this, "No camera on device", Toast.LENGTH_SHORT).show();
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -517,11 +562,12 @@ public class CreateTaskActivity
     }
 
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
-    public final static int SELECT_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
+    public final static int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 1035;
+    public final static int SELECT_IMAGE_ACTIVITY_REQUEST_CODE = 1036;
 
     private Uri fileUri;
 
-    public void launchCamera() {
+    public void launchCameraForImage() {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -536,13 +582,30 @@ public class CreateTaskActivity
         }
     }
 
+    public void launchCameraForVideo() {
+        // create Intent to capture a video and return control to the calling application
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+        fileUri = CameraUtils.getOutputMediaFileUri(CameraUtils.MEDIA_TYPE_VIDEO);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the video file name
+
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        // So as long as the result is not null, it's safe to use the intent.
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            // Start the image capture intent to capture video
+            startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+        }
+    }
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
             if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
                 if (resultCode == RESULT_OK) {
 
-                    startImageUpload(fileUri);
+                    fileLocalUris.add(fileUri.toString());
+                    startFileUpload(fileUri, true);
 
                     mediaPagerAdapter.insert(fileUri, pageIndex);
                     mediaPagerAdapter.notifyDataSetChanged();
@@ -552,6 +615,24 @@ public class CreateTaskActivity
                     // User cancelled the image capture
                 } else { // Result was a failure
                     Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else if(requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE)
+            {
+                if (resultCode == RESULT_OK) {
+
+                    fileLocalUris.add(fileUri.toString());
+                    startFileUpload(fileUri, false);
+
+
+                    mediaPagerAdapter.insert(fileUri, pageIndex);
+                    mediaPagerAdapter.notifyDataSetChanged();
+                    circleIndicator.refreshIndicator();
+
+                } else if (resultCode == RESULT_CANCELED) {
+                    // User cancelled the video capture
+                } else {
+                    Toast.makeText(this, "Failed to record video",  Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -564,7 +645,9 @@ public class CreateTaskActivity
                 @Override
                 public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {
                     Uri fileUri = Uri.fromFile(imageFile);
-                    startImageUpload(fileUri);
+                    fileLocalUris.add(fileUri.toString());
+
+                    startFileUpload(fileUri, true);
                     //Handle the image
                     mediaPagerAdapter.insert(Uri.parse(imageFile.getAbsolutePath()), pageIndex);
                     mediaPagerAdapter.notifyDataSetChanged();
@@ -629,6 +712,16 @@ public class CreateTaskActivity
     }
 
     @Override
+    public void onStartVideoCapture(int position) {
+        try {
+            pageIndex = position;
+            startCameraVideoCapture();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
     public void onStartImageSelect(int position) {
         try {
             pageIndex = position;
@@ -638,25 +731,31 @@ public class CreateTaskActivity
         }
     }
 
-    private void startImageUpload(final Uri fileUri) {
+    private void startFileUpload(final Uri fileUri, boolean isImage) {
         try {
 
             String filename = getFileName(fileUri);
             if (filename == null || filename.isEmpty()) {
-//                Toast
-//                        .makeText(CreateTaskActivity.this, "Could not get file name!", Toast.LENGTH_SHORT).show();
                 return;
             }
             StorageReference imagesStorageReference = storageReference.child("images");
-            StorageReference imageStorageReference = imagesStorageReference.child(filename);
+            StorageReference videosStorageReference = storageReference.child("videos");
+            StorageReference fileStorageReference;
+            if(isImage) {
+                fileStorageReference = imagesStorageReference.child(filename);
+            }
+            else
+            {
+                fileStorageReference = videosStorageReference.child(filename);
+            }
+
             InputStream stream = new FileInputStream(new File(fileUri.getPath()));
 
-            UploadTask uploadTask = imageStorageReference.putStream(stream);
+            UploadTask uploadTask = fileStorageReference.putStream(stream);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-
-                    Toast.makeText(CreateTaskActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateTaskActivity.this, "File upload failed", Toast.LENGTH_SHORT).show();
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -666,15 +765,12 @@ public class CreateTaskActivity
                     if (downloadUrl != null)
 
                         mediaUrls.add(downloadUrl.toString());
-//                        Toast.makeText(CreateTaskActivity.this,
-//                            String.format("Image uploaded to : %s", downloadUrl.toString()), Toast.LENGTH_SHORT).show();
-
 
                 }
             });
 
         } catch (Exception ex) {
-            Timber.e("Error uploading image", ex);
+            Timber.e("Error uploading file", ex);
             ex.printStackTrace();
         }
     }
@@ -690,6 +786,28 @@ public class CreateTaskActivity
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        try {
+            if (fileLocalUris.size() > 0) {
+                for (String fileName : fileLocalUris) {
+                    File file = new File(fileName);
+                    if (file.exists())
+                        if(!file.delete())
+                        {
+                            Timber.e(String.format("file %s could not be deleted", fileName));
+                        }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error deleting captured files");
+        }
+    }
+
+    @Override
     public void onFinishAddressFragment(Address address) {
         try {
             this.address = address;
@@ -697,5 +815,10 @@ public class CreateTaskActivity
         } catch (Exception ex) {
             Timber.e("User entered address could not be parsed");
         }
+    }
+
+    @Override
+    public void onStartItemViewClicked(int pageIndex) {
+        startFullScreenMedia();
     }
 }

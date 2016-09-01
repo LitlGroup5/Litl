@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+
     <application
         android:name=".app.LitlApplication"
         android:allowBackup="true"
@@ -35,7 +36,11 @@
         <activity
             android:name=".activities.SignInActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.ProfileActivity"></activity>
+        <activity android:name=".activities.ProfileActivity" />
+        <activity android:name=".activities.MediaFullScreenActivity"
+
+            android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>
