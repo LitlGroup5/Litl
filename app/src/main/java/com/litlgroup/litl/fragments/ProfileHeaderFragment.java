@@ -16,9 +16,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,6 +53,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import timber.log.Timber;
@@ -94,6 +97,12 @@ public class ProfileHeaderFragment
     @BindView(R.id.tvProfileAddress)
     TextView tvProfileAddress;
 
+    @BindView(R.id.ivProfileImage)
+    CircleImageView ivProfileImage;
+
+    @BindView(R.id.rbUserRating)
+    RatingBar rbUserRating;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -118,6 +127,7 @@ public class ProfileHeaderFragment
     String onScreenUserId;
     ProfileActivity.ProfileMode profileMode;
     Address address;
+    float userRating;
 
     //User object corresponding to the data on screen currently being viewed
     User onScreenUser;
@@ -143,6 +153,7 @@ public class ProfileHeaderFragment
         View view = inflater.inflate(R.layout.fragment_profile_header, container, false);
         unbinder = ButterKnife.bind(this, view);
         try {
+            setEventListeners();
             setupViewPager();
             profileModeLayoutChanges();
         }
@@ -196,6 +207,7 @@ public class ProfileHeaderFragment
         fileLocalUris = new ArrayList<>();
         permissions = new Permissions(getActivity());
 
+
         try {
             currentAuthorizedUId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -208,6 +220,29 @@ public class ProfileHeaderFragment
         } catch (Exception ex) {
             Timber.e("Error creating ProfileHeaderFragment", ex);
         }
+    }
+
+
+
+    private void setEventListeners() {
+        rbUserRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                userRating = v;
+
+                try
+                {
+                    mDatabase.child(Constants.TABLE_USERS)
+                            .child(onScreenUserId)
+                            .child(getString(R.string.user_rating_child))
+                            .setValue(userRating);
+                }
+                catch (Exception ex)
+                {
+                    Timber.e("Error writing user rating to firebase");
+                }
+            }
+        });
     }
 
     private void profileModeLayoutChanges()
@@ -244,6 +279,10 @@ public class ProfileHeaderFragment
                     ibProfileSave.setVisibility(View.GONE);
                     ibAddConnection.setVisibility(View.GONE);
                     ibRemoveConnection.setVisibility(View.VISIBLE);
+
+                    rbUserRating.setIsIndicator(false);
+
+
                     setEditModeFieldsState(false);
                     break;
                 case OTHER:
@@ -253,6 +292,7 @@ public class ProfileHeaderFragment
                     //Set the following two to invisible now and then reset when user data has been fetched
                     ibAddConnection.setVisibility(View.GONE);
                     ibRemoveConnection.setVisibility(View.GONE);
+                    rbUserRating.setIsIndicator(false);
 
                     setEditModeFieldsState(false);
                     break;
@@ -324,6 +364,13 @@ public class ProfileHeaderFragment
             String email = user.getEmail();
             String bio = user.getbiography();
 
+            String profileImageUrl = user.getPhoto();
+
+            Glide.with(this)
+                    .load(profileImageUrl)
+                    .placeholder(R.drawable.ic_profile_placeholder)
+                    .into(ivProfileImage);
+
             ArrayList<String> skillset = null;
             if(user.getSkillSet() != null)
                 skillset = (ArrayList<String>) user.getSkillSet();
@@ -335,9 +382,10 @@ public class ProfileHeaderFragment
                 fileLocalUris = media;
                 for (int i =0 ; i  < mediaUrls.size(); i++) {
                     mediaPagerAdapter.insertUri(Uri.parse(mediaUrls.get(i)), i);
-                    mediaPagerAdapter.notifyDataSetChanged();
+
                     circleIndicator.refreshIndicator();
                 }
+                mediaPagerAdapter.notifyDataSetChanged();
             }
 
             Address address = user.getAddress();
@@ -363,8 +411,8 @@ public class ProfileHeaderFragment
                 etSkills.setText(skills);
             }
 
-            //handle media urls
-
+            if(user.getRating()!=null)
+                rbUserRating.setRating(user.getRating());
 
             if(address != null) {
                 this.address = address;
@@ -607,7 +655,7 @@ public class ProfileHeaderFragment
             ArrayList<String> connections = new ArrayList<>();
 
             ArrayList<String> media = mediaUrls;//new ArrayList<>();
-            Float rating = 0f;
+            Float rating = authUserData.getRating(); //rbUserRating.getRating();
             User user = new User(
                     bookmarks,
                     contactNo,
@@ -698,7 +746,7 @@ public class ProfileHeaderFragment
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         fileUri = CameraUtils.getOutputMediaFileUri(CameraUtils.MEDIA_TYPE_IMAGE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // setEventListeners the image file name
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
@@ -713,7 +761,7 @@ public class ProfileHeaderFragment
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 
         fileUri = CameraUtils.getOutputMediaFileUri(CameraUtils.MEDIA_TYPE_VIDEO);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the video file name
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // setEventListeners the video file name
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
