@@ -36,6 +36,8 @@ import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ImageUtils;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 
 import butterknife.BindColor;
@@ -87,11 +89,12 @@ public class TaskProposalFragment
     @BindColor(R.color.colorPrimary)
     int mColorPrimary;
 
-    private String mTaskId;
-
     private DatabaseReference mDatabase;
 
-//    private MediaPagerAdapter mMediaPagerAdapter;
+    private Task mTask;
+
+    private Menu mMenu;
+
     private AdvancedMediaPagerAdapter mMediaPagerAdapter;
 
     private CircleIndicator mCircleIndicator;
@@ -102,8 +105,10 @@ public class TaskProposalFragment
             Timber.d("Key: " + dataSnapshot.getKey());
             Timber.d("Value: " + String.valueOf(dataSnapshot.getValue()));
 
-            Task task = dataSnapshot.getValue(Task.class);
-            setData(task);
+            mTask = dataSnapshot.getValue(Task.class);
+            mTask.setId(dataSnapshot.getKey());
+
+            setData(mTask);
         }
 
         @Override
@@ -115,11 +120,11 @@ public class TaskProposalFragment
     public TaskProposalFragment() {
     }
 
-    public static TaskProposalFragment newInstance(String taskid) {
+    public static TaskProposalFragment newInstance(Task task) {
         TaskProposalFragment fragment = new TaskProposalFragment();
 
         Bundle args = new Bundle();
-        args.putString(Constants.TASK_ID, taskid);
+        args.putParcelable(Constants.TASK, Parcels.wrap(task));
         fragment.setArguments(args);
 
         return fragment;
@@ -130,8 +135,10 @@ public class TaskProposalFragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        mTaskId = getArguments().getString(Constants.TASK_ID);
+        mTask = Parcels.unwrap(getArguments().getParcelable(Constants.TASK));
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        getTaskData();
     }
 
     @Override
@@ -147,8 +154,6 @@ public class TaskProposalFragment
 
         initToolbar();
         setupViewPager();
-
-        getTaskData();
 
         return view;
     }
@@ -168,7 +173,7 @@ public class TaskProposalFragment
                 mDatabase.removeEventListener(valueEventListener);
                 valueEventListener = null;
 
-                mDatabase.child(Constants.TABLE_TASKS).child(mTaskId).removeValue();
+                mDatabase.child(Constants.TABLE_TASKS).child(mTask.getId()).removeValue();
                 Toast.makeText(getActivity(), "Task Deleted", Toast.LENGTH_SHORT).show();
 
                 getActivity().finish();
@@ -178,8 +183,12 @@ public class TaskProposalFragment
 
             case R.id.action_edit: {
                 Intent i = new Intent(getActivity(), CreateTaskActivity.class);
-                i.putExtra(Constants.TASK_ID, mTaskId);
+                i.putExtra(Constants.TASK_ID, mTask.getId());
                 startActivity(i);
+            }
+
+            case R.id.action_bookmark: {
+                updateBookmark();
             }
         }
 
@@ -189,16 +198,19 @@ public class TaskProposalFragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.task_proposal_menu, menu);
+        mMenu = menu;
+        initBookmark();
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void getTaskData() {
-        mDatabase.child(Constants.TABLE_TASKS).child(mTaskId).addValueEventListener(valueEventListener);
+        mDatabase.child(Constants.TABLE_TASKS).child(mTask.getId()).addValueEventListener(valueEventListener);
     }
 
     private void setData(Task task) {
 
         if (task != null) {
+
             if (task.getTitle() != null)
                 mTvTitle.setText(task.getTitle());
 
@@ -222,6 +234,8 @@ public class TaskProposalFragment
                 mTvPrice.setText(task.getPrice());
 
             if (task.getMedia() != null) {
+                mMediaPagerAdapter.removeAll();
+
                 for (String url : task.getMedia()) {
                     mMediaPagerAdapter.addImage(url);
                     mMediaPagerAdapter.notifyDataSetChanged();
@@ -250,53 +264,58 @@ public class TaskProposalFragment
     @OnClick({R.id.tvBidBy, R.id.tvBidByCount})
     public void bidBy() {
         Intent i = new Intent(getActivity(), BidSelectScreenActivity.class);
-        i.putExtra(Constants.TASK_ID, mTaskId);
+        i.putExtra(Constants.TASK_ID, mTask.getId());
         startActivity(i);
     }
 
     @OnClick(R.id.ivProfileImage)
-    public void startUserProfileScreen()
-    {
-        try
-        {
+    public void startUserProfileScreen() {
+        try {
             Intent intent = new Intent(getActivity(), ProfileActivity.class);
             intent.putExtra(getString(R.string.user_id), "GiJcFd59PlMK31bV17w6qV0GDn93");
             intent.putExtra("profileMode", ProfileActivity.ProfileMode.OTHER);
 
             startActivity(intent);
-        }
-        catch (Exception ex)
-        {
-            Timber.e("Error launching user profile screen",ex);
+        } catch (Exception ex) {
+            Timber.e("Error launching user profile screen", ex);
         }
 
     }
 
-
-    public void startFullScreenMedia()
-    {
-        try
-        {
+    public void startFullScreenMedia() {
+        try {
             Intent intent = new Intent(getActivity(), MediaFullScreenActivity.class);
-            intent.putExtra("urls", (ArrayList)mMediaPagerAdapter.getUrls());
+            intent.putExtra("urls", (ArrayList) mMediaPagerAdapter.getUrls());
             startActivity(intent);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Timber.e("Error starting full screen media");
         }
     }
 
-
     @Override
     public void onStartItemViewClicked(int pageIndex) {
-        try
-        {
+        try {
             startFullScreenMedia();
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Timber.e("Error launching full screen media", ex);
+        }
+    }
+
+    private void initBookmark() {
+        if (Task.isBookmarked(mTask)) {
+            mMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_menu_bookmark_filled));
+        } else {
+            mMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_menu_bookmark));
+        }
+    }
+
+    private void updateBookmark() {
+        if (Task.isBookmarked(mTask)) {
+            mMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_menu_bookmark));
+            Task.updateBookmark(mTask, false);
+        } else {
+            mMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_menu_bookmark_filled));
+            Task.updateBookmark(mTask, true);
         }
     }
 }
