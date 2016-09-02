@@ -9,6 +9,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -95,26 +96,27 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         setUpAndManageBookmarkButtonState(ibBookmark, task, position);
     }
 
-    private void setUpAndManageBookmarkButtonState(final ImageButton bookmarkButton, Task task, final int position) {
-//        if (task.getBookmark().getBookmarked() && task.getType() != Task.Type.CLOSED) {
-//            bookmarkButton.setImageResource(R.drawable.ic_bookmark_filled);
-//        } else {
-//            bookmarkButton.setImageResource(R.drawable.ic_bookmark_border);
-//        }
-//        bookmarkButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Task selectedTask = tasks.get(position);
-//
-//                if (selectedTask.getBookmark().getBookmarked()) {
-//                    bookmarkButton.setImageResource(R.drawable.ic_bookmark_border);
-//                    selectedTask.getBookmark().setBookmarked(false);
-//                } else {
-//                    bookmarkButton.setImageResource(R.drawable.ic_bookmark_filled);
-//                    selectedTask.getBookmark().setBookmarked(true);
-//                }
-//            }
-//        });
+    private void setUpAndManageBookmarkButtonState(final ImageButton bookmarkButton, final Task task, final int position) {
+        if (Task.isBookmarked(task) && task.getType() != Task.Type.CLOSED) {
+            bookmarkButton.setImageResource(R.drawable.ic_bookmark_filled);
+        } else {
+            bookmarkButton.setImageResource(R.drawable.ic_bookmark_border);
+        }
+
+        bookmarkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Task selectedTask = tasks.get(position);
+
+                if (Task.isBookmarked(selectedTask)) {
+                    bookmarkButton.setImageResource(R.drawable.ic_bookmark_border);
+                    Task.updateBookmark(selectedTask, false);
+                } else {
+                    bookmarkButton.setImageResource(R.drawable.ic_bookmark_filled);
+                    Task.updateBookmark(selectedTask, true);
+                }
+            }
+        });
     }
 
     private void convertClosedTaskBackgroundImageToBlackAndWhite(ImageView closedTaskImageView, Task.Type type) {
