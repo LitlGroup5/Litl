@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ import com.litlgroup.litl.utils.CameraUtils;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.DateUtils;
+import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.Permissions;
 
 import java.io.File;
@@ -102,6 +104,9 @@ public class CreateTaskActivity
 
     @BindView(R.id.vpIndicator)
     LinearLayout mViewPagerCountDots;
+
+    @BindView(R.id.ivDataBackground)
+    ImageView ivDataBackground;
 
     CircleIndicator circleIndicator;
 
@@ -752,6 +757,9 @@ public class CreateTaskActivity
             InputStream stream = new FileInputStream(new File(fileUri.getPath()));
 
             UploadTask uploadTask = fileStorageReference.putStream(stream);
+
+            btnPostTask.setEnabled(false);
+
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
@@ -763,8 +771,9 @@ public class CreateTaskActivity
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     if (downloadUrl != null)
-
                         mediaUrls.add(downloadUrl.toString());
+
+                    btnPostTask.setEnabled(true);
 
                 }
             });
@@ -812,6 +821,8 @@ public class CreateTaskActivity
         try {
             this.address = address;
             tvAddress.setText(Address.getDisplayString(address));
+             ImageUtils.setBlurredMapBackground(address, ivDataBackground);
+
         } catch (Exception ex) {
             Timber.e("User entered address could not be parsed");
         }

@@ -28,12 +28,11 @@
                 android:id="@+id/ivDataBackground"
                 tools:src="@color/colorSkyBlue"
                 android:scaleType="centerCrop"
-                android:alpha="0.5" />
+                android:alpha="0.8" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="1">
+            android:layout_height="match_parent">
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -94,8 +93,7 @@
         android:id="@+id/tvDueDate"
         android:layout_alignTop="@+id/etPrice"
         android:layout_alignRight="@+id/tvAddress"
-        android:layout_alignEnd="@+id/tvAddress"
-        android:textStyle="bold" />
+        android:layout_alignEnd="@+id/tvAddress" />
 
     <Button
         android:layout_width="wrap_content"
@@ -118,8 +116,7 @@
         android:layout_alignEnd="@+id/etDescription"
         android:layout_marginTop="14dp"
         android:paddingLeft="4dp"
-        android:layout_marginBottom="7dp"
-        android:textStyle="bold" />
+        android:layout_marginBottom="7dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -130,8 +127,7 @@
             android:layout_alignBottom="@+id/etPrice"
             android:layout_marginTop="14dp"
             android:layout_alignRight="@+id/tvDueDate"
-            android:layout_alignEnd="@+id/tvDueDate"
-            android:textStyle="bold" />
+            android:layout_alignEnd="@+id/tvDueDate" />
     </RelativeLayout>
         </FrameLayout>
     </RelativeLayout>

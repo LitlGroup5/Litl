@@ -18,6 +18,7 @@ public class Address {
     private Integer houseNo;
     private String state;
     private String streetAddress;
+    private String country;
     private Integer zip;
 
     public Address() {
@@ -95,6 +96,26 @@ public class Address {
         this.state = state;
     }
 
+
+    /**
+     *
+     * @return
+     * The country
+     */
+    public String getCountry() {
+        return country;
+    }
+
+    /**
+     *
+     * @param country
+     * The country
+     */
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+
     /**
      *
      * @return
@@ -140,8 +161,7 @@ public class Address {
             if(address.getApt()!=null && !address.getApt().isEmpty())
                 apt = String.format(" Apt %s ", address.getApt());
 
-            if(address.getHouseNo() == null
-                    || address.getStreetAddress() == null
+            if(address.getStreetAddress() == null
                     || address.getCity()== null
                     || address.getState()== null
                     || address.getZip()== null
@@ -149,8 +169,7 @@ public class Address {
                 return "";
 
             String displayString =
-                    String.format("%s %s %s%s %s %s",
-                            address.getHouseNo(),
+                    String.format("%s %s%s %s %s",
                             address.getStreetAddress(),
                             apt,
                             address.getCity(),
