@@ -157,6 +157,7 @@ public class Address {
     {
         try
         {
+            String displayString;
             String apt = "";
             if(address.getApt()!=null && !address.getApt().isEmpty())
                 apt = String.format(" Apt %s ", address.getApt());
@@ -165,10 +166,19 @@ public class Address {
                     || address.getCity()== null
                     || address.getState()== null
                     || address.getZip()== null
-                    )
-                return "";
+                    ) {
 
-            String displayString =
+                if(address.getCity() != null && address.getState() != null)
+                {
+                    displayString = String.format("%s, %s",
+                            address.getCity(),
+                            address.getState());
+                    return displayString;
+                }
+                else
+                    return "";
+            }
+            displayString =
                     String.format("%s %s%s %s %s",
                             address.getStreetAddress(),
                             apt,
