@@ -107,6 +107,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
 
         View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
         setupHeaderDrawerLayout(headerLayout);
+        headerLayout.setBackgroundResource(R.drawable.wood);
     }
 
     private void setupHeaderDrawerLayout(View headerLayout) {
@@ -121,7 +122,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         email.setText(mFirebaseUser.getEmail());
 
         TextView cityState = (TextView) headerLayout.findViewById(R.id.userCityState);
-        cityState.setText("San Diego, CA");
+        cityState.setText("need getAddress method");
+        // need to be able to get city and state for user
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -156,14 +158,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         Fragment fragment = null;
 
         switch (menuItem.getItemId()) {
-            case R.id.nav_create_Task:
-                launchCreateTaskActivity();
-                return;
             case R.id.nav_bookmarks:
                 Toast.makeText(WallActivity.this, "Bookmarks is coming!", Toast.LENGTH_SHORT).show();
-                return;
-            case R.id.nav_profile:
-                Toast.makeText(WallActivity.this, "User Profile is coming!", Toast.LENGTH_SHORT).show();
                 return;
             case R.id.nav_history:
                 Toast.makeText(WallActivity.this, "History is coming!", Toast.LENGTH_SHORT).show();
