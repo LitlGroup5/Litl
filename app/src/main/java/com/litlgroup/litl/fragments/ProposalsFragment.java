@@ -35,6 +35,11 @@ public class ProposalsFragment extends TaskFragment {
     public static ProposalsFragment newInstance(String category) {
         ProposalsFragment fragment = new ProposalsFragment();
         fragment.chosenCategory = category;
+        if (category != null && !category.equalsIgnoreCase("All Categories")) {
+            fragment.tasksForSpecificCategoryIsEmpty = true;
+        } else {
+            fragment.tasksForSpecificCategoryIsEmpty = false;
+        }
 
         return fragment;
     }

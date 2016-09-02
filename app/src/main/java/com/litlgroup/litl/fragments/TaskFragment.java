@@ -39,6 +39,7 @@ public class TaskFragment extends Fragment {
     public String chosenCategory;
     public InfiniteScrollListener infiniteScrollListener;
     public SwipeToRefreshListener swipeToRefreshListener;
+    public boolean tasksForSpecificCategoryIsEmpty = false;
 
     public TaskFragment() {
         // Required empty public constructor
@@ -47,9 +48,15 @@ public class TaskFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_task, container, false);
-        setUpRecycleView(view);
-        setupSwipeToRefresh(view);
+        View view;
+        if (tasksForSpecificCategoryIsEmpty == false) {
+            view = inflater.inflate(R.layout.fragment_task, container, false);
+            setUpRecycleView(view);
+            setupSwipeToRefresh(view);
+        } else {
+            view = inflater.inflate(R.layout.fragment_no_tasks, container, false);
+        }
+
         return view;
     }
 
