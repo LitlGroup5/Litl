@@ -156,14 +156,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         Fragment fragment = null;
 
         switch (menuItem.getItemId()) {
-            case R.id.nav_create_Task:
-                launchCreateTaskActivity();
-                return;
             case R.id.nav_bookmarks:
                 Toast.makeText(WallActivity.this, "Bookmarks is coming!", Toast.LENGTH_SHORT).show();
-                return;
-            case R.id.nav_profile:
-                Toast.makeText(WallActivity.this, "User Profile is coming!", Toast.LENGTH_SHORT).show();
                 return;
             case R.id.nav_history:
                 Toast.makeText(WallActivity.this, "History is coming!", Toast.LENGTH_SHORT).show();

@@ -3,13 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_create_Task"
-            android:title="@string/create_task" />
-        <item
-            android:id="@+id/nav_profile"
-            android:title="@string/profile"/>
-        <item
             android:id="@+id/nav_bookmarks"
+            android:icon="@drawable/ic_bookmark_filled"
             android:title="@string/bookmarks"/>
         <item
             android:id="@+id/nav_history"
@@ -29,41 +24,52 @@
                 <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/automotive"
+                        android:icon="@drawable/automobile"
                         android:title="@string/automotive"/>
 
                     <item
                         android:id="@+id/decorating"
+                        android:icon="@drawable/decorating"
                         android:title="@string/decorating" />
 
                     <item
                         android:id="@+id/electronics"
+                        android:icon="@drawable/electronics"
                         android:title="@string/electronics" />
 
                     <item
                         android:id="@+id/arts_crafts"
+                        android:icon="@drawable/arts_and_crafts"
                         android:title="@string/arts_and_crafts" />
                     <item
                         android:id="@+id/gardening"
+                        android:icon="@drawable/gardening"
                         android:title="@string/gardening" />
 
                     <item
                         android:id="@+id/woodworking"
+                        android:icon="@drawable/woodworking"
                         android:title="@string/woodworking" />
                     <item
                         android:id="@+id/house_cleaning"
+                        android:icon="@drawable/house_cleaning"
                         android:title="@string/house_cleaning" />
 
                     <item
                         android:id="@+id/recreation"
+                        android:icon="@drawable/recreation"
                         android:title="@string/recreation" />
                     <item
                         android:id="@+id/plumbing"
+                        android:icon="@drawable/plumbing"
                         android:title="@string/plumbing" />
                     <item
                         android:id="@+id/groceries"
+                        android:icon="@drawable/groceries"
                         android:title="@string/groceries" />
                     <item
                         android:id="@+id/random"
+                        android:icon="@drawable/random"
                         android:title="@string/random" />
                 </group>
             </menu>
