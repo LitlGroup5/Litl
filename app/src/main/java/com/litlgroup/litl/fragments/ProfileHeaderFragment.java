@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CameraUtils;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
+import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.Permissions;
 
 import java.io.File;
@@ -103,6 +105,9 @@ public class ProfileHeaderFragment
 
     @BindView(R.id.vpIndicator)
     LinearLayout mViewPagerCountDots;
+
+    @BindView(R.id.ivDataBackground)
+    ImageView ivDataBackground;
 
     ArrayList<String> mediaUrls;
 
@@ -369,6 +374,7 @@ public class ProfileHeaderFragment
             if(address != null) {
                 this.address = address;
                 tvProfileAddress.setText(Address.getDisplayString(address));
+                ImageUtils.setBlurredMapBackground(address, ivDataBackground);
             }
 
 
@@ -398,6 +404,8 @@ public class ProfileHeaderFragment
         try {
             this.address = address;
             tvProfileAddress.setText(Address.getDisplayString(address));
+
+            ImageUtils.setBlurredMapBackground(address, ivDataBackground);
         } catch (Exception ex) {
             Timber.e("User entered address could not be parsed");
         }

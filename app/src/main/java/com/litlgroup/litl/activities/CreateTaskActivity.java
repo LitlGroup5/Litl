@@ -221,6 +221,13 @@ public class CreateTaskActivity
 
             Address address = task.getAddress();
             tvAddress.setText(Address.getDisplayString(address));
+            try {
+                ImageUtils.setBlurredMapBackground(address, ivDataBackground);
+            }
+            catch (Exception ex)
+            {
+                Timber.e("Error setting map background");
+            }
 
             etPrice.setText(task.getPrice());
             String category = task.getCategories().get(0);
