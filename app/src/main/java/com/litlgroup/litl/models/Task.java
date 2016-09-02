@@ -1,6 +1,9 @@
 package com.litlgroup.litl.models;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.litlgroup.litl.utils.Constants;
 
 import org.parceler.Parcel;
 
@@ -22,6 +25,7 @@ public class Task {
     private String acceptedOfferId;
     private Address address;
     private Integer bidBy;
+    private Map<String, Boolean> bookmarks = new HashMap<>();
     private List<String> categories = new ArrayList<String>();
     private String deadlineDate;
     private String description;
@@ -77,6 +81,10 @@ public class Task {
      */
     public void setBidBy(Integer bidBy) {
         this.bidBy = bidBy;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     /**
@@ -217,8 +225,37 @@ public class Task {
         return type;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public Map<String, Boolean> getBookmarks() {
+        return bookmarks;
+    }
+
+    public void setBookmarks(Map<String, Boolean> bookmarks) {
+        this.bookmarks = bookmarks;
+    }
+
+    public static boolean isBookmarked(Task task) {
+        Map<String, Boolean> bookmarks = task.getBookmarks();
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            return bookmarks.containsKey(uid);
+        }
+
+        return false;
+    }
+
+    public static void updateBookmark(Task task, boolean add) {
+        Map<String, Boolean> bookmarks = task.getBookmarks();
+
+        Map<String, Object> temp = new HashMap<>();
+        if (add) {
+            bookmarks.put(FirebaseAuth.getInstance().getCurrentUser().getUid(), true);
+            temp.put(FirebaseAuth.getInstance().getCurrentUser().getUid(), true);
+            FirebaseDatabase.getInstance().getReference().child(Constants.TABLE_TASKS).child(task.getId()).child("bookmarks").updateChildren(temp);
+        } else {
+            bookmarks.remove(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            FirebaseDatabase.getInstance().getReference().child(Constants.TABLE_TASKS).child(task.getId()).child("bookmarks").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+        }
     }
 
     public enum Type {
