@@ -36,6 +36,7 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
         app:itemBackground="@drawable/drawer_item"
+        app:itemIconTint="@color/state_list"
         app:itemTextColor="@color/state_list"
         android:background="@color/colorLight"
         app:menu="@menu/drawer_view" />

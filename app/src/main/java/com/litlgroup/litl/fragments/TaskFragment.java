@@ -56,7 +56,7 @@ public class TaskFragment extends Fragment {
             setupSwipeToRefresh(view);
         } else {
             view = inflater.inflate(R.layout.fragment_no_tasks, container, false);
-            Toast.makeText(getActivity(), "No Tasks in this category. Please create one", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "No Tasks in this category. Tap the blue button and create one", Toast.LENGTH_SHORT).show();
         }
 
         return view;
