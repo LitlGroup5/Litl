@@ -107,6 +107,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
 
         View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
         setupHeaderDrawerLayout(headerLayout);
+        headerLayout.setBackgroundResource(R.drawable.wood);
     }
 
     private void setupHeaderDrawerLayout(View headerLayout) {
