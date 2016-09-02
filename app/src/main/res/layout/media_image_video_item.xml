@@ -17,7 +17,8 @@
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:scalableType="fitCenter" />
+        app:scalableType="fitCenter"
+        />
 
     <com.wang.avi.AVLoadingIndicatorView
         android:layout_width="wrap_content"
