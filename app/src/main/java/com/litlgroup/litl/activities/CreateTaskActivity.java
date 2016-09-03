@@ -501,7 +501,7 @@ public class CreateTaskActivity
             FragmentManager fm = getSupportFragmentManager();
 
             AddressFragment addressFragment =
-                    AddressFragment.newInstance(address);
+                    AddressFragment.newInstance(address, AddressFragment.AddressValidationMode.TASK_ADDRESS_MODE);
 
             addressFragment.show(fm, "fragment_address");
         } catch (Exception ex) {

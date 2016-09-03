@@ -390,7 +390,7 @@ public class ProfileHeaderFragment
             FragmentManager fm = getActivity().getSupportFragmentManager();
 
             AddressFragment addressFragment =
-                    AddressFragment.newInstance(address);
+                    AddressFragment.newInstance(address, AddressFragment.AddressValidationMode.PROFILE_ADDRESS_MODE);
             addressFragment.setTargetFragment(this, 0);
 
             addressFragment.show(fm, "fragment_address");
