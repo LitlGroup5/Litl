@@ -20,7 +20,9 @@ public class TaskDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_detail);
 
         Task selectedTask = Parcels.unwrap(getIntent().getParcelableExtra(Constants.SELECTED_TASK));
-        loadFragment(selectedTask);
+
+        if (savedInstanceState == null)
+            loadFragment(selectedTask);
     }
 
     private void loadFragment(Task selectedTask) {
