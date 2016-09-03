@@ -157,10 +157,12 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
+        CharSequence categorySpinnerTitle = menuItem.getTitle();
 
         switch (menuItem.getItemId()) {
             case R.id.nav_bookmarks:
                 fragment = new BookmarksFragment();
+                categorySpinnerTitle = "All Categories";
                 break;
             case R.id.nav_history:
                 Toast.makeText(WallActivity.this, "History is coming!", Toast.LENGTH_SHORT).show();
@@ -185,16 +187,10 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         menuItem.setChecked(true);
 
         // Set spinner category
-        setSpinnerSelectedItem(menuItem.getTitle());
+        setSpinnerSelectedItem(categorySpinnerTitle);
 
         // Close the navigation drawer
         drawerLayout.closeDrawers();
-    }
-
-    public void launchCreateTaskActivity() {
-
-        Intent intent = new Intent(WallActivity.this, CreateTaskActivity.class);
-        startActivity(intent);
     }
 
     @Override
