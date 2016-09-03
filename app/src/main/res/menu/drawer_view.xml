@@ -26,6 +26,10 @@
             <menu>
                 <group android:checkableBehavior="single">
                     <item
+                        android:id="@+id/allCategories"
+                        android:icon="@drawable/all_categories"
+                        android:title="@string/all_categories"/>
+                    <item
                         android:id="@+id/automotive"
                         android:icon="@drawable/automobile"
                         android:title="@string/automotive"/>
@@ -72,7 +76,7 @@
                         android:title="@string/groceries" />
                     <item
                         android:id="@+id/random"
-                        android:icon="@drawable/random"
+                        android:icon="@drawable/shrug_icon"
                         android:title="@string/random" />
                 </group>
             </menu>
