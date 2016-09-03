@@ -32,13 +32,6 @@ public class BookmarksFragment extends TaskFragment {
         setupBehaviors();
     }
 
-    public static BookmarksFragment newInstance(String category) {
-        BookmarksFragment fragment = new BookmarksFragment();
-        fragment.chosenCategory = category;
-
-        return fragment;
-    }
-
     private void setupBehaviors() {
         infiniteScrollListener = new BookmarksWallScrolling();
         swipeToRefreshListener = new BookmarksPullDownToRefresh();
@@ -85,6 +78,10 @@ public class BookmarksFragment extends TaskFragment {
     }
 
     public void setupData(boolean isRefresh) {
-        addAll(mBookmarks, isRefresh);
+        if (isRefresh) {
+            addAllNewTasksForRefresh(mBookmarks);
+        } else {
+            addMoreTasksForEndlessScrolling(mBookmarks);
+        }
     }
 }

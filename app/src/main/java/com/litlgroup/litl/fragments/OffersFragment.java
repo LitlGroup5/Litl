@@ -83,10 +83,10 @@ public class OffersFragment extends TaskFragment {
     }
 
     public void setupData(boolean isRefresh) {
-        if (chosenCategory == null) {
-            addAll(mOffers, isRefresh);
+        if (isRefresh) {
+            addAllNewTasksForRefresh(Task.getSortedTasks(mOffers, chosenCategory));
         } else {
-            addAll(Task.getSortedTasks(mOffers, chosenCategory), isRefresh);
+            addMoreTasksForEndlessScrolling(mOffers);
         }
     }
 }

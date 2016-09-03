@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.litlgroup.litl.R;
+import com.litlgroup.litl.fragments.BookmarksFragment;
 import com.litlgroup.litl.fragments.WallFragment;
 import com.litlgroup.litl.utils.ImageUtils;
 
@@ -122,7 +123,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         email.setText(mFirebaseUser.getEmail());
 
         TextView cityState = (TextView) headerLayout.findViewById(R.id.userCityState);
-        cityState.setText("need getAddress method");
+            cityState.setText("need getAddress method");
         // need to be able to get city and state for user
     }
 
@@ -156,11 +157,13 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
+        CharSequence categorySpinnerTitle = menuItem.getTitle();
 
         switch (menuItem.getItemId()) {
             case R.id.nav_bookmarks:
-                startActivity(new Intent(this, BookmarksActivity.class));
-                return;
+                fragment = new BookmarksFragment();
+                categorySpinnerTitle = "All Categories";
+                break;
             case R.id.nav_history:
                 Toast.makeText(WallActivity.this, "History is coming!", Toast.LENGTH_SHORT).show();
                 return;
@@ -184,16 +187,10 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         menuItem.setChecked(true);
 
         // Set spinner category
-        setSpinnerSelectedItem(menuItem.getTitle());
+        setSpinnerSelectedItem(categorySpinnerTitle);
 
         // Close the navigation drawer
         drawerLayout.closeDrawers();
-    }
-
-    public void launchCreateTaskActivity() {
-
-        Intent intent = new Intent(WallActivity.this, CreateTaskActivity.class);
-        startActivity(intent);
     }
 
     @Override
