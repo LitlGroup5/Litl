@@ -159,7 +159,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
 
         switch (menuItem.getItemId()) {
             case R.id.nav_bookmarks:
-                Toast.makeText(WallActivity.this, "Bookmarks is coming!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, BookmarksActivity.class));
                 return;
             case R.id.nav_history:
                 Toast.makeText(WallActivity.this, "History is coming!", Toast.LENGTH_SHORT).show();
