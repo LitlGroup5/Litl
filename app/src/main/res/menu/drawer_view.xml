@@ -26,6 +26,10 @@
             <menu>
                 <group android:checkableBehavior="single">
                     <item
+                        android:id="@+id/allCategories"
+                        android:icon="@drawable/all_categories"
+                        android:title="@string/all_categories"/>
+                    <item
                         android:id="@+id/automotive"
                         android:icon="@drawable/automobile"
                         android:title="@string/automotive"/>

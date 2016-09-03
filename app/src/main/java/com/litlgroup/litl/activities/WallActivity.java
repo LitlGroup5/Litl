@@ -158,10 +158,12 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
         CharSequence categorySpinnerTitle = menuItem.getTitle();
+        String toolbarTitle = "Litl";
 
         switch (menuItem.getItemId()) {
             case R.id.nav_bookmarks:
                 fragment = new BookmarksFragment();
+                toolbarTitle = "Bookmarks";
                 categorySpinnerTitle = "All Categories";
                 break;
             case R.id.nav_history:
@@ -179,6 +181,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
             default:
                 fragment = WallFragment.newInstance(menuItem.toString());
         }
+
+        toolbar.setTitle(toolbarTitle);
 
         // Insert the fragment by replacing any existing fragment
         loadFragmentIntoFrameLayout(fragment);
