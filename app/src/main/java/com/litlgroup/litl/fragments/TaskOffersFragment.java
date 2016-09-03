@@ -43,6 +43,7 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import timber.log.Timber;
 
 public class TaskOffersFragment
@@ -85,6 +86,8 @@ public class TaskOffersFragment
     int mPrimaryDark;
     @BindColor(R.color.colorPrimary)
     int mColorPrimary;
+
+    private Unbinder unbinder;
 
     private DatabaseReference mDatabase;
 
@@ -155,7 +158,7 @@ public class TaskOffersFragment
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_task_offers, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         mCollapsingToolbar.setExpandedTitleColor(mTransparent);
         mCollapsingToolbar.setContentScrimColor(mColorPrimary);
@@ -242,6 +245,16 @@ public class TaskOffersFragment
     public void onDestroyView() {
         super.onDestroyView();
         Glide.clear(mIvProfileImage);
+
+        mDatabase.removeEventListener(valueEventListener);
+        valueEventListener = null;
+
+        unbinder.unbind();
+
+        mMediaPagerAdapter = null;
+        mCircleIndicator = null;
+
+        mMenu = null;
     }
 
     @OnClick(R.id.btnBidNow)
@@ -307,18 +320,18 @@ public class TaskOffersFragment
 
     private void initBookmark() {
         if (Task.isBookmarked(mTask)) {
-            mMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_menu_bookmark_filled));
+            mMenu.getItem(0).setIcon(R.drawable.ic_menu_bookmark_filled);
         } else {
-            mMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_menu_bookmark));
+            mMenu.getItem(0).setIcon(R.drawable.ic_menu_bookmark);
         }
     }
 
     private void updateBookmark() {
         if (Task.isBookmarked(mTask)) {
-            mMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_menu_bookmark));
+            mMenu.getItem(0).setIcon(R.drawable.ic_menu_bookmark);
             Task.updateBookmark(mTask, false);
         } else {
-            mMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_menu_bookmark_filled));
+            mMenu.getItem(0).setIcon(R.drawable.ic_menu_bookmark_filled);
             Task.updateBookmark(mTask, true);
         }
     }
