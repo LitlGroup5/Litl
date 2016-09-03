@@ -122,7 +122,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         email.setText(mFirebaseUser.getEmail());
 
         TextView cityState = (TextView) headerLayout.findViewById(R.id.userCityState);
-        cityState.setText("need getAddress method");
+            cityState.setText("need getAddress method");
         // need to be able to get city and state for user
     }
 

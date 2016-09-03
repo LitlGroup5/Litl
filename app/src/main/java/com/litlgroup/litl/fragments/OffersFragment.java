@@ -38,7 +38,7 @@ public class OffersFragment extends TaskFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getData(false);
+        getData();
         setupBehaviors();
     }
 
@@ -47,7 +47,7 @@ public class OffersFragment extends TaskFragment {
         infiniteScrollListener = new OffersWallScrolling();
     }
 
-    public void getData(final boolean isRefresh) {
+    public void getData() {
         try {
             final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -70,7 +70,7 @@ public class OffersFragment extends TaskFragment {
                                 mOffers.add(task);
                             }
 
-                            setupData(isRefresh);
+                            setupData();
                         }
 
                         @Override
@@ -82,11 +82,11 @@ public class OffersFragment extends TaskFragment {
         }
     }
 
-    public void setupData(boolean isRefresh) {
+    public void setupData() {
         if (chosenCategory == null) {
-            addAll(mOffers, isRefresh);
+            addMoreTasksForEndlessScrolling(mOffers);
         } else {
-            addAll(Task.getSortedTasks(mOffers, chosenCategory), isRefresh);
+            addAllNewTasksForRefresh(Task.getSortedTasks(mOffers, chosenCategory));
         }
     }
 }

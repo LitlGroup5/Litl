@@ -69,20 +69,23 @@ public class TaskFragment extends Fragment {
         taskRecycleAdapter = new TaskRecycleAdapter(tasks);
     }
 
-    public void addAll(ArrayList<Task> newTasks, boolean isRefresh) {
-        if (isRefresh) {
-            tasks.addAll(0, newTasks);
-            taskRecycleAdapter.notifyItemRangeInserted(0, newTasks.size() - 1);
+    public void addMoreTasksForEndlessScrolling(ArrayList<Task> moreTasks) {
+        tasks.addAll(moreTasks);
+        taskRecycleAdapter.notifyDataSetChanged();
+    }
+
+    public void addAllNewTasksForRefresh(ArrayList<Task> newTasks) {
+        tasks.addAll(0, newTasks);
+        taskRecycleAdapter.notifyItemRangeInserted(0, newTasks.size() - 1);
+
+        if (newTasks.size() > 0) {
             linearLayoutManager.scrollToPosition(0);
-            swipeContainer.setRefreshing(false);
-        } else {
-            tasks.addAll(newTasks);
-            taskRecycleAdapter.notifyItemRangeInserted(taskRecycleAdapter.getItemCount(), tasks.size() - 1);
         }
+        swipeContainer.setRefreshing(false);
     }
 
     private void setUpRecycleView(View v) {
-        rvTasks= (RecyclerView) v.findViewById(R.id.taskRecycleView);
+        rvTasks = (RecyclerView) v.findViewById(R.id.taskRecycleView);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvTasks.setLayoutManager(linearLayoutManager);
         rvTasks.setAdapter(taskRecycleAdapter);
@@ -90,7 +93,7 @@ public class TaskFragment extends Fragment {
                 new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                               navigateToTaskDetailActivity(position);
+                        navigateToTaskDetailActivity(position);
                     }
                 });
         rvTasks.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
