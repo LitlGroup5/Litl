@@ -85,6 +85,10 @@ public class BookmarksFragment extends TaskFragment {
     }
 
     public void setupData(boolean isRefresh) {
-        addAll(mBookmarks, isRefresh);
+        if (isRefresh) {
+            addAllNewTasksForRefresh(mBookmarks);
+        } else {
+            addMoreTasksForEndlessScrolling(mBookmarks);
+        }
     }
 }
