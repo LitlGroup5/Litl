@@ -28,7 +28,7 @@ public class ProposalsFragment extends TaskFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getData();
+        getData(false);
         setupBehaviors();
     }
 
@@ -49,7 +49,7 @@ public class ProposalsFragment extends TaskFragment {
         swipeToRefreshListener = new ProposalsPullDownToRefresh();
     }
 
-    public void getData() {
+    public void getData(final boolean isRefresh) {
         try {
             final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
@@ -72,7 +72,7 @@ public class ProposalsFragment extends TaskFragment {
                                 mProposals.add(task);
                             }
 
-                            setupData();
+                            setupData(isRefresh);
                         }
 
                         @Override
@@ -84,11 +84,11 @@ public class ProposalsFragment extends TaskFragment {
         }
     }
 
-    public void setupData() {
-        if (chosenCategory == null) {
-            addMoreTasksForEndlessScrolling(mProposals);
-        } else {
+    public void setupData(boolean isRefresh) {
+        if (isRefresh) {
             addAllNewTasksForRefresh(Task.getSortedTasks(mProposals, chosenCategory));
+        } else {
+            addMoreTasksForEndlessScrolling(mProposals);
         }
     }
 }
