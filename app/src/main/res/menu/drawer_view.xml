@@ -72,7 +72,7 @@
                         android:title="@string/groceries" />
                     <item
                         android:id="@+id/random"
-                        android:icon="@drawable/random"
+                        android:icon="@drawable/shrug_icon"
                         android:title="@string/random" />
                 </group>
             </menu>
