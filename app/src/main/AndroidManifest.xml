@@ -39,12 +39,6 @@
         <activity
             android:name=".activities.MediaFullScreenActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.BookmarksActivity"
-            android:label="@string/bookmarks_title"
-            android:parentActivityName=".activities.WallActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
     </application>
 
 </manifest>

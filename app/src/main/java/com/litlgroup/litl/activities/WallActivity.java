@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.litlgroup.litl.R;
+import com.litlgroup.litl.fragments.BookmarksFragment;
 import com.litlgroup.litl.fragments.WallFragment;
 import com.litlgroup.litl.utils.ImageUtils;
 
@@ -159,8 +160,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
 
         switch (menuItem.getItemId()) {
             case R.id.nav_bookmarks:
-                startActivity(new Intent(this, BookmarksActivity.class));
-                return;
+                fragment = new BookmarksFragment();
+                break;
             case R.id.nav_history:
                 Toast.makeText(WallActivity.this, "History is coming!", Toast.LENGTH_SHORT).show();
                 return;
