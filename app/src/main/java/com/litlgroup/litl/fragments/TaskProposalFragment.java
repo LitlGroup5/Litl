@@ -36,6 +36,7 @@ import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ImageUtils;
+import com.litlgroup.litl.utils.ZoomOutPageTransformer;
 
 import org.parceler.Parcels;
 
@@ -60,14 +61,14 @@ public class TaskProposalFragment
     TextView mTvPrice;
     @BindView(R.id.tvDescription)
     TextView mTvDescription;
-    @BindView(R.id.tvViewedBy)
-    TextView mTvViewedBy;
+    @BindView(R.id.ivViewedBy)
+    ImageView mTvViewedBy;
     @BindView(R.id.tvViewedByCount)
     TextView mTvViewedByCount;
     @BindView(R.id.tvBidByCount)
     TextView mTvBidByCount;
-    @BindView(R.id.tvBidBy)
-    TextView mTvBidBy;
+    @BindView(R.id.ivBidBy)
+    ImageView mTvBidBy;
     @BindView(R.id.vpMedia)
     ViewPager mVpMedia;
     @BindView(R.id.ivProfileImage)
@@ -194,7 +195,6 @@ public class TaskProposalFragment
 
                 mDatabase.child(Constants.TABLE_TASKS).child(mTask.getId()).removeValue();
                 Toast.makeText(getActivity(), "Task Deleted", Toast.LENGTH_SHORT).show();
-
                 getActivity().finish();
 
                 break;
@@ -204,10 +204,14 @@ public class TaskProposalFragment
                 Intent i = new Intent(getActivity(), CreateTaskActivity.class);
                 i.putExtra(Constants.TASK_ID, mTask.getId());
                 startActivity(i);
+
+                break;
             }
 
             case R.id.action_bookmark: {
                 updateBookmark();
+
+                break;
             }
         }
 
@@ -272,6 +276,7 @@ public class TaskProposalFragment
     private void setupViewPager() {
         mMediaPagerAdapter = new AdvancedMediaPagerAdapter(getActivity(), false, true, this);
         mVpMedia.setAdapter(mMediaPagerAdapter);
+        mVpMedia.setPageTransformer(true, new ZoomOutPageTransformer());
         mCircleIndicator = new CircleIndicator(mViewPagerCountDots, mVpMedia);
     }
 
@@ -284,7 +289,7 @@ public class TaskProposalFragment
         }
     }
 
-    @OnClick({R.id.tvBidBy, R.id.tvBidByCount})
+    @OnClick({R.id.ivBidBy, R.id.tvBidByCount})
     public void bidBy() {
         Intent i = new Intent(getActivity(), BidSelectScreenActivity.class);
         i.putExtra(Constants.TASK_ID, mTask.getId());
