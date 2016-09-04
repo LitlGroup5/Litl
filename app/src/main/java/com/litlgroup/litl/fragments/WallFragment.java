@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.astuetz.PagerSlidingTabStrip;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.CreateTaskActivity;
+import com.litlgroup.litl.utils.ZoomOutPageTransformer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +51,7 @@ public class WallFragment extends Fragment {
     private void setupViewPagerAndSlidingTabs(View v) {
         ViewPager viewPager = (ViewPager) v.findViewById(R.id.viewpager);
         viewPager.setAdapter(new TaskPagerAdapter(getActivity().getSupportFragmentManager(), chosenCategory));
+        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
 
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) v.findViewById(R.id.tabs);
         tabStrip.setViewPager(viewPager);
