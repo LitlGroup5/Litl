@@ -3,6 +3,7 @@ package com.litlgroup.litl.activities;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.fragments.TaskOffersFragment;
@@ -37,5 +38,15 @@ public class TaskDetailActivity extends AppCompatActivity {
         }
 
         ft.commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
