@@ -85,27 +85,24 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/tvViewedBy"
+            <ImageView
+                android:id="@+id/ivViewedBy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/tvDescription"
                 android:layout_alignStart="@+id/tvDescription"
                 android:layout_below="@+id/tvDescription"
                 android:paddingTop="16dp"
-                android:text="@string/viewed_by"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:src="@drawable/ic_viewed_by" />
 
             <TextView
                 android:id="@+id/tvViewedByCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/tvViewedBy"
-                android:layout_toEndOf="@+id/tvViewedBy"
-                android:layout_toRightOf="@+id/tvViewedBy"
-                android:paddingLeft="16dp"
+                android:layout_alignBottom="@+id/ivViewedBy"
+                android:layout_toEndOf="@+id/ivViewedBy"
+                android:layout_toRightOf="@+id/ivViewedBy"
+                android:paddingLeft="8dp"
                 android:paddingTop="16dp"
                 android:text="7"
                 android:textSize="16sp" />
@@ -117,35 +114,27 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/tvDescription"
-                android:paddingLeft="16dp"
+                android:paddingLeft="8dp"
                 android:paddingTop="16dp"
                 android:text="23"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/tvBidBy"
+            <ImageView
+                android:id="@+id/ivBidBy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/tvBidByCount"
                 android:layout_toLeftOf="@+id/tvBidByCount"
                 android:layout_toStartOf="@+id/tvBidByCount"
                 android:paddingTop="16dp"
-                android:text="@string/bid_by"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
+                android:src="@drawable/ic_bid_by"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/tvViewedBy"
-                android:layout_alignRight="@+id/tvViewedBy"
-                android:layout_below="@+id/tvPostedDate" />
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 
     <Button
+        style="@style/BidButton"
         android:id="@+id/btnBidNow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
