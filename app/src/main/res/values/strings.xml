@@ -46,4 +46,5 @@
     <string name="static_map_base_url">https://maps.googleapis.com/maps/api/staticmap</string>
     <string name="static_map_api_key">AIzaSyBijMuucfgSXEl1XUZHvCGE22MZwim5AVk</string>
     <string name="bookmarks_title">Bookmarks</string>
+    <string name="place_bid">Place Bid</string>
 </resources>
