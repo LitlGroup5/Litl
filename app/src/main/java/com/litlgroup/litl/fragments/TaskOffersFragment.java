@@ -60,14 +60,14 @@ public class TaskOffersFragment
     TextView mTvPrice;
     @BindView(R.id.tvDescription)
     TextView mTvDescription;
-    @BindView(R.id.tvViewedBy)
-    TextView mTvViewedBy;
+    @BindView(R.id.ivViewedBy)
+    ImageView mTvViewedBy;
     @BindView(R.id.tvViewedByCount)
     TextView mTvViewedByCount;
     @BindView(R.id.tvBidByCount)
     TextView mTvBidByCount;
-    @BindView(R.id.tvBidBy)
-    TextView mTvBidBy;
+    @BindView(R.id.ivBidBy)
+    ImageView mTvBidBy;
     @BindView(R.id.vpMedia)
     ViewPager mVpMedia;
     @BindView(R.id.ivProfileImage)
@@ -274,7 +274,7 @@ public class TaskOffersFragment
         myDialog.show(fm, Constants.BID_NOW_FRAGMENT);
     }
 
-    @OnClick({R.id.tvBidBy, R.id.tvBidByCount})
+    @OnClick({R.id.ivBidBy, R.id.tvBidByCount})
     public void bidBy() {
         Intent i = new Intent(getActivity(), BidSelectScreenActivity.class);
         i.putExtra(Constants.TASK_ID, mTask.getId());
