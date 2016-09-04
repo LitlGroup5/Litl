@@ -1,12 +1,7 @@
 package com.litlgroup.litl.fragments;
 
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -41,6 +36,7 @@ import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ImageUtils;
+import com.litlgroup.litl.utils.ZoomOutPageTransformer;
 
 import org.parceler.Parcels;
 
@@ -199,7 +195,6 @@ public class TaskProposalFragment
 
                 mDatabase.child(Constants.TABLE_TASKS).child(mTask.getId()).removeValue();
                 Toast.makeText(getActivity(), "Task Deleted", Toast.LENGTH_SHORT).show();
-
                 getActivity().finish();
 
                 break;
@@ -209,10 +204,14 @@ public class TaskProposalFragment
                 Intent i = new Intent(getActivity(), CreateTaskActivity.class);
                 i.putExtra(Constants.TASK_ID, mTask.getId());
                 startActivity(i);
+
+                break;
             }
 
             case R.id.action_bookmark: {
                 updateBookmark();
+
+                break;
             }
         }
 
@@ -277,6 +276,7 @@ public class TaskProposalFragment
     private void setupViewPager() {
         mMediaPagerAdapter = new AdvancedMediaPagerAdapter(getActivity(), false, true, this);
         mVpMedia.setAdapter(mMediaPagerAdapter);
+        mVpMedia.setPageTransformer(true, new ZoomOutPageTransformer());
         mCircleIndicator = new CircleIndicator(mViewPagerCountDots, mVpMedia);
     }
 
