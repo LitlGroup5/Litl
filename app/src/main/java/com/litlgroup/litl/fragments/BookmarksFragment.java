@@ -63,7 +63,7 @@ public class BookmarksFragment extends TaskFragment {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Timber.d(dataSnapshot.toString());
-
+                            int currentNumberOfBookmarks = mBookmarks.size();
                             mBookmarks.clear();
 
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -77,8 +77,9 @@ public class BookmarksFragment extends TaskFragment {
 
                                 mBookmarks.add(task);
                             }
-
-                            setupData(isRefresh);
+                            if (mBookmarks.size() != currentNumberOfBookmarks) {
+                                setupData(isRefresh);
+                            }
                         }
 
                         @Override
