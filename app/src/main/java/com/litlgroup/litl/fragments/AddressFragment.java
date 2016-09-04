@@ -197,7 +197,6 @@ public class AddressFragment
     private boolean validateAddress()
     {
         try {
-            String apt = etApt.getText().toString();
             String streetAddress = etStreetAddress.getText().toString();
             String city = etCity.getText().toString();
             String zip = etZip.getText().toString();

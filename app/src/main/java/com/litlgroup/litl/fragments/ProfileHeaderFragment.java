@@ -347,6 +347,14 @@ public class ProfileHeaderFragment
 
             Address address = user.getAddress();
 
+            try {
+                ImageUtils.setBlurredMapBackground(address, ivDataBackground);
+            }
+            catch (Exception ex)
+            {
+                Timber.e("Error setting the map background");
+            }
+
             if(name != null && !name.isEmpty())
                 etProfileName.setText(name);
 
@@ -552,6 +560,9 @@ public class ProfileHeaderFragment
     {
         try
         {
+            boolean isDataValid = validateProfileData();
+            if(!isDataValid)
+                return;
             mediaPagerAdapter.setAllowCapture(false);
             User user;
             if(profileMode == ProfileActivity.ProfileMode.ME_CREATE
@@ -568,6 +579,60 @@ public class ProfileHeaderFragment
             Timber.e("Error when saving profile", ex);
         }
     }
+
+    private boolean validateProfileData()
+    {
+        try
+        {
+            String name = etProfileName.getText().toString();
+
+            String email = etProfileEmail.getText().toString();
+
+            String bio = etAboutMe.getText().toString();
+            String skillsString = etSkills.getText().toString();
+
+            String address = tvProfileAddress.getText().toString();
+
+
+            boolean isValid = true;
+            if(name == null || name.trim().isEmpty())
+            {
+                etProfileName.setError("Name is required");
+                isValid = false;
+            }
+
+            if(email == null || email.trim().isEmpty())
+            {
+                etProfileEmail.setError("Email is required");
+                isValid = false;
+            }
+
+            if(bio == null || bio.trim().isEmpty())
+            {
+                etAboutMe.setError("About me is required");
+                isValid = false;
+            }
+
+            if(skillsString == null || skillsString.trim().isEmpty())
+            {
+                etSkills.setError("Skills are required");
+                isValid = false;
+            }
+
+            if(address == null || address.trim().isEmpty())
+            {
+                tvProfileAddress.setError("Address is required");
+                isValid = false;
+            }
+            return isValid;
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error validating profile data");
+            return false;
+        }
+    }
+
 
     private void writeUser(User user)
     {

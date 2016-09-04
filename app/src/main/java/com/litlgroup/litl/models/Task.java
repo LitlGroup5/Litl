@@ -341,8 +341,6 @@ public class Task {
             HashMap<String, Object> result = new HashMap<>();
             result.put("address", address);
             result.put("categories", categories);
-            result.put("deadlineDate", deadlineDate);
-            result.put("description", description);
             result.put("media", media);
             result.put("price", price);
             result.put("title", title);

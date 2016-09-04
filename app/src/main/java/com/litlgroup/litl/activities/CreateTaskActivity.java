@@ -44,6 +44,7 @@ import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.DateUtils;
 import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.Permissions;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,6 +52,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -127,6 +129,12 @@ public class CreateTaskActivity
 
     ArrayList<String> fileLocalUris;
 
+
+    public enum TaskDataValidationMode { TASK_DEFAULT_MODE}
+
+    public TaskDataValidationMode  taskDataValidationMode;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,6 +158,9 @@ public class CreateTaskActivity
         fileLocalUris = new ArrayList<>();
         checkForExistingTaskData();
 
+        tvDueDate.setText(getDefaultDeadlineDate());
+
+        taskDataValidationMode = TaskDataValidationMode.TASK_DEFAULT_MODE;
     }
 
     private void checkForExistingTaskData() {
@@ -172,7 +183,6 @@ public class CreateTaskActivity
             Timber.e("Checking for existing task data failed");
         }
     }
-
 
     private void fetchExistingTaskData(String taskId) {
         try {
@@ -251,6 +261,11 @@ public class CreateTaskActivity
     @OnClick(R.id.btnPostTask)
     public void postTask() {
         try {
+
+            boolean isTaskDataValid = validateTaskData();
+
+            if(!isTaskDataValid)
+                return;
             Task task;
 
             if (isEditMode) {
@@ -376,7 +391,6 @@ public class CreateTaskActivity
         return null;
     }
 
-
     private void writeNewTask(Task task) {
         try {
 
@@ -407,6 +421,80 @@ public class CreateTaskActivity
         }
 
     }
+
+    private boolean validateTaskData()
+    {
+        try {
+
+
+            String title = etTitle.getText().toString();
+            String description = etDescription.getText().toString();
+            String date = tvDueDate.getText().toString();
+            String time = tvDueTime.getText().toString();
+            String address = tvAddress.getText().toString();
+            String price = etPrice.getText().toString();
+            String category = spCategory.getSelectedItem().toString();
+            List<String> mediaUrls = this.mediaUrls;
+
+            boolean isValid  = true;
+
+            if(taskDataValidationMode == TaskDataValidationMode.TASK_DEFAULT_MODE)
+            {
+                if(title == null || title.trim().isEmpty())
+                {
+                    etTitle.setError("Title is required");
+                    isValid = false;
+                }
+
+                if(description == null || description.trim().isEmpty())
+                {
+                    etDescription.setError("Description is required");
+                    isValid = false;
+                }
+
+                if(date == null || date.trim().isEmpty())
+                {
+                    tvDueDate.setError("Date is required");
+                    isValid = false;
+                }
+
+                if(time == null || time.trim().isEmpty())
+                {
+                    tvDueTime.setError("Time is required");
+                    isValid = false;
+                }
+
+                if(address == null || address.trim().isEmpty())
+                {
+                    tvAddress.setError("Address is required");
+                    isValid = false;
+                }
+
+                if(price == null || price.trim().isEmpty())
+                {
+                    etPrice.setError("Price is required");
+                    isValid = false;
+                }
+
+                if(mediaUrls == null || mediaUrls.size() == 0)
+                {
+                    //Toast.makeText(CreateTaskActivity.this, "Please add an image/video", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(CreateTaskActivity.this, "Please add an image/video", TastyToast.LENGTH_LONG, TastyToast.WARNING);
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error validating task data");
+            return false;
+        }
+    }
+
 
     private String dueDate;
 
@@ -839,4 +927,24 @@ public class CreateTaskActivity
     public void onStartItemViewClicked(int pageIndex) {
         startFullScreenMedia();
     }
+
+    private String getDefaultDeadlineDate()
+    {
+        try {
+
+            Calendar calendar = Calendar.getInstance();
+
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH) + 1;
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            return String.format(Locale.US, "%02d/%02d/%d", month , day, year );
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
 }
