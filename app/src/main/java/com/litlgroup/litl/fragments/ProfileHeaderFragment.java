@@ -2,6 +2,7 @@ package com.litlgroup.litl.fragments;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,9 +18,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,6 +45,7 @@ import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.Permissions;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -53,6 +57,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import timber.log.Timber;
@@ -93,8 +98,20 @@ public class ProfileHeaderFragment
     @BindView(R.id.ibRemoveConnection)
     ImageButton ibRemoveConnection;
 
+    @BindView(R.id.ibContactPhone)
+    ImageButton ibContactPhone;
+
+    @BindView(R.id.etContactNo)
+    EditText etContactNo;
+
     @BindView(R.id.tvProfileAddress)
     TextView tvProfileAddress;
+
+    @BindView(R.id.ivProfileImage)
+    CircleImageView ivProfileImage;
+
+    @BindView(R.id.rbUserRating)
+    RatingBar rbUserRating;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -123,6 +140,7 @@ public class ProfileHeaderFragment
     String onScreenUserId;
     ProfileActivity.ProfileMode profileMode;
     Address address;
+    float userRating;
 
     //User object corresponding to the data on screen currently being viewed
     User onScreenUser;
@@ -148,6 +166,7 @@ public class ProfileHeaderFragment
         View view = inflater.inflate(R.layout.fragment_profile_header, container, false);
         unbinder = ButterKnife.bind(this, view);
         try {
+            setEventListeners();
             setupViewPager();
             profileModeLayoutChanges();
         }
@@ -201,6 +220,7 @@ public class ProfileHeaderFragment
         fileLocalUris = new ArrayList<>();
         permissions = new Permissions(getActivity());
 
+
         try {
             currentAuthorizedUId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -215,6 +235,29 @@ public class ProfileHeaderFragment
         }
     }
 
+
+
+    private void setEventListeners() {
+        rbUserRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                userRating = v;
+
+                try
+                {
+                    mDatabase.child(Constants.TABLE_USERS)
+                            .child(onScreenUserId)
+                            .child(getString(R.string.user_rating_child))
+                            .setValue(userRating);
+                }
+                catch (Exception ex)
+                {
+                    Timber.e("Error writing user rating to firebase");
+                }
+            }
+        });
+    }
+
     private void profileModeLayoutChanges()
     {
         try
@@ -222,43 +265,61 @@ public class ProfileHeaderFragment
             switch (profileMode)
             {
                 case ME_CREATE:
-                    ibProfileEdit.setVisibility(View.GONE);
+                    ibProfileEdit.setVisibility(View.INVISIBLE);
                     ibProfileSave.setVisibility(View.VISIBLE);
-                    ibAddConnection.setVisibility(View.GONE);
-                    ibRemoveConnection.setVisibility(View.GONE);
+                    ibAddConnection.setVisibility(View.INVISIBLE);
+                    ibRemoveConnection.setVisibility(View.INVISIBLE);
+
+                    setPrivateInfoVisibility(true);
 
                     setEditModeFieldsState(true);
                     break;
                 case ME_VIEW:
                     ibProfileEdit.setVisibility(View.VISIBLE);
-                    ibProfileSave.setVisibility(View.GONE);
-                    ibAddConnection.setVisibility(View.GONE);
-                    ibRemoveConnection.setVisibility(View.GONE);
+                    ibProfileSave.setVisibility(View.INVISIBLE);
+                    ibAddConnection.setVisibility(View.INVISIBLE);
+                    ibRemoveConnection.setVisibility(View.INVISIBLE);
+
+                    etProfileEmail.setVisibility(View.VISIBLE);
+                    etContactNo.setVisibility(View.VISIBLE);
+                    ibContactPhone.setVisibility(View.VISIBLE);
+                    setPrivateInfoVisibility(true);
                     setEditModeFieldsState(false);
                     break;
                 case ME_EDIT:
-                    ibProfileEdit.setVisibility(View.GONE);
+                    ibProfileEdit.setVisibility(View.INVISIBLE);
                     ibProfileSave.setVisibility(View.VISIBLE);
-                    ibAddConnection.setVisibility(View.GONE);
-                    ibRemoveConnection.setVisibility(View.GONE);
+                    ibAddConnection.setVisibility(View.INVISIBLE);
+                    ibRemoveConnection.setVisibility(View.INVISIBLE);
 
+                    etProfileEmail.setVisibility(View.VISIBLE);
+                    etContactNo.setVisibility(View.VISIBLE);
+                    ibContactPhone.setVisibility(View.VISIBLE);
+
+                    setPrivateInfoVisibility(true);
                     setEditModeFieldsState(true);
+
                     break;
                 case CONNECTION:
-                    ibProfileEdit.setVisibility(View.GONE);
-                    ibProfileSave.setVisibility(View.GONE);
-                    ibAddConnection.setVisibility(View.GONE);
+                    ibProfileEdit.setVisibility(View.INVISIBLE);
+                    ibProfileSave.setVisibility(View.INVISIBLE);
+                    ibAddConnection.setVisibility(View.INVISIBLE);
                     ibRemoveConnection.setVisibility(View.VISIBLE);
+                    etProfileEmail.setVisibility(View.INVISIBLE);
+                    rbUserRating.setIsIndicator(false);
+
                     setEditModeFieldsState(false);
                     break;
                 case OTHER:
-                    ibProfileEdit.setVisibility(View.GONE);
-                    ibProfileSave.setVisibility(View.GONE);
+                    ibProfileEdit.setVisibility(View.INVISIBLE);
+                    ibProfileSave.setVisibility(View.INVISIBLE);
 
                     //Set the following two to invisible now and then reset when user data has been fetched
-                    ibAddConnection.setVisibility(View.GONE);
-                    ibRemoveConnection.setVisibility(View.GONE);
-
+                    ibAddConnection.setVisibility(View.INVISIBLE);
+                    ibRemoveConnection.setVisibility(View.INVISIBLE);
+                    rbUserRating.setIsIndicator(false);
+                    etProfileEmail.setVisibility(View.INVISIBLE);
+                    setPrivateInfoVisibility(false);
                     setEditModeFieldsState(false);
                     break;
             }
@@ -274,14 +335,24 @@ public class ProfileHeaderFragment
     {
         try
         {
-            etProfileName.setEnabled(isEditMode);
-            etProfileEmail.setEnabled(isEditMode);
-
+//            etProfileName.setEnabled(isEditMode);
+//            etProfileEmail.setEnabled(isEditMode);
+            etContactNo.setEnabled(isEditMode);
             etAboutMe.setEnabled(isEditMode);
             etSkills.setEnabled(isEditMode);
 
+
             if(isEditMode) {
                 ibAddConnection.setVisibility(View.GONE);
+                etContactNo.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                etAboutMe.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                etSkills.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            }
+            else
+            {
+                etContactNo.setBackgroundColor(Color.TRANSPARENT);
+                etAboutMe.setBackgroundColor(Color.TRANSPARENT);
+                etSkills.setBackgroundColor(Color.TRANSPARENT);
             }
 
             tvProfileAddress.setClickable(isEditMode);
@@ -328,6 +399,13 @@ public class ProfileHeaderFragment
             String name = user.getName();
             String email = user.getEmail();
             String bio = user.getbiography();
+            String contactNo = user.getContactNo();
+            String profileImageUrl = user.getPhoto();
+
+            Glide.with(this)
+                    .load(profileImageUrl)
+                    .placeholder(R.drawable.offer_profile_image)
+                    .into(ivProfileImage);
 
             ArrayList<String> skillset = null;
             if(user.getSkillSet() != null)
@@ -340,20 +418,13 @@ public class ProfileHeaderFragment
                 fileLocalUris = media;
                 for (int i =0 ; i  < mediaUrls.size(); i++) {
                     mediaPagerAdapter.insertUri(Uri.parse(mediaUrls.get(i)), i);
-                    mediaPagerAdapter.notifyDataSetChanged();
+
                     circleIndicator.refreshIndicator();
                 }
+                mediaPagerAdapter.notifyDataSetChanged();
             }
 
             Address address = user.getAddress();
-
-            try {
-                ImageUtils.setBlurredMapBackground(address, ivDataBackground);
-            }
-            catch (Exception ex)
-            {
-                Timber.e("Error setting the map background");
-            }
 
             if(name != null && !name.isEmpty())
                 etProfileName.setText(name);
@@ -363,6 +434,9 @@ public class ProfileHeaderFragment
 
             if(bio != null && !bio.isEmpty())
                 etAboutMe.setText(bio);
+
+            if(contactNo != null && !contactNo.isEmpty())
+                etContactNo.setText(contactNo);
 
             if(skillset != null && !skillset.isEmpty()) {
 
@@ -376,15 +450,14 @@ public class ProfileHeaderFragment
                 etSkills.setText(skills);
             }
 
-            //handle media urls
-
+            if(user.getRating()!=null)
+                rbUserRating.setRating(user.getRating());
 
             if(address != null) {
                 this.address = address;
                 tvProfileAddress.setText(Address.getDisplayString(address));
                 ImageUtils.setBlurredMapBackground(address, ivDataBackground);
             }
-
 
 
         } catch (Exception ex) {
@@ -429,10 +502,10 @@ public class ProfileHeaderFragment
             mediaPagerAdapter.setAllowCapture(true);
             mediaPagerAdapter.notifyDataSetChanged();//to force capture controls to be displayed
 
-            ibProfileEdit.setVisibility(View.GONE);
+            ibProfileEdit.setVisibility(View.INVISIBLE);
             ibProfileSave.setVisibility(View.VISIBLE);
-            ibAddConnection.setVisibility(View.GONE);
-            ibRemoveConnection.setVisibility(View.GONE);
+            ibAddConnection.setVisibility(View.INVISIBLE);
+            ibRemoveConnection.setVisibility(View.INVISIBLE);
         }
         catch (Exception ex)
         {
@@ -448,12 +521,13 @@ public class ProfileHeaderFragment
         {
             isConnectionAdded = true;
 
-            ibAddConnection.setVisibility(View.GONE);
+            ibAddConnection.setVisibility(View.INVISIBLE);
             ibRemoveConnection.setVisibility(View.VISIBLE);
 
-            Toast.makeText(getActivity(), "Added to your connections!", Toast.LENGTH_SHORT).show();
+            TastyToast.makeText(getActivity(), "Added to your connections", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
 
             writeAddRemoveConnection(isConnectionAdded);
+            setPrivateInfoVisibility(true);
         }
         catch (Exception ex)
         {
@@ -469,14 +543,42 @@ public class ProfileHeaderFragment
             isConnectionAdded = false;
 
             ibAddConnection.setVisibility(View.VISIBLE);
-            ibRemoveConnection.setVisibility(View.GONE);
+            ibRemoveConnection.setVisibility(View.INVISIBLE);
 
-            Toast.makeText(getActivity(), "Removed from your connections!", Toast.LENGTH_SHORT).show();
+            TastyToast.makeText(getActivity(), "Removed from your connections", TastyToast.LENGTH_LONG, TastyToast.INFO);
+
             writeAddRemoveConnection(isConnectionAdded);
+            setPrivateInfoVisibility(false);
         }
         catch (Exception ex)
         {
             Timber.e("Error starting remove connection", ex);
+        }
+    }
+
+    private void setPrivateInfoVisibility(boolean isSetVisible)
+    {
+        try
+        {
+            if (!onScreenUser.getConnections().contains(currentAuthorizedUId))
+                return;
+
+            if(isSetVisible) {
+                etProfileEmail.setVisibility(View.VISIBLE);
+                etContactNo.setVisibility(View.VISIBLE);
+                ibContactPhone.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                etProfileEmail.setVisibility(View.GONE);
+                etContactNo.setVisibility(View.GONE);
+                ibContactPhone.setVisibility(View.GONE);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error setting visiblity of private information");
         }
     }
 
@@ -498,11 +600,15 @@ public class ProfileHeaderFragment
                                 try {
                                     if (authUserconnections.contains(onScreenUserId)) //if onscreen user is in current authorized user's authUserconnections
                                     {
-                                        ibAddConnection.setVisibility(View.GONE);
+
+                                        ibAddConnection.setVisibility(View.INVISIBLE);
                                         ibRemoveConnection.setVisibility(View.VISIBLE);
+                                        setPrivateInfoVisibility(true);
+
                                     } else {
                                         ibAddConnection.setVisibility(View.VISIBLE);
-                                        ibRemoveConnection.setVisibility(View.GONE);
+                                        ibRemoveConnection.setVisibility(View.INVISIBLE);
+                                        setPrivateInfoVisibility(false);
                                     }
                                 }
                                 catch (Exception ex)
@@ -589,10 +695,10 @@ public class ProfileHeaderFragment
             String email = etProfileEmail.getText().toString();
 
             String bio = etAboutMe.getText().toString();
+            String contactNo = etContactNo.getText().toString();
             String skillsString = etSkills.getText().toString();
 
             String address = tvProfileAddress.getText().toString();
-
 
             boolean isValid = true;
             if(name == null || name.trim().isEmpty())
@@ -604,6 +710,12 @@ public class ProfileHeaderFragment
             if(email == null || email.trim().isEmpty())
             {
                 etProfileEmail.setError("Email is required");
+                isValid = false;
+            }
+
+            if(contactNo == null || contactNo.trim().isEmpty())
+            {
+                etContactNo.setError("Contact number is required");
                 isValid = false;
             }
 
@@ -662,6 +774,7 @@ public class ProfileHeaderFragment
             String email = etProfileEmail.getText().toString();
             if(email.isEmpty())
                 email = authUserData.getEmail();
+            String contactNo = etContactNo.getText().toString();
             String bio = etAboutMe.getText().toString();
             String skillsString = etSkills.getText().toString();
             ArrayList<String> skillSet = new ArrayList<>();
@@ -673,14 +786,14 @@ public class ProfileHeaderFragment
 
             Address address = this.address;
             List<String> bookmarks = new ArrayList<>();
-            String contactNo = getString(R.string.default_contact_no);
+
             Float earnings = 0f;
 
             String photo = authUserData.getPhoto();
             ArrayList<String> connections = new ArrayList<>();
 
             ArrayList<String> media = mediaUrls;//new ArrayList<>();
-            Float rating = 0f;
+            Float rating = authUserData.getRating(); //rbUserRating.getRating();
             User user = new User(
                     bookmarks,
                     contactNo,
@@ -771,7 +884,7 @@ public class ProfileHeaderFragment
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         fileUri = CameraUtils.getOutputMediaFileUri(CameraUtils.MEDIA_TYPE_IMAGE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // setEventListeners the image file name
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
@@ -786,7 +899,7 @@ public class ProfileHeaderFragment
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 
         fileUri = CameraUtils.getOutputMediaFileUri(CameraUtils.MEDIA_TYPE_VIDEO);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the video file name
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // setEventListeners the video file name
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
