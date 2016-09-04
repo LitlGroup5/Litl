@@ -3,6 +3,7 @@ package com.litlgroup.litl.activities;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.litlgroup.litl.R;
@@ -48,5 +49,14 @@ public class ProfileActivity extends AppCompatActivity {
             ft.commit();
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            supportFinishAfterTransition();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

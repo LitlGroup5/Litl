@@ -57,7 +57,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import de.hdodenhof.circleimageview.CircleImageView;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import timber.log.Timber;
@@ -108,7 +107,7 @@ public class ProfileHeaderFragment
     TextView tvProfileAddress;
 
     @BindView(R.id.ivProfileImage)
-    CircleImageView ivProfileImage;
+    ImageView ivProfileImage;
 
     @BindView(R.id.rbUserRating)
     RatingBar rbUserRating;
@@ -402,10 +401,12 @@ public class ProfileHeaderFragment
             String contactNo = user.getContactNo();
             String profileImageUrl = user.getPhoto();
 
-            Glide.with(this)
-                    .load(profileImageUrl)
-                    .placeholder(R.drawable.offer_profile_image)
-                    .into(ivProfileImage);
+            ImageUtils.setCircularImage(ivProfileImage, profileImageUrl);
+
+//            Glide.with(this)
+//                    .load(profileImageUrl)
+//                    .placeholder(R.drawable.offer_profile_image)
+//                    .into(ivProfileImage);
 
             ArrayList<String> skillset = null;
             if(user.getSkillSet() != null)

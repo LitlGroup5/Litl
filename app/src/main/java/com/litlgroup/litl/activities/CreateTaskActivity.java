@@ -62,7 +62,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
+
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import timber.log.Timber;
@@ -110,7 +110,7 @@ public class CreateTaskActivity
     LinearLayout mViewPagerCountDots;
 
     @BindView(R.id.ivProfileImage)
-    CircleImageView ivProfileImage;
+    ImageView ivProfileImage;
 
     @BindView(R.id.ivDataBackground)
     ImageView ivDataBackground;
@@ -169,10 +169,7 @@ public class CreateTaskActivity
 
         try {
             String profileImageUrl = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
-            Glide.with(this)
-                    .load(profileImageUrl)
-                    .placeholder(R.drawable.offer_profile_image)
-                    .into(ivProfileImage);
+            ImageUtils.setCircularImage(ivProfileImage, profileImageUrl);
         }
         catch (Exception ex)
         {

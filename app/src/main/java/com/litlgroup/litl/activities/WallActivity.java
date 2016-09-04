@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -53,7 +54,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
     private Spinner categorySpinner;
-
+    private ImageView ivProfileImage;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
@@ -113,7 +114,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void setupHeaderDrawerLayout(View headerLayout) {
-        ImageView ivProfileImage = (ImageView) headerLayout.findViewById(R.id.ivProfileImage_header);
+        ivProfileImage = (ImageView) headerLayout.findViewById(R.id.ivProfileImage_header);
         ImageUtils.setCircularImage(ivProfileImage, mFirebaseUser.getPhotoUrl().toString());
 
         TextView userName = (TextView) headerLayout.findViewById(R.id.userName);
@@ -204,8 +205,9 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
             Intent intent = new Intent(WallActivity.this, ProfileActivity.class);
             intent.putExtra(getString(R.string.user_id), userId);
             intent.putExtra("profileMode", ProfileActivity.ProfileMode.ME_VIEW);
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, (View)ivProfileImage ,"profile");
 
-            startActivity(intent);
+            startActivity(intent, options.toBundle());
         } catch (Exception ex) {
             Timber.e("Error launching user profile screen", ex);
         }

@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.litlgroup.litl"
-        minSdkVersion 14
+        minSdkVersion 21
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -53,7 +53,6 @@ dependencies {
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'jp.wasabeef:glide-transformations:2.0.1'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'org.parceler:parceler-api:1.1.1'
 
     compile 'com.github.jkwiecien:EasyImage:1.2.3'

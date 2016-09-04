@@ -40,19 +40,29 @@
 
             </FrameLayout>
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/ivProfileImage"
+            <!--<de.hdodenhof.circleimageview.CircleImageView-->
+                <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                <!--android:id="@+id/ivProfileImage"-->
+                <!--android:layout_width="75dp"-->
+                <!--android:layout_height="75dp"-->
+                <!--app:civ_border_width="2dp"-->
+                <!--app:civ_border_color="@color/colorPrimaryDark"-->
+                <!--android:layout_gravity="start|bottom"-->
+                <!--android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+                <!--android:layout_marginStart="@dimen/activity_horizontal_margin"-->
+                <!--android:src="@drawable/offer_profile_image"-->
+                <!--android:alpha="0.8"-->
+                <!--android:transitionName="profile"/>-->
+
+            <ImageView
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                app:civ_border_width="2dp"
-                app:civ_border_color="@color/colorPrimaryDark"
+                android:id="@+id/ivProfileImage"
                 android:layout_gravity="start|bottom"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:src="@drawable/offer_profile_image"
-                android:alpha="0.8" />
-
+                android:alpha="0.8"
+                android:transitionName="profile"/>
 
         </FrameLayout>
 
