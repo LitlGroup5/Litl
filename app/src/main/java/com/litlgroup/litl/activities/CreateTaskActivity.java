@@ -176,7 +176,17 @@ public class CreateTaskActivity
         }
         catch (Exception ex)
         {
-            Timber.e("Error onCreate New Task");
+            Timber.e("Error Loading profile image");
+        }
+
+
+        try
+        {
+            ImageUtils.setBlurredMapBackground(address, ivDataBackground);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error loading map background");
         }
 
     }
@@ -258,6 +268,7 @@ public class CreateTaskActivity
             }
 
             etPrice.setText(task.getPrice());
+
             String category = task.getCategories().get(0);
 
             List<String> cat = Arrays.asList(getResources().getStringArray(R.array.categories_array_values));
@@ -324,7 +335,7 @@ public class CreateTaskActivity
             String time = tvDueTime.getText().toString();
             String timestampMillis = Task.getTimestampMillis(date, time);
             Address address = this.address;
-            String price = etPrice.getText().toString();
+            String price = etPrice.getText().toString().replace("$","");
             String category = spCategory.getSelectedItem().toString();
             List<String> categories = new ArrayList<>();
             categories.add(category);
@@ -372,7 +383,7 @@ public class CreateTaskActivity
             String time = tvDueTime.getText().toString();
             String timestampMillis = Task.getTimestampMillis(date, time);
             Address address = this.address;
-            String price = etPrice.getText().toString();
+            String price = etPrice.getText().toString().replace("$","");
             String category = spCategory.getSelectedItem().toString();
             List<String> categories = new ArrayList<>();
             categories.add(category);
