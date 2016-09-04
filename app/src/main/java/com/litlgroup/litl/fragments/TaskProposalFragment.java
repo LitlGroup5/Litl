@@ -30,6 +30,7 @@ import com.litlgroup.litl.activities.BidSelectScreenActivity;
 import com.litlgroup.litl.activities.CreateTaskActivity;
 import com.litlgroup.litl.activities.MediaFullScreenActivity;
 import com.litlgroup.litl.activities.ProfileActivity;
+import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CircleIndicator;
@@ -44,14 +45,12 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import timber.log.Timber;
 
 public class TaskProposalFragment
-
         extends Fragment
-        implements AdvancedMediaPagerAdapter.StartOnItemViewClickListener
-
-{
+        implements AdvancedMediaPagerAdapter.StartOnItemViewClickListener {
 
     @BindView(R.id.tvTitle)
     TextView mTvTitle;
@@ -79,6 +78,8 @@ public class TaskProposalFragment
     CollapsingToolbarLayout mCollapsingToolbar;
     @BindView(R.id.vpIndicator)
     LinearLayout mViewPagerCountDots;
+    @BindView(R.id.tvLocation)
+    TextView mTvLocation;
 
     @BindColor(android.R.color.transparent)
     int mTransparent;
@@ -88,6 +89,8 @@ public class TaskProposalFragment
     int mPrimaryDark;
     @BindColor(R.color.colorPrimary)
     int mColorPrimary;
+
+    private Unbinder unbinder;
 
     private DatabaseReference mDatabase;
 
@@ -137,8 +140,6 @@ public class TaskProposalFragment
 
         mTask = Parcels.unwrap(getArguments().getParcelable(Constants.TASK));
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        getTaskData();
     }
 
     @Override
@@ -146,14 +147,16 @@ public class TaskProposalFragment
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_task_proposal, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         mCollapsingToolbar.setExpandedTitleColor(mTransparent);
-        mCollapsingToolbar.setContentScrimColor(mColorPrimary);
+        mCollapsingToolbar.setContentScrimColor(mPrimaryDark);
         mCollapsingToolbar.setStatusBarScrimColor(mPrimaryDark);
 
         initToolbar();
         setupViewPager();
+
+        getTaskData();
 
         return view;
     }
@@ -162,6 +165,22 @@ public class TaskProposalFragment
     public void onDestroyView() {
         super.onDestroyView();
         Glide.clear(mIvProfileImage);
+
+        unbinder.unbind();
+        unbinder = null;
+
+        mDatabase.removeEventListener(valueEventListener);
+        valueEventListener = null;
+
+        mMediaPagerAdapter = null;
+        mCircleIndicator = null;
+
+        mMenu = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
@@ -200,6 +219,7 @@ public class TaskProposalFragment
         inflater.inflate(R.menu.task_proposal_menu, menu);
         mMenu = menu;
         initBookmark();
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -209,10 +229,13 @@ public class TaskProposalFragment
 
     private void setData(Task task) {
 
-        if (task != null) {
+        if (task != null && unbinder != null) {
 
             if (task.getTitle() != null)
                 mTvTitle.setText(task.getTitle());
+
+            if (task.getAddress() != null)
+                mTvLocation.setText(Address.getDisplayString(task.getAddress()));
 
             if (task.getDescription() != null)
                 mTvDescription.setText(task.getDescription());
@@ -303,18 +326,18 @@ public class TaskProposalFragment
 
     private void initBookmark() {
         if (Task.isBookmarked(mTask)) {
-            mMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_menu_bookmark_filled));
+            mMenu.getItem(0).setIcon(R.drawable.ic_menu_bookmark_filled);
         } else {
-            mMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_menu_bookmark));
+            mMenu.getItem(0).setIcon(R.drawable.ic_menu_bookmark);
         }
     }
 
     private void updateBookmark() {
         if (Task.isBookmarked(mTask)) {
-            mMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_menu_bookmark));
+            mMenu.getItem(0).setIcon(R.drawable.ic_menu_bookmark);
             Task.updateBookmark(mTask, false);
         } else {
-            mMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_menu_bookmark_filled));
+            mMenu.getItem(0).setIcon(R.drawable.ic_menu_bookmark_filled);
             Task.updateBookmark(mTask, true);
         }
     }

@@ -39,8 +39,6 @@
         android:src="@android:drawable/ic_input_add"
         android:tint="@color/colorAccent"
         app:backgroundTint="@color/colorPrimary"
-        app:layout_anchor="@id/linearLayout"
-        app:layout_anchorGravity="bottom|right|end"
         app:layout_behavior="com.litlgroup.litl.behaviors.ScrollAwareFABBehavior" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -9,8 +9,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.litlgroup.litl.behaviors.ProposalWallScrolling;
-import com.litlgroup.litl.behaviors.ProposalsPullDownToRefresh;
+import com.litlgroup.litl.behaviors.BookmarksPullDownToRefresh;
+import com.litlgroup.litl.behaviors.BookmarksWallScrolling;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.Constants;
 
@@ -19,11 +19,11 @@ import java.util.ArrayList;
 import timber.log.Timber;
 
 /**
- * Created by andrj148 on 8/17/16.
+ * A placeholder fragment containing a simple view.
  */
-public class ProposalsFragment extends TaskFragment {
+public class BookmarksFragment extends TaskFragment {
 
-    ArrayList<Task> mProposals = new ArrayList<>();
+    ArrayList<Task> mBookmarks = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,29 +32,17 @@ public class ProposalsFragment extends TaskFragment {
         setupBehaviors();
     }
 
-    public static ProposalsFragment newInstance(String category) {
-        ProposalsFragment fragment = new ProposalsFragment();
-        fragment.chosenCategory = category;
-        if (category != null && !category.equalsIgnoreCase("All Categories")) {
-            fragment.tasksForSpecificCategoryIsEmpty = true;
-        } else {
-            fragment.tasksForSpecificCategoryIsEmpty = false;
-        }
-
-        return fragment;
-    }
-
     private void setupBehaviors() {
-        infiniteScrollListener = new ProposalWallScrolling();
-        swipeToRefreshListener = new ProposalsPullDownToRefresh();
+        infiniteScrollListener = new BookmarksWallScrolling();
+        swipeToRefreshListener = new BookmarksPullDownToRefresh();
     }
 
     public void getData(final boolean isRefresh) {
         try {
             final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
-            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            String node = Constants.TABLE_TASKS_COLUMN_USER + "/" + uid;
+            final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            String node = Constants.TABLE_TASKS_COLUMN_BOOKMARKS + "/" + uid;
 
             database.child(Constants.TABLE_TASKS).orderByChild(node)
                     .equalTo(true)
@@ -63,13 +51,18 @@ public class ProposalsFragment extends TaskFragment {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Timber.d(dataSnapshot.toString());
 
-                            mProposals.clear();
+                            mBookmarks.clear();
 
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 Task task = snapshot.getValue(Task.class);
                                 task.setId(snapshot.getKey());
-                                task.setType(Task.Type.PROPOSAL);
-                                mProposals.add(task);
+
+                                if (task.getUser().getId().equals(uid))
+                                    task.setType(Task.Type.PROPOSAL);
+                                else
+                                    task.setType(Task.Type.OFFER);
+
+                                mBookmarks.add(task);
                             }
 
                             setupData(isRefresh);
@@ -86,9 +79,9 @@ public class ProposalsFragment extends TaskFragment {
 
     public void setupData(boolean isRefresh) {
         if (isRefresh) {
-            addAllNewTasksForRefresh(Task.getSortedTasks(mProposals, chosenCategory));
+            addAllNewTasksForRefresh(mBookmarks);
         } else {
-            addMoreTasksForEndlessScrolling(mProposals);
+            addMoreTasksForEndlessScrolling(mBookmarks);
         }
     }
 }

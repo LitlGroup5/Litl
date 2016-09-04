@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.litlgroup.litl.R;
+import com.litlgroup.litl.fragments.BookmarksFragment;
 import com.litlgroup.litl.fragments.WallFragment;
 import com.litlgroup.litl.utils.ImageUtils;
 
@@ -107,6 +108,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
 
         View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
         setupHeaderDrawerLayout(headerLayout);
+        headerLayout.setBackgroundResource(R.drawable.wood);
     }
 
     private void setupHeaderDrawerLayout(View headerLayout) {
@@ -121,7 +123,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         email.setText(mFirebaseUser.getEmail());
 
         TextView cityState = (TextView) headerLayout.findViewById(R.id.userCityState);
-        cityState.setText("San Diego, CA");
+            cityState.setText("need getAddress method");
+        // need to be able to get city and state for user
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -154,19 +157,20 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
+        CharSequence categorySpinnerTitle = menuItem.getTitle();
+        String toolbarTitle = "Litl";
 
         switch (menuItem.getItemId()) {
-            case R.id.nav_create_Task:
-                launchCreateTaskActivity();
-                return;
             case R.id.nav_bookmarks:
-                Toast.makeText(WallActivity.this, "Bookmarks is coming!", Toast.LENGTH_SHORT).show();
+                fragment = new BookmarksFragment();
+                toolbarTitle = "Bookmarks";
+                categorySpinnerTitle = "All Categories";
+                break;
+            case R.id.nav_history:
+                Toast.makeText(WallActivity.this, "History is coming!", Toast.LENGTH_SHORT).show();
                 return;
             case R.id.nav_profile:
                 startUserProfileScreen();
-                return;
-            case R.id.nav_history:
-                Toast.makeText(WallActivity.this, "History is coming!", Toast.LENGTH_SHORT).show();
                 return;
             case R.id.nav_settings:
                 Toast.makeText(WallActivity.this, "Settings is coming!", Toast.LENGTH_SHORT).show();
@@ -181,6 +185,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
                 fragment = WallFragment.newInstance(menuItem.toString());
         }
 
+        toolbar.setTitle(toolbarTitle);
+
         // Insert the fragment by replacing any existing fragment
         loadFragmentIntoFrameLayout(fragment);
 
@@ -188,16 +194,10 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         menuItem.setChecked(true);
 
         // Set spinner category
-        setSpinnerSelectedItem(menuItem.getTitle());
+        setSpinnerSelectedItem(categorySpinnerTitle);
 
         // Close the navigation drawer
         drawerLayout.closeDrawers();
-    }
-
-    public void launchCreateTaskActivity() {
-
-        Intent intent = new Intent(WallActivity.this, CreateTaskActivity.class);
-        startActivity(intent);
     }
 
     public void startUserProfileScreen()

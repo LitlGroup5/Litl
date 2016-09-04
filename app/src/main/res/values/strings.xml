@@ -36,7 +36,7 @@
     <string name="plumbing">Plumbing</string>
     <string name="groceries">Groceries</string>
     <string name="random">Random</string>
-    <string name="profile">Your Profile</string>
+    <string name="profile">Profile</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="history">Your Litl History</string>
     <string name="settings">Settings</string>
@@ -45,4 +45,5 @@
     <string name="storage_reference_users_child">Users</string>
     <string name="static_map_base_url">https://maps.googleapis.com/maps/api/staticmap</string>
     <string name="static_map_api_key">AIzaSyBijMuucfgSXEl1XUZHvCGE22MZwim5AVk</string>
+    <string name="bookmarks_title">Bookmarks</string>
 </resources>
