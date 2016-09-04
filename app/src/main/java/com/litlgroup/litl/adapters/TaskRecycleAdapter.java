@@ -21,6 +21,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.litlgroup.litl.R;
+import com.litlgroup.litl.interfaces.RemoveBookmarkListener;
 import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
 
@@ -32,6 +33,11 @@ import java.util.ArrayList;
 public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.ViewHolder> {
     private ArrayList<Task> tasks;
     private Context thisContext;
+    private RemoveBookmarkListener removeBookmarkListener;
+
+    public static interface RemoveBookmarkListener {
+        public void onClick(int position, boolean isBookmarked);
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private CardView cardView;
@@ -44,6 +50,10 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
     public TaskRecycleAdapter(ArrayList<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public void setRemoveBookmarkListener(RemoveBookmarkListener listener) {
+        removeBookmarkListener = listener;
     }
 
     @Override
@@ -106,11 +116,13 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
             @Override
             public void liked(LikeButton likeButton) {
+                removeBookmarkListener.onClick(position, true);
                 changeTaskBookmarkStatus(selectedTask);
             }
 
             @Override
             public void unLiked(LikeButton likeButton) {
+                removeBookmarkListener.onClick(position, false);
                 changeTaskBookmarkStatus(selectedTask);
             }
         });
