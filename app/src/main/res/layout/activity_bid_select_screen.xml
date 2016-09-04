@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".activities.BidSelectScreenActivity">
+    tools:context=".activities.BidSelectScreenActivity"
+    android:id="@+id/rlContainer"
+    >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvOffers"

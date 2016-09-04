@@ -1,12 +1,15 @@
 package com.litlgroup.litl.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.github.jinatonic.confetti.CommonConfetti;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.adapters.BidsAdapter;
 import com.litlgroup.litl.models.Bids;
+import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.SpacesItemDecoration;
 
@@ -36,6 +40,9 @@ public class BidSelectScreenActivity
 
     @BindView(R.id.rvOffers)
     RecyclerView rvOffers;
+
+    @BindView(R.id.rlContainer)
+    RelativeLayout rlContainer;
 
     private String thisTaskId;
     DatabaseReference database;
@@ -177,11 +184,14 @@ public class BidSelectScreenActivity
 
     @Override
     public void onAcceptBidListener(int bidIndex) {
-        try
-        {
+        try {
+            CommonConfetti.rainingConfetti(rlContainer, new int[] { Color.BLUE, Color.GREEN, Color.MAGENTA, Color.CYAN })
+                    .infinite();
             updateAcceptedBidId(bidIndex);
-            updateBidStatus(getString(R.string.task_status_bid_accepted));
-            finish();
+            String state = Task.State.SUCCESSFULLY_ACCEPTED.toString();
+            updateBidStatus(state);
+
+
         }
         catch (Exception ex)
         {
