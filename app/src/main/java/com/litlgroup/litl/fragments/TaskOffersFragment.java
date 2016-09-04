@@ -35,6 +35,7 @@ import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ImageUtils;
+import com.litlgroup.litl.utils.ZoomOutPageTransformer;
 
 import org.parceler.Parcels;
 
@@ -235,6 +236,7 @@ public class TaskOffersFragment
     private void setupViewPager() {
         mMediaPagerAdapter = new AdvancedMediaPagerAdapter(getActivity(), false, true, this);
         mVpMedia.setAdapter(mMediaPagerAdapter);
+        mVpMedia.setPageTransformer(true, new ZoomOutPageTransformer());
         mCircleIndicator = new CircleIndicator(mViewPagerCountDots, mVpMedia);
     }
 
