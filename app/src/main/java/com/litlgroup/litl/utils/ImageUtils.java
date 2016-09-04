@@ -34,6 +34,14 @@ public class ImageUtils {
                 .into(imageView);
     }
 
+    public static void setBlurImage(ImageView imageView, int resourceId) {
+        Glide.with(imageView.getContext())
+                .load(resourceId)
+                .centerCrop()
+                .crossFade()
+                .bitmapTransform(new BlurTransformation(imageView.getContext(), 10, 1))
+                .into(imageView);
+    }
 
     public static void setBlurredMapBackground(Address address, ImageView imageView)
     {
