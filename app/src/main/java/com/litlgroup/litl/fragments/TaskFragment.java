@@ -4,6 +4,7 @@ package com.litlgroup.litl.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
@@ -153,7 +154,8 @@ public class TaskFragment extends Fragment {
     private void navigateToTaskDetailActivity(int position) {
         Intent i = new Intent(getActivity(), TaskDetailActivity.class);
         i.putExtra(Constants.SELECTED_TASK, Parcels.wrap(tasks.get(position)));
-        startActivity(i);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), (View)taskRecycleAdapter.getIvBackground() , "backgroundImage");
+        startActivity(i, options.toBundle());
     }
 
 }

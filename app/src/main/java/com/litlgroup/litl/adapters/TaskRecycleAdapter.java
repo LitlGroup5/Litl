@@ -35,6 +35,8 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
     private Context thisContext;
     private RemoveBookmarkListener removeBookmarkListener;
 
+    public ImageView ivBackground;
+
     public static interface RemoveBookmarkListener {
         public void onClick(int position, boolean isBookmarked);
     }
@@ -74,11 +76,15 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         return tasks.size();
     }
 
+    public ImageView getIvBackground() {
+        return ivBackground;
+    }
+
     private void setSubviews(ViewHolder viewHolder, final Task task, final int position) {
         final CardView taskCardView = viewHolder.cardView;
         taskCardView.setTag(position);
 
-        ImageView ivBackground = (ImageView) taskCardView.findViewById(R.id.ivBackground);
+        ivBackground = (ImageView) taskCardView.findViewById(R.id.ivBackground);
 
         if (task.getMedia().size() > 0) {
             Glide.with(taskCardView.getContext()).load(task.getMedia().get(0)).diskCacheStrategy(DiskCacheStrategy.ALL).into(ivBackground);
