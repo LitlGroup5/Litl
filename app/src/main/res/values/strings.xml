@@ -47,6 +47,8 @@
     <string name="static_map_api_key">AIzaSyBijMuucfgSXEl1XUZHvCGE22MZwim5AVk</string>
     <string name="bookmarks_title">Bookmarks</string>
     <string name="place_bid">Place Bid</string>
+    <string name="task_status_child">status</string>
+    <string name="task_status_bid_accepted">BID_ACCEPTED</string>
     <string name="log_out_title">Log Out</string>
     <string name="log_out_message">Are you sure ? Logging out will remove all your data from this device.</string>
 </resources>

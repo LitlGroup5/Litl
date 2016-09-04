@@ -7,18 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.models.Bids;
 import com.litlgroup.litl.models.UserSummary;
+import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 /**
  * Created by Hari on 8/18/2016.
@@ -47,6 +48,15 @@ public class BidsAdapter
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public void setEnabled(boolean isEnabled)
+        {
+            tvUsername.setEnabled(isEnabled);
+            ivProfileImage.setEnabled(isEnabled);
+            tvOfferValue.setEnabled(isEnabled);
+            ibOfferAccept.setEnabled(isEnabled);
+            ibOfferReject.setEnabled(isEnabled);
         }
     }
 
@@ -93,30 +103,6 @@ public class BidsAdapter
                         .load(profileImageUrl)
                         .placeholder(R.drawable.offer_profile_image)
                         .into(holder.ivProfileImage);
-            }
-
-            if(acceptedBidListIndex == -1)
-            {
-                holder.ibOfferAccept.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        holder.ibOfferReject.setAlpha(0.3f);
-                        holder.ibOfferAccept.setAlpha(1f);
-
-                        AcceptBidListener listener = (AcceptBidListener) mContext;
-                        Toast.makeText(getContext(), "Offer accepted!", Toast.LENGTH_SHORT).show();
-                        listener.onAcceptBidListener(position);
-                    }
-                });
-
-                holder.ibOfferReject.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        holder.ibOfferAccept.setAlpha(0.3f);
-                        holder.ibOfferReject.setAlpha(1f);
-                        Toast.makeText(getContext(), "Offer rejected!", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
                 holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -128,10 +114,28 @@ public class BidsAdapter
                         }
                         catch (Exception ex)
                         {
-                            ex.printStackTrace();
+                            Timber.e("Error launching profile screen from bid select screen");
                         }
                     }
                 });
+            }
+
+            if(acceptedBidListIndex == -1)
+            {
+                holder.ibOfferAccept.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showConfirmAcceptDialog(position);
+                    }
+                });
+
+                holder.ibOfferReject.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showConfirmRejectDialog(holder);
+                    }
+                });
+
             }
             else if(position == acceptedBidListIndex) {
                 holder.ibOfferReject.setAlpha(0.2f);
@@ -146,9 +150,53 @@ public class BidsAdapter
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Timber.e(ex.toString());
         }
     }
+
+    private void showConfirmAcceptDialog(final int position)
+    {
+
+        new LovelyStandardDialog(mContext)
+                .setTopColorRes(android.R.color.holo_orange_light)
+                .setButtonsColorRes(R.color.colorAccent)
+//                .setIcon(R.drawable.ic_star_border_white_36dp)
+                .setTitle("Are you sure?")
+                .setMessage("Are you sure you want to accept this bid?")
+                .setPositiveButton("Yes", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AcceptBidListener listener = (AcceptBidListener) mContext;
+                        listener.onAcceptBidListener(position);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .show();
+    }
+
+    private boolean showConfirmRejectDialog(final ViewHolder holder)
+    {
+        final boolean[] isConfirmedReject = {false};
+        new LovelyStandardDialog(mContext)
+                .setTopColorRes(android.R.color.holo_orange_dark)
+                .setButtonsColorRes(R.color.colorAccent)
+//                .setIcon(R.drawable.ic_star_border_white_36dp)
+                .setTitle("Are you sure?")
+                .setMessage("Are you sure you want to reject this bid?")
+                .setPositiveButton("Yes", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        holder.ibOfferReject.setAlpha(0.1f);
+                        holder.ibOfferAccept.setAlpha(0.1f);
+                        holder.setEnabled(false);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .show();
+
+        return isConfirmedReject[0];
+    }
+
 
     @Override
     public int getItemCount() {

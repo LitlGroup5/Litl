@@ -63,6 +63,10 @@ dependencies {
 
     compile 'com.seatgeek:placesautocomplete:0.2-SNAPSHOT'
     compile 'com.sdsmdg.tastytoast:tastytoast:0.0.4'
+
+    compile 'com.yarolegovich:lovely-dialog:1.0.4'
+
+    compile 'com.github.jinatonic.confetti:confetti:1.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
