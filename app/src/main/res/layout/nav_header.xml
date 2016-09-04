@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="125dp"
     android:layout_marginTop="-51dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="?android:attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/ivProfileImage_header"
