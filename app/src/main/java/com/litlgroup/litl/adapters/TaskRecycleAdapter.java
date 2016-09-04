@@ -116,13 +116,17 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
             @Override
             public void liked(LikeButton likeButton) {
-                removeBookmarkListener.onClick(position, true);
+                if (removeBookmarkListener != null) {
+                    removeBookmarkListener.onClick(position, true);
+                }
                 changeTaskBookmarkStatus(selectedTask);
             }
 
             @Override
             public void unLiked(LikeButton likeButton) {
-                removeBookmarkListener.onClick(position, false);
+                if (removeBookmarkListener != null) {
+                    removeBookmarkListener.onClick(position, false);
+                }
                 changeTaskBookmarkStatus(selectedTask);
             }
         });

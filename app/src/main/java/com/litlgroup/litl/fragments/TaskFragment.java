@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,18 +32,21 @@ import java.util.ArrayList;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class TaskFragment extends Fragment {
 
-    private RecyclerView rvTasks;
     private LinearLayoutManager linearLayoutManager;
-    private TaskRecycleAdapter taskRecycleAdapter;
     private ArrayList<Task> tasks;
     private SwipeRefreshLayout swipeContainer;
+    private RecyclerView rvTasks;
+
+    public TaskRecycleAdapter taskRecycleAdapter;
     public String chosenCategory;
     public InfiniteScrollListener infiniteScrollListener;
     public SwipeToRefreshListener swipeToRefreshListener;
@@ -75,7 +80,7 @@ public class TaskFragment extends Fragment {
     }
 
     public void addMoreTasksForEndlessScrolling(ArrayList<Task> moreTasks) {
-        int startingPoint = tasks.size() - 1;
+        int startingPoint = tasks.size();
         tasks.addAll(moreTasks);
         taskRecycleAdapter.notifyItemRangeChanged(startingPoint, moreTasks.size());
     }
@@ -88,6 +93,11 @@ public class TaskFragment extends Fragment {
             linearLayoutManager.scrollToPosition(0);
         }
         swipeContainer.setRefreshing(false);
+    }
+
+    public void removeTaskWithAnimation(int position) {
+        tasks.remove(position);
+        taskRecycleAdapter.notifyItemRemoved(position);
     }
 
     private void setUpRecycleView(View v) {
@@ -114,7 +124,11 @@ public class TaskFragment extends Fragment {
 
     private void implementRecyclerViewAnimations() {
         //RecyclerView Animations from Library https://github.com/wasabeef/recyclerview-animators
-        rvTasks.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+        rvTasks.setItemAnimator(new FlipInTopXAnimator(new OvershootInterpolator()));
+        rvTasks.getItemAnimator().setAddDuration(1000);
+        rvTasks.getItemAnimator().setRemoveDuration(1000);
+        rvTasks.getItemAnimator().setMoveDuration(1000);
+        rvTasks.getItemAnimator().setChangeDuration(1000);
 
         ScaleInAnimationAdapter scaleInAdapter = new ScaleInAnimationAdapter(taskRecycleAdapter);
         scaleInAdapter.setDuration(1500);
