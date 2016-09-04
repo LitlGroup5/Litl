@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,6 +62,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import timber.log.Timber;
@@ -106,6 +108,9 @@ public class CreateTaskActivity
 
     @BindView(R.id.vpIndicator)
     LinearLayout mViewPagerCountDots;
+
+    @BindView(R.id.ivProfileImage)
+    CircleImageView ivProfileImage;
 
     @BindView(R.id.ivDataBackground)
     ImageView ivDataBackground;
@@ -161,6 +166,19 @@ public class CreateTaskActivity
         tvDueDate.setText(getDefaultDeadlineDate());
 
         taskDataValidationMode = TaskDataValidationMode.TASK_DEFAULT_MODE;
+
+        try {
+            String profileImageUrl = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
+            Glide.with(this)
+                    .load(profileImageUrl)
+                    .placeholder(R.drawable.offer_profile_image)
+                    .into(ivProfileImage);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error onCreate New Task");
+        }
+
     }
 
     private void checkForExistingTaskData() {
@@ -253,6 +271,13 @@ public class CreateTaskActivity
                 mediaPagerAdapter.notifyDataSetChanged();
                 circleIndicator.refreshIndicator();
             }
+
+            String profileImageUrl = task.getUser().getPhoto();
+            Glide.with(this)
+                    .load(profileImageUrl)
+                    .placeholder(R.drawable.offer_profile_image)
+                    .into(ivProfileImage);
+
         } catch (Exception ex) {
             Timber.e("Error populating task data");
         }

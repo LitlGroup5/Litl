@@ -85,7 +85,7 @@ public class ImageUtils {
             Glide.with(context)
                     .load(url)
                     .centerCrop()
-                    .bitmapTransform(new BlurTransformation(context, 7, 1))
+                    .bitmapTransform(new BlurTransformation(context, 3, 1))
                     .into(imageView);
         }
         catch (Exception ex)

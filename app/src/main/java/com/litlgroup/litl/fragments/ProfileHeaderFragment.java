@@ -44,6 +44,7 @@ import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.Permissions;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -95,6 +96,12 @@ public class ProfileHeaderFragment
 
     @BindView(R.id.ibRemoveConnection)
     ImageButton ibRemoveConnection;
+
+    @BindView(R.id.ibContactPhone)
+    ImageButton ibContactPhone;
+
+    @BindView(R.id.etContactNo)
+    EditText etContactNo;
 
     @BindView(R.id.tvProfileAddress)
     TextView tvProfileAddress;
@@ -257,48 +264,61 @@ public class ProfileHeaderFragment
             switch (profileMode)
             {
                 case ME_CREATE:
-                    ibProfileEdit.setVisibility(View.GONE);
+                    ibProfileEdit.setVisibility(View.INVISIBLE);
                     ibProfileSave.setVisibility(View.VISIBLE);
-                    ibAddConnection.setVisibility(View.GONE);
-                    ibRemoveConnection.setVisibility(View.GONE);
+                    ibAddConnection.setVisibility(View.INVISIBLE);
+                    ibRemoveConnection.setVisibility(View.INVISIBLE);
+
+                    setPrivateInfoVisibility(true);
 
                     setEditModeFieldsState(true);
                     break;
                 case ME_VIEW:
                     ibProfileEdit.setVisibility(View.VISIBLE);
-                    ibProfileSave.setVisibility(View.GONE);
-                    ibAddConnection.setVisibility(View.GONE);
-                    ibRemoveConnection.setVisibility(View.GONE);
+                    ibProfileSave.setVisibility(View.INVISIBLE);
+                    ibAddConnection.setVisibility(View.INVISIBLE);
+                    ibRemoveConnection.setVisibility(View.INVISIBLE);
+
+                    etProfileEmail.setVisibility(View.VISIBLE);
+                    etContactNo.setVisibility(View.VISIBLE);
+                    ibContactPhone.setVisibility(View.VISIBLE);
+                    setPrivateInfoVisibility(true);
                     setEditModeFieldsState(false);
                     break;
                 case ME_EDIT:
-                    ibProfileEdit.setVisibility(View.GONE);
+                    ibProfileEdit.setVisibility(View.INVISIBLE);
                     ibProfileSave.setVisibility(View.VISIBLE);
-                    ibAddConnection.setVisibility(View.GONE);
-                    ibRemoveConnection.setVisibility(View.GONE);
+                    ibAddConnection.setVisibility(View.INVISIBLE);
+                    ibRemoveConnection.setVisibility(View.INVISIBLE);
 
+                    etProfileEmail.setVisibility(View.VISIBLE);
+                    etContactNo.setVisibility(View.VISIBLE);
+                    ibContactPhone.setVisibility(View.VISIBLE);
+
+                    setPrivateInfoVisibility(true);
                     setEditModeFieldsState(true);
+
                     break;
                 case CONNECTION:
-                    ibProfileEdit.setVisibility(View.GONE);
-                    ibProfileSave.setVisibility(View.GONE);
-                    ibAddConnection.setVisibility(View.GONE);
+                    ibProfileEdit.setVisibility(View.INVISIBLE);
+                    ibProfileSave.setVisibility(View.INVISIBLE);
+                    ibAddConnection.setVisibility(View.INVISIBLE);
                     ibRemoveConnection.setVisibility(View.VISIBLE);
-
+                    etProfileEmail.setVisibility(View.INVISIBLE);
                     rbUserRating.setIsIndicator(false);
-
 
                     setEditModeFieldsState(false);
                     break;
                 case OTHER:
-                    ibProfileEdit.setVisibility(View.GONE);
-                    ibProfileSave.setVisibility(View.GONE);
+                    ibProfileEdit.setVisibility(View.INVISIBLE);
+                    ibProfileSave.setVisibility(View.INVISIBLE);
 
                     //Set the following two to invisible now and then reset when user data has been fetched
-                    ibAddConnection.setVisibility(View.GONE);
-                    ibRemoveConnection.setVisibility(View.GONE);
+                    ibAddConnection.setVisibility(View.INVISIBLE);
+                    ibRemoveConnection.setVisibility(View.INVISIBLE);
                     rbUserRating.setIsIndicator(false);
-
+                    etProfileEmail.setVisibility(View.INVISIBLE);
+                    setPrivateInfoVisibility(false);
                     setEditModeFieldsState(false);
                     break;
             }
@@ -314,8 +334,9 @@ public class ProfileHeaderFragment
     {
         try
         {
-            etProfileName.setEnabled(isEditMode);
-            etProfileEmail.setEnabled(isEditMode);
+//            etProfileName.setEnabled(isEditMode);
+//            etProfileEmail.setEnabled(isEditMode);
+            etContactNo.setEnabled(isEditMode);
 
             etAboutMe.setEnabled(isEditMode);
             etSkills.setEnabled(isEditMode);
@@ -368,12 +389,12 @@ public class ProfileHeaderFragment
             String name = user.getName();
             String email = user.getEmail();
             String bio = user.getbiography();
-
+            String contactNo = user.getContactNo();
             String profileImageUrl = user.getPhoto();
 
             Glide.with(this)
                     .load(profileImageUrl)
-                    .placeholder(R.drawable.ic_profile_placeholder)
+                    .placeholder(R.drawable.offer_profile_image)
                     .into(ivProfileImage);
 
             ArrayList<String> skillset = null;
@@ -395,14 +416,6 @@ public class ProfileHeaderFragment
 
             Address address = user.getAddress();
 
-            try {
-                ImageUtils.setBlurredMapBackground(address, ivDataBackground);
-            }
-            catch (Exception ex)
-            {
-                Timber.e("Error setting the map background");
-            }
-
             if(name != null && !name.isEmpty())
                 etProfileName.setText(name);
 
@@ -411,6 +424,9 @@ public class ProfileHeaderFragment
 
             if(bio != null && !bio.isEmpty())
                 etAboutMe.setText(bio);
+
+            if(contactNo != null && !contactNo.isEmpty())
+                etContactNo.setText(contactNo);
 
             if(skillset != null && !skillset.isEmpty()) {
 
@@ -432,7 +448,6 @@ public class ProfileHeaderFragment
                 tvProfileAddress.setText(Address.getDisplayString(address));
                 ImageUtils.setBlurredMapBackground(address, ivDataBackground);
             }
-
 
 
         } catch (Exception ex) {
@@ -477,10 +492,10 @@ public class ProfileHeaderFragment
             mediaPagerAdapter.setAllowCapture(true);
             mediaPagerAdapter.notifyDataSetChanged();//to force capture controls to be displayed
 
-            ibProfileEdit.setVisibility(View.GONE);
+            ibProfileEdit.setVisibility(View.INVISIBLE);
             ibProfileSave.setVisibility(View.VISIBLE);
-            ibAddConnection.setVisibility(View.GONE);
-            ibRemoveConnection.setVisibility(View.GONE);
+            ibAddConnection.setVisibility(View.INVISIBLE);
+            ibRemoveConnection.setVisibility(View.INVISIBLE);
         }
         catch (Exception ex)
         {
@@ -496,12 +511,13 @@ public class ProfileHeaderFragment
         {
             isConnectionAdded = true;
 
-            ibAddConnection.setVisibility(View.GONE);
+            ibAddConnection.setVisibility(View.INVISIBLE);
             ibRemoveConnection.setVisibility(View.VISIBLE);
 
-            Toast.makeText(getActivity(), "Added to your connections!", Toast.LENGTH_SHORT).show();
+            TastyToast.makeText(getActivity(), "Added to your connections", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
 
             writeAddRemoveConnection(isConnectionAdded);
+            setPrivateInfoVisibility(true);
         }
         catch (Exception ex)
         {
@@ -517,14 +533,42 @@ public class ProfileHeaderFragment
             isConnectionAdded = false;
 
             ibAddConnection.setVisibility(View.VISIBLE);
-            ibRemoveConnection.setVisibility(View.GONE);
+            ibRemoveConnection.setVisibility(View.INVISIBLE);
 
-            Toast.makeText(getActivity(), "Removed from your connections!", Toast.LENGTH_SHORT).show();
+            TastyToast.makeText(getActivity(), "Removed from your connections", TastyToast.LENGTH_LONG, TastyToast.INFO);
+
             writeAddRemoveConnection(isConnectionAdded);
+            setPrivateInfoVisibility(false);
         }
         catch (Exception ex)
         {
             Timber.e("Error starting remove connection", ex);
+        }
+    }
+
+    private void setPrivateInfoVisibility(boolean isSetVisible)
+    {
+        try
+        {
+            if (!onScreenUser.getConnections().contains(currentAuthorizedUId))
+                return;
+
+            if(isSetVisible) {
+                etProfileEmail.setVisibility(View.VISIBLE);
+                etContactNo.setVisibility(View.VISIBLE);
+                ibContactPhone.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                etProfileEmail.setVisibility(View.GONE);
+                etContactNo.setVisibility(View.GONE);
+                ibContactPhone.setVisibility(View.GONE);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error setting visiblity of private information");
         }
     }
 
@@ -546,11 +590,15 @@ public class ProfileHeaderFragment
                                 try {
                                     if (authUserconnections.contains(onScreenUserId)) //if onscreen user is in current authorized user's authUserconnections
                                     {
-                                        ibAddConnection.setVisibility(View.GONE);
+
+                                        ibAddConnection.setVisibility(View.INVISIBLE);
                                         ibRemoveConnection.setVisibility(View.VISIBLE);
+                                        setPrivateInfoVisibility(true);
+
                                     } else {
                                         ibAddConnection.setVisibility(View.VISIBLE);
-                                        ibRemoveConnection.setVisibility(View.GONE);
+                                        ibRemoveConnection.setVisibility(View.INVISIBLE);
+                                        setPrivateInfoVisibility(false);
                                     }
                                 }
                                 catch (Exception ex)
@@ -637,10 +685,10 @@ public class ProfileHeaderFragment
             String email = etProfileEmail.getText().toString();
 
             String bio = etAboutMe.getText().toString();
+            String contactNo = etContactNo.getText().toString();
             String skillsString = etSkills.getText().toString();
 
             String address = tvProfileAddress.getText().toString();
-
 
             boolean isValid = true;
             if(name == null || name.trim().isEmpty())
@@ -652,6 +700,12 @@ public class ProfileHeaderFragment
             if(email == null || email.trim().isEmpty())
             {
                 etProfileEmail.setError("Email is required");
+                isValid = false;
+            }
+
+            if(contactNo != null || contactNo.trim().isEmpty())
+            {
+                etContactNo.setError("Contact number is required");
                 isValid = false;
             }
 
@@ -710,6 +764,7 @@ public class ProfileHeaderFragment
             String email = etProfileEmail.getText().toString();
             if(email.isEmpty())
                 email = authUserData.getEmail();
+            String contactNo = etContactNo.getText().toString();
             String bio = etAboutMe.getText().toString();
             String skillsString = etSkills.getText().toString();
             ArrayList<String> skillSet = new ArrayList<>();
@@ -721,7 +776,7 @@ public class ProfileHeaderFragment
 
             Address address = this.address;
             List<String> bookmarks = new ArrayList<>();
-            String contactNo = getString(R.string.default_contact_no);
+
             Float earnings = 0f;
 
             String photo = authUserData.getPhoto();
