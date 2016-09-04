@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
 
 import com.litlgroup.litl.R;
@@ -26,6 +27,10 @@ import com.litlgroup.litl.utils.ItemClickSupport;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,8 +75,9 @@ public class TaskFragment extends Fragment {
     }
 
     public void addMoreTasksForEndlessScrolling(ArrayList<Task> moreTasks) {
+        int startingPoint = tasks.size() - 1;
         tasks.addAll(moreTasks);
-        taskRecycleAdapter.notifyDataSetChanged();
+        taskRecycleAdapter.notifyItemRangeChanged(startingPoint, moreTasks.size());
     }
 
     public void addAllNewTasksForRefresh(ArrayList<Task> newTasks) {
@@ -86,9 +92,14 @@ public class TaskFragment extends Fragment {
 
     private void setUpRecycleView(View v) {
         rvTasks = (RecyclerView) v.findViewById(R.id.taskRecycleView);
+        rvTasks.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvTasks.setLayoutManager(linearLayoutManager);
-        rvTasks.setAdapter(taskRecycleAdapter);
+        ScaleInAnimationAdapter scaleInAdapter = new ScaleInAnimationAdapter(taskRecycleAdapter);
+        scaleInAdapter.setDuration(1500);
+        rvTasks.setAdapter(scaleInAdapter);
+
         ItemClickSupport.addTo(rvTasks).setOnItemClickListener(
                 new ItemClickSupport.OnItemClickListener() {
                     @Override
