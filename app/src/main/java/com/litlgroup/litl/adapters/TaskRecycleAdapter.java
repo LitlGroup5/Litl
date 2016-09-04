@@ -18,7 +18,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.litlgroup.litl.R;
+import com.litlgroup.litl.interfaces.RemoveBookmarkListener;
 import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
 
@@ -30,6 +33,11 @@ import java.util.ArrayList;
 public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.ViewHolder> {
     private ArrayList<Task> tasks;
     private Context thisContext;
+    private RemoveBookmarkListener removeBookmarkListener;
+
+    public static interface RemoveBookmarkListener {
+        public void onClick(int position, boolean isBookmarked);
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private CardView cardView;
@@ -42,6 +50,10 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
     public TaskRecycleAdapter(ArrayList<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public void setRemoveBookmarkListener(RemoveBookmarkListener listener) {
+        removeBookmarkListener = listener;
     }
 
     @Override
@@ -92,31 +104,48 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         TextView tvDeadlineDate = (TextView) taskCardView.findViewById(R.id.tvDeadlineDate);
         tvDeadlineDate.setText(task.getDeadlineDate());
 
-        ImageButton ibBookmark = (ImageButton) taskCardView.findViewById(R.id.ibBookmark);
-        setUpAndManageBookmarkButtonState(ibBookmark, task, position);
+        LikeButton bookmarkButton = (LikeButton) taskCardView.findViewById(R.id.btnBookmark);
+        setUpAndManageBookmarkButtonState(bookmarkButton, task, position);
     }
 
-    private void setUpAndManageBookmarkButtonState(final ImageButton bookmarkButton, final Task task, final int position) {
-        if (Task.isBookmarked(task) && task.getType() != Task.Type.CLOSED) {
-            bookmarkButton.setImageResource(R.drawable.ic_bookmark_filled);
-        } else {
-            bookmarkButton.setImageResource(R.drawable.ic_bookmark_border);
-        }
+    private void setUpAndManageBookmarkButtonState(final LikeButton bookmarkButton, final Task task, final int position) {
+        bookmarkButtonAnimation(bookmarkButton, task);
 
-        bookmarkButton.setOnClickListener(new View.OnClickListener() {
+        bookmarkButton.setOnLikeListener(new OnLikeListener() {
+            Task selectedTask = tasks.get(position);
+
             @Override
-            public void onClick(View view) {
-                Task selectedTask = tasks.get(position);
-
-                if (Task.isBookmarked(selectedTask)) {
-                    bookmarkButton.setImageResource(R.drawable.ic_bookmark_border);
-                    Task.updateBookmark(selectedTask, false);
-                } else {
-                    bookmarkButton.setImageResource(R.drawable.ic_bookmark_filled);
-                    Task.updateBookmark(selectedTask, true);
+            public void liked(LikeButton likeButton) {
+                if (removeBookmarkListener != null) {
+                    removeBookmarkListener.onClick(position, true);
                 }
+                changeTaskBookmarkStatus(selectedTask);
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                if (removeBookmarkListener != null) {
+                    removeBookmarkListener.onClick(position, false);
+                }
+                changeTaskBookmarkStatus(selectedTask);
             }
         });
+    }
+
+    private void changeTaskBookmarkStatus(Task selectedTask) {
+        if (Task.isBookmarked(selectedTask)) {
+            Task.updateBookmark(selectedTask, false);
+        } else {
+            Task.updateBookmark(selectedTask, true);
+        }
+    }
+
+    private void bookmarkButtonAnimation(LikeButton bookmarkButton, Task task) {
+        if (Task.isBookmarked(task) && task.getType() != Task.Type.CLOSED) {
+            bookmarkButton.setLiked(true);
+        } else {
+            bookmarkButton.setLiked(false);
+        }
     }
 
     private void convertClosedTaskBackgroundImageToBlackAndWhite(ImageView closedTaskImageView, Task.Type type) {
