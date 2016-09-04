@@ -240,7 +240,7 @@
                     android:layout_weight="0.8"
                     android:layout_gravity="center"
                     android:background="@color/colorTransparent"
-                    android:text="Carpentry\nMasonry\nGeneral"
+                    android:text="Carpentry\nGeneral\nPlumbing"
                     android:textSize="13dp"
                     android:textColor="#ffffff" />
 

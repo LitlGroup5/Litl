@@ -2,6 +2,7 @@ package com.litlgroup.litl.fragments;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -337,12 +338,21 @@ public class ProfileHeaderFragment
 //            etProfileName.setEnabled(isEditMode);
 //            etProfileEmail.setEnabled(isEditMode);
             etContactNo.setEnabled(isEditMode);
-
             etAboutMe.setEnabled(isEditMode);
             etSkills.setEnabled(isEditMode);
 
+
             if(isEditMode) {
                 ibAddConnection.setVisibility(View.GONE);
+                etContactNo.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                etAboutMe.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                etSkills.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            }
+            else
+            {
+                etContactNo.setBackgroundColor(Color.TRANSPARENT);
+                etAboutMe.setBackgroundColor(Color.TRANSPARENT);
+                etSkills.setBackgroundColor(Color.TRANSPARENT);
             }
 
             tvProfileAddress.setClickable(isEditMode);
@@ -703,7 +713,7 @@ public class ProfileHeaderFragment
                 isValid = false;
             }
 
-            if(contactNo != null || contactNo.trim().isEmpty())
+            if(contactNo == null || contactNo.trim().isEmpty())
             {
                 etContactNo.setError("Contact number is required");
                 isValid = false;
