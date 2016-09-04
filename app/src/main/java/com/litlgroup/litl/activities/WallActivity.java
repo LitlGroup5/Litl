@@ -169,6 +169,9 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
             case R.id.nav_history:
                 Toast.makeText(WallActivity.this, "History is coming!", Toast.LENGTH_SHORT).show();
                 return;
+            case R.id.nav_profile:
+                startUserProfileScreen();
+                return;
             case R.id.nav_settings:
                 Toast.makeText(WallActivity.this, "Settings is coming!", Toast.LENGTH_SHORT).show();
                 return;
@@ -196,6 +199,24 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         // Close the navigation drawer
         drawerLayout.closeDrawers();
     }
+
+    public void startUserProfileScreen()
+    {
+        try
+        {
+            String userId = mFirebaseUser.getUid();
+            Intent intent = new Intent(WallActivity.this, ProfileActivity.class);
+            intent.putExtra(getString(R.string.user_id), userId);
+            intent.putExtra("profileMode", ProfileActivity.ProfileMode.ME_VIEW);
+
+            startActivity(intent);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error launching user profile screen",ex);
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

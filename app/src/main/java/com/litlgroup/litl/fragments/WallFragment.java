@@ -3,11 +3,10 @@ package com.litlgroup.litl.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
@@ -16,13 +15,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.design.widget.FloatingActionButton;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.CreateTaskActivity;
-
-import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.

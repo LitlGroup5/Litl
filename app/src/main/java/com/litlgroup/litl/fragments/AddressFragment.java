@@ -65,9 +65,10 @@ public class AddressFragment
 
     }
 
-    public static AddressFragment newInstance(Address address) {
+    public static AddressFragment newInstance(Address address, AddressValidationMode addressValidationMode) {
         AddressFragment frag = new AddressFragment();
         frag.address = address;
+        frag.addressValidationMode = addressValidationMode;
         return frag;
     }
 
@@ -184,7 +185,75 @@ public class AddressFragment
 
     @OnClick(R.id.ibSaveAddress)
     public void startSaveAddress() {
-        saveAddress();
+        boolean isValidAddress = validateAddress();
+        if(isValidAddress)
+            saveAddress();
+    }
+
+    public enum AddressValidationMode { TASK_ADDRESS_MODE, PROFILE_ADDRESS_MODE};
+
+    public AddressValidationMode addressValidationMode;
+
+    private boolean validateAddress()
+    {
+        try {
+            String streetAddress = etStreetAddress.getText().toString();
+            String city = etCity.getText().toString();
+            String zip = etZip.getText().toString();
+            String state = etState.getText().toString();
+            String country = etCountry.getText().toString();
+
+            boolean isValid = true;
+
+            if(addressValidationMode == AddressValidationMode.PROFILE_ADDRESS_MODE) {
+
+                if (city == null || city.trim().isEmpty()) {
+                    etCity.setError("City is required");
+                    isValid = false;
+                }
+
+                if (state == null || state.trim().isEmpty()) {
+                    etState.setError("State is required");
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+            else if (addressValidationMode == AddressValidationMode.TASK_ADDRESS_MODE)
+            {
+
+                if(streetAddress == null || streetAddress.trim().isEmpty())
+                {
+                    etStreetAddress.setError("Street Address is required");
+                    isValid = false;
+                }
+
+                if (city == null || city.trim().isEmpty()) {
+                    etCity.setError("City is required");
+                    isValid = false;
+                }
+
+                if(zip == null || zip.trim().isEmpty())
+                {
+                    etZip.setError("Zip is required");
+                    isValid = false;
+                }
+
+                if (state == null || state.trim().isEmpty()) {
+                    etState.setError("State is required");
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error validating the entered address");
+            return false;
+        }
     }
 
 

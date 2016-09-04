@@ -40,9 +40,18 @@ public class ImageUtils {
         try {
             String mapAddressQuery = "";
 
-            if (!address.getStreetAddress().isEmpty() && !address.getCity().isEmpty() && !address.getState().isEmpty())
-                mapAddressQuery = String.format("%s,%s,%s", address.getStreetAddress(), address.getCity(), address.getState());
+            String streetAddress= address.getStreetAddress();
+            String city = address.getCity();
+            String state = address.getState();
 
+            if(streetAddress == null || streetAddress.isEmpty())
+                streetAddress = " ";
+
+            if(city == null || city.isEmpty())
+                city = " ";
+
+            if(state == null || state.isEmpty())
+                state = " ";
 
             Context context = imageView.getContext();
             String baseUrl = context.getString(R.string.static_map_base_url);
@@ -51,6 +60,15 @@ public class ImageUtils {
             String zoom = "10";
             String size = "400x640";
             String apiKey = context.getString(R.string.static_map_api_key);
+
+
+            if (!streetAddress.isEmpty() && !city.isEmpty() && !state.isEmpty())
+                mapAddressQuery = String.format("%s,%s,%s", address.getStreetAddress(), address.getCity(), address.getState());
+            else if(streetAddress.equals(" ") && city.equals(" ") && state.equals(" "))
+            {
+                mapAddressQuery = "usa";
+                zoom = "4";
+            }
 
             if (mapAddressQuery.isEmpty())
                 return;

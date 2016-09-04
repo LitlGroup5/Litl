@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_profile"
+            android:title="@string/profile"
+
+            android:icon="@drawable/ic_profile_placeholder"
+            />
+
+        <item
             android:id="@+id/nav_bookmarks"
             android:icon="@drawable/bookmark"
             android:title="@string/bookmarks"/>
