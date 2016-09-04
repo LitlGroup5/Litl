@@ -22,7 +22,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -402,12 +401,6 @@ public class ProfileHeaderFragment
             String profileImageUrl = user.getPhoto();
 
             ImageUtils.setCircularImage(ivProfileImage, profileImageUrl);
-
-//            Glide.with(this)
-//                    .load(profileImageUrl)
-//                    .placeholder(R.drawable.offer_profile_image)
-//                    .into(ivProfileImage);
-
             ArrayList<String> skillset = null;
             if(user.getSkillSet() != null)
                 skillset = (ArrayList<String>) user.getSkillSet();

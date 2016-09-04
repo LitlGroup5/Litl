@@ -127,6 +127,13 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         TextView cityState = (TextView) headerLayout.findViewById(R.id.userCityState);
         cityState.setText("need getAddress method");
         // need to be able to get city and state for user
+
+        headerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startUserProfileScreen();
+            }
+        });
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -171,9 +178,6 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
             case R.id.nav_history:
                 Toast.makeText(WallActivity.this, "History is coming!", Toast.LENGTH_SHORT).show();
                 return;
-            case R.id.nav_profile:
-                startUserProfileScreen();
-                return;
             case R.id.nav_settings:
                 Toast.makeText(WallActivity.this, "Settings is coming!", Toast.LENGTH_SHORT).show();
                 return;
@@ -199,7 +203,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         drawerLayout.closeDrawers();
     }
 
-    public void startUserProfileScreen() {
+    private void startUserProfileScreen() {
         try {
             String userId = mFirebaseUser.getUid();
             Intent intent = new Intent(WallActivity.this, ProfileActivity.class);
