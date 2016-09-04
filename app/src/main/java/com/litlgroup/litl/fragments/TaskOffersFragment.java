@@ -29,6 +29,7 @@ import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.BidSelectScreenActivity;
 import com.litlgroup.litl.activities.MediaFullScreenActivity;
 import com.litlgroup.litl.activities.ProfileActivity;
+import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CircleIndicator;
@@ -77,6 +78,8 @@ public class TaskOffersFragment
     CollapsingToolbarLayout mCollapsingToolbar;
     @BindView(R.id.vpIndicator)
     LinearLayout mViewPagerCountDots;
+    @BindView(R.id.tvLocation)
+    TextView mTvLocation;
 
     @BindColor(android.R.color.transparent)
     int mTransparent;
@@ -161,7 +164,7 @@ public class TaskOffersFragment
         unbinder = ButterKnife.bind(this, view);
 
         mCollapsingToolbar.setExpandedTitleColor(mTransparent);
-        mCollapsingToolbar.setContentScrimColor(mColorPrimary);
+        mCollapsingToolbar.setContentScrimColor(mPrimaryDark);
         mCollapsingToolbar.setStatusBarScrimColor(mPrimaryDark);
 
         initToolbar();
@@ -189,10 +192,13 @@ public class TaskOffersFragment
 
     private void setData(Task task) {
 
-        if (task != null) {
+        if (task != null && unbinder != null) {
 
             if (task.getTitle() != null)
                 mTvTitle.setText(task.getTitle());
+
+            if (task.getAddress() != null)
+                mTvLocation.setText(Address.getDisplayString(task.getAddress()));
 
             if (task.getDescription() != null)
                 mTvDescription.setText(task.getDescription());
@@ -250,6 +256,7 @@ public class TaskOffersFragment
         valueEventListener = null;
 
         unbinder.unbind();
+        unbinder = null;
 
         mMediaPagerAdapter = null;
         mCircleIndicator = null;

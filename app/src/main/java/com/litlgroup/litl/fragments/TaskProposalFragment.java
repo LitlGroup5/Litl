@@ -30,6 +30,7 @@ import com.litlgroup.litl.activities.BidSelectScreenActivity;
 import com.litlgroup.litl.activities.CreateTaskActivity;
 import com.litlgroup.litl.activities.MediaFullScreenActivity;
 import com.litlgroup.litl.activities.ProfileActivity;
+import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CircleIndicator;
@@ -48,11 +49,8 @@ import butterknife.Unbinder;
 import timber.log.Timber;
 
 public class TaskProposalFragment
-
         extends Fragment
-        implements AdvancedMediaPagerAdapter.StartOnItemViewClickListener
-
-{
+        implements AdvancedMediaPagerAdapter.StartOnItemViewClickListener {
 
     @BindView(R.id.tvTitle)
     TextView mTvTitle;
@@ -80,6 +78,8 @@ public class TaskProposalFragment
     CollapsingToolbarLayout mCollapsingToolbar;
     @BindView(R.id.vpIndicator)
     LinearLayout mViewPagerCountDots;
+    @BindView(R.id.tvLocation)
+    TextView mTvLocation;
 
     @BindColor(android.R.color.transparent)
     int mTransparent;
@@ -150,7 +150,7 @@ public class TaskProposalFragment
         unbinder = ButterKnife.bind(this, view);
 
         mCollapsingToolbar.setExpandedTitleColor(mTransparent);
-        mCollapsingToolbar.setContentScrimColor(mColorPrimary);
+        mCollapsingToolbar.setContentScrimColor(mPrimaryDark);
         mCollapsingToolbar.setStatusBarScrimColor(mPrimaryDark);
 
         initToolbar();
@@ -167,6 +167,7 @@ public class TaskProposalFragment
         Glide.clear(mIvProfileImage);
 
         unbinder.unbind();
+        unbinder = null;
 
         mDatabase.removeEventListener(valueEventListener);
         valueEventListener = null;
@@ -218,6 +219,7 @@ public class TaskProposalFragment
         inflater.inflate(R.menu.task_proposal_menu, menu);
         mMenu = menu;
         initBookmark();
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -227,10 +229,13 @@ public class TaskProposalFragment
 
     private void setData(Task task) {
 
-        if (task != null) {
+        if (task != null && unbinder != null) {
 
             if (task.getTitle() != null)
                 mTvTitle.setText(task.getTitle());
+
+            if (task.getAddress() != null)
+                mTvLocation.setText(Address.getDisplayString(task.getAddress()));
 
             if (task.getDescription() != null)
                 mTvDescription.setText(task.getDescription());
