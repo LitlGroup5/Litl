@@ -35,6 +35,11 @@ public class ProposalsFragment extends TaskFragment {
     public static ProposalsFragment newInstance(String category) {
         ProposalsFragment fragment = new ProposalsFragment();
         fragment.chosenCategory = category;
+        if (category != null && !category.equalsIgnoreCase("All Categories")) {
+            fragment.tasksForSpecificCategoryIsEmpty = true;
+        } else {
+            fragment.tasksForSpecificCategoryIsEmpty = false;
+        }
 
         return fragment;
     }
@@ -80,10 +85,10 @@ public class ProposalsFragment extends TaskFragment {
     }
 
     public void setupData(boolean isRefresh) {
-        if (chosenCategory == null) {
-            addAll(mProposals, isRefresh);
+        if (isRefresh) {
+            addAllNewTasksForRefresh(Task.getSortedTasks(mProposals, chosenCategory));
         } else {
-            addAll(Task.getSortedTasks(mProposals, chosenCategory), isRefresh);
+            addMoreTasksForEndlessScrolling(mProposals);
         }
     }
 }

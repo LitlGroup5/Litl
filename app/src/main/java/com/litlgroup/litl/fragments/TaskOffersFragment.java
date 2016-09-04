@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -28,11 +29,14 @@ import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.BidSelectScreenActivity;
 import com.litlgroup.litl.activities.MediaFullScreenActivity;
 import com.litlgroup.litl.activities.ProfileActivity;
+import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ImageUtils;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -40,6 +44,7 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import timber.log.Timber;
 
 public class TaskOffersFragment
@@ -73,6 +78,8 @@ public class TaskOffersFragment
     CollapsingToolbarLayout mCollapsingToolbar;
     @BindView(R.id.vpIndicator)
     LinearLayout mViewPagerCountDots;
+    @BindView(R.id.tvLocation)
+    TextView mTvLocation;
 
     @BindColor(android.R.color.transparent)
     int mTransparent;
@@ -83,16 +90,17 @@ public class TaskOffersFragment
     @BindColor(R.color.colorPrimary)
     int mColorPrimary;
 
-    private String mTaskId;
+    private Unbinder unbinder;
 
     private DatabaseReference mDatabase;
 
     AdvancedMediaPagerAdapter mMediaPagerAdapter;
 
-
     private CircleIndicator mCircleIndicator;
 
     private Task mTask;
+
+    private Menu mMenu;
 
     private ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
@@ -100,8 +108,10 @@ public class TaskOffersFragment
             Timber.d("Key: " + dataSnapshot.getKey());
             Timber.d("Value: " + String.valueOf(dataSnapshot.getValue()));
 
-            Task task = dataSnapshot.getValue(Task.class);
-            setData(task);
+            mTask = dataSnapshot.getValue(Task.class);
+            mTask.setId(dataSnapshot.getKey());
+
+            setData(mTask);
         }
 
         @Override
@@ -113,22 +123,36 @@ public class TaskOffersFragment
     public TaskOffersFragment() {
     }
 
-    public static TaskOffersFragment newInstance(String taskid) {
+    public static TaskOffersFragment newInstance(Task task) {
         TaskOffersFragment fragment = new TaskOffersFragment();
 
         Bundle args = new Bundle();
-        args.putString(Constants.TASK_ID, taskid);
+        args.putParcelable(Constants.TASK, Parcels.wrap(task));
         fragment.setArguments(args);
 
         return fragment;
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_bookmark: {
+                updateBookmark();
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        mTaskId = getArguments().getString(Constants.TASK_ID);
+        mTask = Parcels.unwrap(getArguments().getParcelable(Constants.TASK));
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
@@ -137,10 +161,10 @@ public class TaskOffersFragment
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_task_offers, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         mCollapsingToolbar.setExpandedTitleColor(mTransparent);
-        mCollapsingToolbar.setContentScrimColor(mColorPrimary);
+        mCollapsingToolbar.setContentScrimColor(mPrimaryDark);
         mCollapsingToolbar.setStatusBarScrimColor(mPrimaryDark);
 
         initToolbar();
@@ -154,18 +178,27 @@ public class TaskOffersFragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.task_offers_menu, menu);
+
+        mMenu = menu;
+
+        initBookmark();
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void getTaskData() {
-        mDatabase.child(Constants.TABLE_TASKS).child(mTaskId).addValueEventListener(valueEventListener);
+        mDatabase.child(Constants.TABLE_TASKS).child(mTask.getId()).addValueEventListener(valueEventListener);
     }
 
     private void setData(Task task) {
 
-        if (task != null) {
+        if (task != null && unbinder != null) {
+
             if (task.getTitle() != null)
                 mTvTitle.setText(task.getTitle());
+
+            if (task.getAddress() != null)
+                mTvLocation.setText(Address.getDisplayString(task.getAddress()));
 
             if (task.getDescription() != null)
                 mTvDescription.setText(task.getDescription());
@@ -187,6 +220,8 @@ public class TaskOffersFragment
                 mTvPrice.setText(task.getPrice());
 
             if (task.getMedia() != null) {
+                mMediaPagerAdapter.removeAll();
+
                 for (String url : task.getMedia()) {
                     mMediaPagerAdapter.addImage(url);
                     mMediaPagerAdapter.notifyDataSetChanged();
@@ -216,13 +251,24 @@ public class TaskOffersFragment
     public void onDestroyView() {
         super.onDestroyView();
         Glide.clear(mIvProfileImage);
+
+        mDatabase.removeEventListener(valueEventListener);
+        valueEventListener = null;
+
+        unbinder.unbind();
+        unbinder = null;
+
+        mMediaPagerAdapter = null;
+        mCircleIndicator = null;
+
+        mMenu = null;
     }
 
     @OnClick(R.id.btnBidNow)
     public void bidNow() {
         Timber.d("Bid Now Clicked");
 
-        PlaceBidFragment myDialog = PlaceBidFragment.newInstance(mTaskId, mTask.getBidBy());
+        PlaceBidFragment myDialog = PlaceBidFragment.newInstance(mTask.getId(), mTask.getBidBy());
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
         myDialog.show(fm, Constants.BID_NOW_FRAGMENT);
@@ -231,7 +277,7 @@ public class TaskOffersFragment
     @OnClick({R.id.tvBidBy, R.id.tvBidByCount})
     public void bidBy() {
         Intent i = new Intent(getActivity(), BidSelectScreenActivity.class);
-        i.putExtra(Constants.TASK_ID, mTaskId);
+        i.putExtra(Constants.TASK_ID, mTask.getId());
         startActivity(i);
     }
 
@@ -276,6 +322,24 @@ public class TaskOffersFragment
         catch (Exception ex)
         {
             Timber.e("Error launching full screen media", ex);
+        }
+    }
+
+    private void initBookmark() {
+        if (Task.isBookmarked(mTask)) {
+            mMenu.getItem(0).setIcon(R.drawable.ic_menu_bookmark_filled);
+        } else {
+            mMenu.getItem(0).setIcon(R.drawable.ic_menu_bookmark);
+        }
+    }
+
+    private void updateBookmark() {
+        if (Task.isBookmarked(mTask)) {
+            mMenu.getItem(0).setIcon(R.drawable.ic_menu_bookmark);
+            Task.updateBookmark(mTask, false);
+        } else {
+            mMenu.getItem(0).setIcon(R.drawable.ic_menu_bookmark_filled);
+            Task.updateBookmark(mTask, true);
         }
     }
 }

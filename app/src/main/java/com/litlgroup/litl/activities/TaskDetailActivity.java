@@ -20,17 +20,19 @@ public class TaskDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_detail);
 
         Task selectedTask = Parcels.unwrap(getIntent().getParcelableExtra(Constants.SELECTED_TASK));
-        loadFragment(selectedTask);
+
+        if (savedInstanceState == null)
+            loadFragment(selectedTask);
     }
 
     private void loadFragment(Task selectedTask) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
         if (selectedTask.getType() == Task.Type.PROPOSAL) {
-            TaskProposalFragment fragmentDemo = TaskProposalFragment.newInstance(selectedTask.getId());
+            TaskProposalFragment fragmentDemo = TaskProposalFragment.newInstance(selectedTask);
             ft.replace(R.id.fragment_placeholder, fragmentDemo);
         } else if (selectedTask.getType() == Task.Type.OFFER) {
-            TaskOffersFragment fragmentDemo = TaskOffersFragment.newInstance(selectedTask.getId());
+            TaskOffersFragment fragmentDemo = TaskOffersFragment.newInstance(selectedTask);
             ft.replace(R.id.fragment_placeholder, fragmentDemo);
         }
 
