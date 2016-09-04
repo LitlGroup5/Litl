@@ -92,13 +92,10 @@ public class TaskFragment extends Fragment {
 
     private void setUpRecycleView(View v) {
         rvTasks = (RecyclerView) v.findViewById(R.id.taskRecycleView);
-        rvTasks.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+        implementRecyclerViewAnimations();
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvTasks.setLayoutManager(linearLayoutManager);
-        ScaleInAnimationAdapter scaleInAdapter = new ScaleInAnimationAdapter(taskRecycleAdapter);
-        scaleInAdapter.setDuration(1500);
-        rvTasks.setAdapter(scaleInAdapter);
 
         ItemClickSupport.addTo(rvTasks).setOnItemClickListener(
                 new ItemClickSupport.OnItemClickListener() {
@@ -113,6 +110,15 @@ public class TaskFragment extends Fragment {
                 infiniteScrollListener.userScrolledPastBenchmark(TaskFragment.this, totalItemsCount - 1);
             }
         });
+    }
+
+    private void implementRecyclerViewAnimations() {
+        //RecyclerView Animations from Library https://github.com/wasabeef/recyclerview-animators
+        rvTasks.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+
+        ScaleInAnimationAdapter scaleInAdapter = new ScaleInAnimationAdapter(taskRecycleAdapter);
+        scaleInAdapter.setDuration(1500);
+        rvTasks.setAdapter(scaleInAdapter);
     }
 
     private void setupSwipeToRefresh(View view) {
