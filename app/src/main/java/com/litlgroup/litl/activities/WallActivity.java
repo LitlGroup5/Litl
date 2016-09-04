@@ -1,7 +1,9 @@
 package com.litlgroup.litl.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -10,12 +12,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -38,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindColor;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
@@ -48,15 +54,14 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     private ActionBarDrawerToggle drawerToggle;
     private Spinner categorySpinner;
 
-    private String mUsername;
-    private String mPhotoUrl;
-
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
 
     private GoogleApiClient mGoogleApiClient;
 
+    @BindColor(R.color.colorAccent)
+    int mAccentColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +78,6 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
             finish();
             return;
         } else {
-            mUsername = mFirebaseUser.getDisplayName();
-            mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
-
             Map<String, Object> userDetails = new HashMap<>();
             userDetails.put("email", mFirebaseUser.getEmail());
             userDetails.put("name", mFirebaseUser.getDisplayName());
@@ -89,7 +91,6 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
                 .enableAutoManage(this /* WallActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
-
 
         ButterKnife.bind(this);
         setupNavigationDrawerLayout();
@@ -123,7 +124,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         email.setText(mFirebaseUser.getEmail());
 
         TextView cityState = (TextView) headerLayout.findViewById(R.id.userCityState);
-            cityState.setText("need getAddress method");
+        cityState.setText("need getAddress method");
         // need to be able to get city and state for user
     }
 
@@ -176,10 +177,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
                 Toast.makeText(WallActivity.this, "Settings is coming!", Toast.LENGTH_SHORT).show();
                 return;
             case R.id.nav_logout:
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(this, SignInActivity.class));
-                finish();
-                Toast.makeText(WallActivity.this, "Signed Out!", Toast.LENGTH_SHORT).show();
+                signOutDialog();
                 return;
             default:
                 fragment = WallFragment.newInstance(menuItem.toString());
@@ -200,20 +198,16 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         drawerLayout.closeDrawers();
     }
 
-    public void startUserProfileScreen()
-    {
-        try
-        {
+    public void startUserProfileScreen() {
+        try {
             String userId = mFirebaseUser.getUid();
             Intent intent = new Intent(WallActivity.this, ProfileActivity.class);
             intent.putExtra(getString(R.string.user_id), userId);
             intent.putExtra("profileMode", ProfileActivity.ProfileMode.ME_VIEW);
 
             startActivity(intent);
-        }
-        catch (Exception ex)
-        {
-            Timber.e("Error launching user profile screen",ex);
+        } catch (Exception ex) {
+            Timber.e("Error launching user profile screen", ex);
         }
     }
 
@@ -265,5 +259,48 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Timber.d("onConnectionFailed:" + connectionResult);
+    }
+
+    private void signOut() {
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(this, SignInActivity.class));
+        finish();
+        Toast.makeText(WallActivity.this, "Signed Out!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void signOutDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_signout, null);
+
+        builder.setView(view)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        signOut();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    Button negativeButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
+                    Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+
+                    negativeButton.setTextColor(mAccentColor);
+                    positiveButton.setTextColor(mAccentColor);
+                }
+            });
+        }
+
+        dialog.show();
     }
 }
