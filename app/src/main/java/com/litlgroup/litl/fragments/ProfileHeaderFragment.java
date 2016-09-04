@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CameraUtils;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
+import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.Permissions;
 
 import java.io.File;
@@ -112,6 +114,9 @@ public class ProfileHeaderFragment
 
     @BindView(R.id.vpIndicator)
     LinearLayout mViewPagerCountDots;
+
+    @BindView(R.id.ivDataBackground)
+    ImageView ivDataBackground;
 
     ArrayList<String> mediaUrls;
 
@@ -390,6 +395,14 @@ public class ProfileHeaderFragment
 
             Address address = user.getAddress();
 
+            try {
+                ImageUtils.setBlurredMapBackground(address, ivDataBackground);
+            }
+            catch (Exception ex)
+            {
+                Timber.e("Error setting the map background");
+            }
+
             if(name != null && !name.isEmpty())
                 etProfileName.setText(name);
 
@@ -417,6 +430,7 @@ public class ProfileHeaderFragment
             if(address != null) {
                 this.address = address;
                 tvProfileAddress.setText(Address.getDisplayString(address));
+                ImageUtils.setBlurredMapBackground(address, ivDataBackground);
             }
 
 
@@ -432,7 +446,7 @@ public class ProfileHeaderFragment
             FragmentManager fm = getActivity().getSupportFragmentManager();
 
             AddressFragment addressFragment =
-                    AddressFragment.newInstance(address);
+                    AddressFragment.newInstance(address, AddressFragment.AddressValidationMode.PROFILE_ADDRESS_MODE);
             addressFragment.setTargetFragment(this, 0);
 
             addressFragment.show(fm, "fragment_address");
@@ -446,6 +460,8 @@ public class ProfileHeaderFragment
         try {
             this.address = address;
             tvProfileAddress.setText(Address.getDisplayString(address));
+
+            ImageUtils.setBlurredMapBackground(address, ivDataBackground);
         } catch (Exception ex) {
             Timber.e("User entered address could not be parsed");
         }
@@ -592,6 +608,9 @@ public class ProfileHeaderFragment
     {
         try
         {
+            boolean isDataValid = validateProfileData();
+            if(!isDataValid)
+                return;
             mediaPagerAdapter.setAllowCapture(false);
             User user;
             if(profileMode == ProfileActivity.ProfileMode.ME_CREATE
@@ -608,6 +627,60 @@ public class ProfileHeaderFragment
             Timber.e("Error when saving profile", ex);
         }
     }
+
+    private boolean validateProfileData()
+    {
+        try
+        {
+            String name = etProfileName.getText().toString();
+
+            String email = etProfileEmail.getText().toString();
+
+            String bio = etAboutMe.getText().toString();
+            String skillsString = etSkills.getText().toString();
+
+            String address = tvProfileAddress.getText().toString();
+
+
+            boolean isValid = true;
+            if(name == null || name.trim().isEmpty())
+            {
+                etProfileName.setError("Name is required");
+                isValid = false;
+            }
+
+            if(email == null || email.trim().isEmpty())
+            {
+                etProfileEmail.setError("Email is required");
+                isValid = false;
+            }
+
+            if(bio == null || bio.trim().isEmpty())
+            {
+                etAboutMe.setError("About me is required");
+                isValid = false;
+            }
+
+            if(skillsString == null || skillsString.trim().isEmpty())
+            {
+                etSkills.setError("Skills are required");
+                isValid = false;
+            }
+
+            if(address == null || address.trim().isEmpty())
+            {
+                tvProfileAddress.setError("Address is required");
+                isValid = false;
+            }
+            return isValid;
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error validating profile data");
+            return false;
+        }
+    }
+
 
     private void writeUser(User user)
     {

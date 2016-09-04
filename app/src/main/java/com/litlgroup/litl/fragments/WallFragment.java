@@ -3,23 +3,23 @@ package com.litlgroup.litl.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.design.widget.FloatingActionButton;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.CreateTaskActivity;
-
-import java.util.Date;
+import com.litlgroup.litl.utils.ZoomOutPageTransformer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,6 +51,7 @@ public class WallFragment extends Fragment {
     private void setupViewPagerAndSlidingTabs(View v) {
         ViewPager viewPager = (ViewPager) v.findViewById(R.id.viewpager);
         viewPager.setAdapter(new TaskPagerAdapter(getActivity().getSupportFragmentManager(), chosenCategory));
+        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
 
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) v.findViewById(R.id.tabs);
         tabStrip.setViewPager(viewPager);
@@ -64,6 +65,11 @@ public class WallFragment extends Fragment {
                 launchCreateTaskActivity();
             }
         });
+
+        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fabCreateTask.getLayoutParams();
+        lp.setAnchorId(View.NO_ID);
+        lp.gravity = Gravity.BOTTOM | GravityCompat.END;
+        fabCreateTask.setLayoutParams(lp);
     }
 
     public void launchCreateTaskActivity() {

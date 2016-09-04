@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,7 +42,9 @@ import com.litlgroup.litl.utils.CameraUtils;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.DateUtils;
+import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.Permissions;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,6 +52,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -103,6 +107,9 @@ public class CreateTaskActivity
     @BindView(R.id.vpIndicator)
     LinearLayout mViewPagerCountDots;
 
+    @BindView(R.id.ivDataBackground)
+    ImageView ivDataBackground;
+
     CircleIndicator circleIndicator;
 
     AdvancedMediaPagerAdapter mediaPagerAdapter;
@@ -121,6 +128,12 @@ public class CreateTaskActivity
     Boolean isEditMode = false;
 
     ArrayList<String> fileLocalUris;
+
+
+    public enum TaskDataValidationMode { TASK_DEFAULT_MODE}
+
+    public TaskDataValidationMode  taskDataValidationMode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +158,9 @@ public class CreateTaskActivity
         fileLocalUris = new ArrayList<>();
         checkForExistingTaskData();
 
+        tvDueDate.setText(getDefaultDeadlineDate());
+
+        taskDataValidationMode = TaskDataValidationMode.TASK_DEFAULT_MODE;
     }
 
     private void checkForExistingTaskData() {
@@ -167,7 +183,6 @@ public class CreateTaskActivity
             Timber.e("Checking for existing task data failed");
         }
     }
-
 
     private void fetchExistingTaskData(String taskId) {
         try {
@@ -216,6 +231,13 @@ public class CreateTaskActivity
 
             Address address = task.getAddress();
             tvAddress.setText(Address.getDisplayString(address));
+            try {
+                ImageUtils.setBlurredMapBackground(address, ivDataBackground);
+            }
+            catch (Exception ex)
+            {
+                Timber.e("Error setting map background");
+            }
 
             etPrice.setText(task.getPrice());
             String category = task.getCategories().get(0);
@@ -239,6 +261,11 @@ public class CreateTaskActivity
     @OnClick(R.id.btnPostTask)
     public void postTask() {
         try {
+
+            boolean isTaskDataValid = validateTaskData();
+
+            if(!isTaskDataValid)
+                return;
             Task task;
 
             if (isEditMode) {
@@ -364,7 +391,6 @@ public class CreateTaskActivity
         return null;
     }
 
-
     private void writeNewTask(Task task) {
         try {
 
@@ -395,6 +421,80 @@ public class CreateTaskActivity
         }
 
     }
+
+    private boolean validateTaskData()
+    {
+        try {
+
+
+            String title = etTitle.getText().toString();
+            String description = etDescription.getText().toString();
+            String date = tvDueDate.getText().toString();
+            String time = tvDueTime.getText().toString();
+            String address = tvAddress.getText().toString();
+            String price = etPrice.getText().toString();
+            String category = spCategory.getSelectedItem().toString();
+            List<String> mediaUrls = this.mediaUrls;
+
+            boolean isValid  = true;
+
+            if(taskDataValidationMode == TaskDataValidationMode.TASK_DEFAULT_MODE)
+            {
+                if(title == null || title.trim().isEmpty())
+                {
+                    etTitle.setError("Title is required");
+                    isValid = false;
+                }
+
+                if(description == null || description.trim().isEmpty())
+                {
+                    etDescription.setError("Description is required");
+                    isValid = false;
+                }
+
+                if(date == null || date.trim().isEmpty())
+                {
+                    tvDueDate.setError("Date is required");
+                    isValid = false;
+                }
+
+                if(time == null || time.trim().isEmpty())
+                {
+                    tvDueTime.setError("Time is required");
+                    isValid = false;
+                }
+
+                if(address == null || address.trim().isEmpty())
+                {
+                    tvAddress.setError("Address is required");
+                    isValid = false;
+                }
+
+                if(price == null || price.trim().isEmpty())
+                {
+                    etPrice.setError("Price is required");
+                    isValid = false;
+                }
+
+                if(mediaUrls == null || mediaUrls.size() == 0)
+                {
+                    //Toast.makeText(CreateTaskActivity.this, "Please add an image/video", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(CreateTaskActivity.this, "Please add an image/video", TastyToast.LENGTH_LONG, TastyToast.WARNING);
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error validating task data");
+            return false;
+        }
+    }
+
 
     private String dueDate;
 
@@ -489,7 +589,7 @@ public class CreateTaskActivity
             FragmentManager fm = getSupportFragmentManager();
 
             AddressFragment addressFragment =
-                    AddressFragment.newInstance(address);
+                    AddressFragment.newInstance(address, AddressFragment.AddressValidationMode.TASK_ADDRESS_MODE);
 
             addressFragment.show(fm, "fragment_address");
         } catch (Exception ex) {
@@ -752,6 +852,9 @@ public class CreateTaskActivity
             InputStream stream = new FileInputStream(new File(fileUri.getPath()));
 
             UploadTask uploadTask = fileStorageReference.putStream(stream);
+
+            btnPostTask.setEnabled(false);
+
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
@@ -763,8 +866,9 @@ public class CreateTaskActivity
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     if (downloadUrl != null)
-
                         mediaUrls.add(downloadUrl.toString());
+
+                    btnPostTask.setEnabled(true);
 
                 }
             });
@@ -812,6 +916,8 @@ public class CreateTaskActivity
         try {
             this.address = address;
             tvAddress.setText(Address.getDisplayString(address));
+             ImageUtils.setBlurredMapBackground(address, ivDataBackground);
+
         } catch (Exception ex) {
             Timber.e("User entered address could not be parsed");
         }
@@ -821,4 +927,24 @@ public class CreateTaskActivity
     public void onStartItemViewClicked(int pageIndex) {
         startFullScreenMedia();
     }
+
+    private String getDefaultDeadlineDate()
+    {
+        try {
+
+            Calendar calendar = Calendar.getInstance();
+
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH) + 1;
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            return String.format(Locale.US, "%02d/%02d/%d", month , day, year );
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
 }

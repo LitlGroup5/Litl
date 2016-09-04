@@ -10,11 +10,30 @@
     <include layout="@layout/app_bar_media_pager"
         android:id="@+id/include" />
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/include"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:id="@+id/ivDataBackground"
+                tools:src="@color/colorSkyBlue"
+                android:scaleType="centerCrop"
+                android:alpha="0.5" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="1">
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,7 +94,8 @@
         android:id="@+id/tvDueDate"
         android:layout_alignTop="@+id/etPrice"
         android:layout_alignRight="@+id/tvAddress"
-        android:layout_alignEnd="@+id/tvAddress" />
+        android:layout_alignEnd="@+id/tvAddress"
+        android:textStyle="bold" />
 
     <Button
         android:layout_width="wrap_content"
@@ -98,7 +118,8 @@
         android:layout_alignEnd="@+id/etDescription"
         android:layout_marginTop="14dp"
         android:paddingLeft="4dp"
-        android:layout_marginBottom="7dp" />
+        android:layout_marginBottom="7dp"
+        android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -109,6 +130,11 @@
             android:layout_alignBottom="@+id/etPrice"
             android:layout_marginTop="14dp"
             android:layout_alignRight="@+id/tvDueDate"
-            android:layout_alignEnd="@+id/tvDueDate" />
+            android:layout_alignEnd="@+id/tvDueDate"
+            android:textStyle="bold" />
     </RelativeLayout>
+        </FrameLayout>
+    </RelativeLayout>
+
+
 </android.support.design.widget.CoordinatorLayout>

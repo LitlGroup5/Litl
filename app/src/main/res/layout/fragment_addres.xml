@@ -2,14 +2,37 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     >
+
 <LinearLayout
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center_vertical|center_horizontal">
+    android:gravity="center_vertical|center_horizontal"
+
+    >
+
+    <com.seatgeek.placesautocomplete.PlacesAutocompleteTextView
+        android:id="@+id/places_autocomplete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:hint="Search"
+        app:pacv_googleMapsApiKey="AIzaSyCq2fdDcQMd3itgeydcrNSLiKbJ9sRN30w"
+        />
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etStreetAddress"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp"
+        android:layout_marginTop="14dp"
+        android:hint="Street Address" />
 
 
     <LinearLayout
@@ -24,35 +47,16 @@
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:layout_marginLeft="14dp"
-            android:layout_marginRight="7dp"
+            android:layout_marginRight="14dp"
             android:id="@+id/etApt"
             android:hint="Apt"
             android:layout_marginTop="14dp"
-            android:textAlignment="center" />
+            android:textAlignment="center"
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:layout_marginLeft="7dp"
-            android:layout_marginRight="14dp"
-            android:hint="House Num"
-            android:id="@+id/etHouseNum"
-            android:layout_marginTop="14dp"
-            android:inputType="number"
-            android:textAlignment="center" />
+            />
 
     </LinearLayout>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/etStreetAddress"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="28dp"
-        android:layout_marginRight="28dp"
-        android:layout_marginTop="14dp"
-        android:hint="Street Address" />
 
     <EditText
         android:layout_width="match_parent"
@@ -61,7 +65,8 @@
         android:layout_marginLeft="28dp"
         android:layout_marginTop="14dp"
         android:hint="City"
-        android:id="@+id/etCity" />
+        android:id="@+id/etCity"
+        android:textAlignment="center" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -92,6 +97,16 @@
             android:textAlignment="center" />
 
     </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etCountry"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp"
+        android:hint="Country"
+        android:textAlignment="center" />
 
     <ImageButton
         android:layout_width="wrap_content"

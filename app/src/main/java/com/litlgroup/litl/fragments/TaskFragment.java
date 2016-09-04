@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.TaskDetailActivity;
@@ -39,6 +40,7 @@ public class TaskFragment extends Fragment {
     public String chosenCategory;
     public InfiniteScrollListener infiniteScrollListener;
     public SwipeToRefreshListener swipeToRefreshListener;
+    public boolean tasksForSpecificCategoryIsEmpty = false;
 
     public TaskFragment() {
         // Required empty public constructor
@@ -47,9 +49,16 @@ public class TaskFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_task, container, false);
-        setUpRecycleView(view);
-        setupSwipeToRefresh(view);
+        View view;
+        if (tasksForSpecificCategoryIsEmpty == false) {
+            view = inflater.inflate(R.layout.fragment_task, container, false);
+            setUpRecycleView(view);
+            setupSwipeToRefresh(view);
+        } else {
+            view = inflater.inflate(R.layout.fragment_no_tasks, container, false);
+            Toast.makeText(getActivity(), "No Tasks in this category. Tap the blue button and create one", Toast.LENGTH_SHORT).show();
+        }
+
         return view;
     }
 
@@ -60,20 +69,23 @@ public class TaskFragment extends Fragment {
         taskRecycleAdapter = new TaskRecycleAdapter(tasks);
     }
 
-    public void addAll(ArrayList<Task> newTasks, boolean isRefresh) {
-        if (isRefresh) {
-            tasks.addAll(0, newTasks);
-            taskRecycleAdapter.notifyItemRangeInserted(0, newTasks.size() - 1);
+    public void addMoreTasksForEndlessScrolling(ArrayList<Task> moreTasks) {
+        tasks.addAll(moreTasks);
+        taskRecycleAdapter.notifyDataSetChanged();
+    }
+
+    public void addAllNewTasksForRefresh(ArrayList<Task> newTasks) {
+        tasks.addAll(0, newTasks);
+        taskRecycleAdapter.notifyItemRangeInserted(0, newTasks.size() - 1);
+
+        if (newTasks.size() > 0) {
             linearLayoutManager.scrollToPosition(0);
-            swipeContainer.setRefreshing(false);
-        } else {
-            tasks.addAll(newTasks);
-            taskRecycleAdapter.notifyItemRangeInserted(taskRecycleAdapter.getItemCount(), tasks.size() - 1);
         }
+        swipeContainer.setRefreshing(false);
     }
 
     private void setUpRecycleView(View v) {
-        rvTasks= (RecyclerView) v.findViewById(R.id.taskRecycleView);
+        rvTasks = (RecyclerView) v.findViewById(R.id.taskRecycleView);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvTasks.setLayoutManager(linearLayoutManager);
         rvTasks.setAdapter(taskRecycleAdapter);
@@ -81,7 +93,7 @@ public class TaskFragment extends Fragment {
                 new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                               navigateToTaskDetailActivity(position);
+                        navigateToTaskDetailActivity(position);
                     }
                 });
         rvTasks.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {

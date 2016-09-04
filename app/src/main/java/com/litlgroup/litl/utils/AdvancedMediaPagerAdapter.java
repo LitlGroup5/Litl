@@ -410,8 +410,13 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
     {
         allowCapture = state;
         if(state) {
-            if (mImageUrls.get(mImageUrls.size() - 1) != null)
+            if(mImageUrls.size() >= 1) {
+                if (mImageUrls.get(mImageUrls.size() - 1) != null)
+                    mImageUrls.add(null);
+            }
+            else
                 mImageUrls.add(null);
+
         }
         else
         {

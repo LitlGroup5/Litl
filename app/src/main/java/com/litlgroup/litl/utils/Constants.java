@@ -5,6 +5,7 @@ package com.litlgroup.litl.utils;
  */
 public class Constants {
 
+    public static final String TASK = "Task";
     public static final String TASK_ID = "TaskID";
     public static final String SELECTED_TASK = "SelectedTask";
     public static final String TASK_TYPE = "TaskType";
@@ -17,6 +18,7 @@ public class Constants {
     public static final String TABLE_TASKS_COLUMN_BID_BY = "bidBy";
     public static final String TABLE_TASKS_COLUMN_VIEWED_BY = "viewedBy";
     public static final String TABLE_TASKS_COLUMN_USER = "user";
+    public static final String TABLE_TASKS_COLUMN_BOOKMARKS = "bookmarks";
     public static final String TABLE_BIDS_COLUMN_TASK = "task";
 
     public static final String BID_NOW_FRAGMENT = "BidNow";

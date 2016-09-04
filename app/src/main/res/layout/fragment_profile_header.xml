@@ -14,6 +14,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/include"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
@@ -29,6 +30,24 @@
             android:layout_gravity="center"
             android:src="@drawable/offer_profile_image"
             android:alpha="0.5" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:id="@+id/ivDataBackground"
+                tools:src="@color/colorSkyBlue"
+                android:scaleType="centerCrop"
+                android:alpha="0.5" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
 
 
         <LinearLayout
@@ -226,6 +245,7 @@
 
 
     </RelativeLayout>
+        </FrameLayout>
 
-
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

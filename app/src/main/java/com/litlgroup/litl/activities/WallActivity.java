@@ -1,7 +1,9 @@
 package com.litlgroup.litl.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -10,12 +12,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,6 +34,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.litlgroup.litl.R;
+import com.litlgroup.litl.fragments.BookmarksFragment;
 import com.litlgroup.litl.fragments.WallFragment;
 import com.litlgroup.litl.utils.ImageUtils;
 
@@ -37,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindColor;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
@@ -47,15 +54,14 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     private ActionBarDrawerToggle drawerToggle;
     private Spinner categorySpinner;
 
-    private String mUsername;
-    private String mPhotoUrl;
-
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
 
     private GoogleApiClient mGoogleApiClient;
 
+    @BindColor(R.color.colorAccent)
+    int mAccentColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +78,6 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
             finish();
             return;
         } else {
-            mUsername = mFirebaseUser.getDisplayName();
-            mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
-
             Map<String, Object> userDetails = new HashMap<>();
             userDetails.put("email", mFirebaseUser.getEmail());
             userDetails.put("name", mFirebaseUser.getDisplayName());
@@ -88,7 +91,6 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
                 .enableAutoManage(this /* WallActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
-
 
         ButterKnife.bind(this);
         setupNavigationDrawerLayout();
@@ -107,6 +109,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
 
         View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
         setupHeaderDrawerLayout(headerLayout);
+        headerLayout.setBackgroundResource(R.drawable.wood);
     }
 
     private void setupHeaderDrawerLayout(View headerLayout) {
@@ -121,7 +124,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         email.setText(mFirebaseUser.getEmail());
 
         TextView cityState = (TextView) headerLayout.findViewById(R.id.userCityState);
-        cityState.setText("San Diego, CA");
+        cityState.setText("need getAddress method");
+        // need to be able to get city and state for user
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -154,29 +158,32 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
+        CharSequence categorySpinnerTitle = menuItem.getTitle();
+        String toolbarTitle = "Litl";
 
         switch (menuItem.getItemId()) {
-            case R.id.nav_create_Task:
-                launchCreateTaskActivity();
-                return;
             case R.id.nav_bookmarks:
-                Toast.makeText(WallActivity.this, "Bookmarks is coming!", Toast.LENGTH_SHORT).show();
-                return;
-            case R.id.nav_profile:
-                Toast.makeText(WallActivity.this, "User Profile is coming!", Toast.LENGTH_SHORT).show();
-                return;
+                fragment = new BookmarksFragment();
+                toolbarTitle = "Bookmarks";
+                categorySpinnerTitle = "All Categories";
+                break;
             case R.id.nav_history:
                 Toast.makeText(WallActivity.this, "History is coming!", Toast.LENGTH_SHORT).show();
+                return;
+            case R.id.nav_profile:
+                startUserProfileScreen();
                 return;
             case R.id.nav_settings:
                 Toast.makeText(WallActivity.this, "Settings is coming!", Toast.LENGTH_SHORT).show();
                 return;
             case R.id.nav_logout:
-                Toast.makeText(WallActivity.this, "Logout just needs to be plugged up!", Toast.LENGTH_SHORT).show();
+                signOutDialog();
                 return;
             default:
                 fragment = WallFragment.newInstance(menuItem.toString());
         }
+
+        toolbar.setTitle(toolbarTitle);
 
         // Insert the fragment by replacing any existing fragment
         loadFragmentIntoFrameLayout(fragment);
@@ -185,17 +192,25 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         menuItem.setChecked(true);
 
         // Set spinner category
-        setSpinnerSelectedItem(menuItem.getTitle());
+        setSpinnerSelectedItem(categorySpinnerTitle);
 
         // Close the navigation drawer
         drawerLayout.closeDrawers();
     }
 
-    public void launchCreateTaskActivity() {
+    public void startUserProfileScreen() {
+        try {
+            String userId = mFirebaseUser.getUid();
+            Intent intent = new Intent(WallActivity.this, ProfileActivity.class);
+            intent.putExtra(getString(R.string.user_id), userId);
+            intent.putExtra("profileMode", ProfileActivity.ProfileMode.ME_VIEW);
 
-        Intent intent = new Intent(WallActivity.this, CreateTaskActivity.class);
-        startActivity(intent);
+            startActivity(intent);
+        } catch (Exception ex) {
+            Timber.e("Error launching user profile screen", ex);
+        }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -244,5 +259,48 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Timber.d("onConnectionFailed:" + connectionResult);
+    }
+
+    private void signOut() {
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(this, SignInActivity.class));
+        finish();
+        Toast.makeText(WallActivity.this, "Signed Out!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void signOutDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_signout, null);
+
+        builder.setView(view)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        signOut();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    Button negativeButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
+                    Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+
+                    negativeButton.setTextColor(mAccentColor);
+                    positiveButton.setTextColor(mAccentColor);
+                }
+            });
+        }
+
+        dialog.show();
     }
 }
