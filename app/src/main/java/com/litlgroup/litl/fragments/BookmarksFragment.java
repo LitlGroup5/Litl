@@ -2,6 +2,9 @@ package com.litlgroup.litl.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -9,11 +12,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.litlgroup.litl.R;
 import com.litlgroup.litl.adapters.TaskRecycleAdapter;
 import com.litlgroup.litl.behaviors.BookmarksPullDownToRefresh;
 import com.litlgroup.litl.behaviors.BookmarksWallScrolling;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.Constants;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.ArrayList;
 
@@ -32,6 +37,22 @@ public class BookmarksFragment extends TaskFragment {
         getData(false);
         setupBehaviors();
         setupRemoveBookmarkListenerImplementation();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view;
+        if (!tasksForSpecificCategoryIsEmpty) {
+            view = inflater.inflate(R.layout.fragment_task, container, false);
+            setUpRecycleView(view);
+            setupSwipeToRefresh(view);
+        } else {
+            view = inflater.inflate(R.layout.fragment_no_bookmarks, container, false);
+            TastyToast.makeText(getActivity(), "No Bookmarks in this category", TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
+        }
+
+        return view;
     }
 
     private void setupRemoveBookmarkListenerImplementation() {
