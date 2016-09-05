@@ -110,7 +110,7 @@ public class TaskFragment extends Fragment {
                 new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        navigateToTaskDetailActivity(position);
+                        navigateToTaskDetailActivity(position, v);
                     }
                 });
         rvTasks.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
@@ -149,10 +149,13 @@ public class TaskFragment extends Fragment {
                 R.color.colorAccent);
     }
 
-    private void navigateToTaskDetailActivity(int position) {
+    private void navigateToTaskDetailActivity(int position, View view) {
         Intent i = new Intent(getActivity(), TaskDetailActivity.class);
         i.putExtra(Constants.SELECTED_TASK, Parcels.wrap(tasks.get(position)));
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), (View)taskRecycleAdapter.getIvBackground() , "backgroundImage");
+
+        View background = view.findViewById(R.id.ivBackground);
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), background , "backgroundImage");
         startActivity(i, options.toBundle());
     }
 
