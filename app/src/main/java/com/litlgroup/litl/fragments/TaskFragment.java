@@ -63,7 +63,7 @@ public class TaskFragment extends Fragment {
             setupSwipeToRefresh(view);
         } else {
             view = inflater.inflate(R.layout.fragment_no_tasks, container, false);
-            Snackbar.make(rvTasks, "No Tasks in this category. Tap the blue button and create one", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(container, "No Tasks in this category. You should tap the blue button and create one", Snackbar.LENGTH_SHORT).setDuration(3000).show();
         }
 
         return view;
