@@ -297,7 +297,7 @@ public class TaskProposalFragment
     public void startUserProfileScreen() {
         try {
             Intent intent = new Intent(getActivity(), ProfileActivity.class);
-            intent.putExtra(getString(R.string.user_id), "GiJcFd59PlMK31bV17w6qV0GDn93");
+            intent.putExtra(getString(R.string.user_id), mTask.getUser().getId());
             intent.putExtra("profileMode", ProfileActivity.ProfileMode.OTHER);
 
             startActivity(intent);

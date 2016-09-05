@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -285,7 +286,7 @@ public class TaskOffersFragment
     public void startUserProfileScreen() {
         try {
             Intent intent = new Intent(getActivity(), ProfileActivity.class);
-            intent.putExtra(getString(R.string.user_id), "GiJcFd59PlMK31bV17w6qV0GDn93");
+            intent.putExtra(getString(R.string.user_id), mTask.getUser().getId());
             intent.putExtra("profileMode", ProfileActivity.ProfileMode.OTHER);
 
             startActivity(intent);
