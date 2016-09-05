@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -92,7 +91,7 @@ public class CreateTaskActivity
     TextView tvDueTime;
 
     @BindView(R.id.spCategory)
-    Spinner spCategory;
+    com.toptoche.searchablespinnerlibrary.SearchableSpinner spCategory;
 
     @BindView(R.id.btnPostTask)
     Button btnPostTask;
@@ -164,9 +163,11 @@ public class CreateTaskActivity
         checkForExistingTaskData();
 
         tvDueDate.setText(getDefaultDeadlineDate());
+        etPrice.setSelection(etPrice.getText().length());
 
         taskDataValidationMode = TaskDataValidationMode.TASK_DEFAULT_MODE;
 
+        spCategory.setTitle("Select Category");
         try {
             String profileImageUrl = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
             Glide.with(this)
@@ -268,6 +269,7 @@ public class CreateTaskActivity
             }
 
             etPrice.setText(task.getPrice());
+            etPrice.setSelection(etPrice.getText().length());
 
             String category = task.getCategories().get(0);
 

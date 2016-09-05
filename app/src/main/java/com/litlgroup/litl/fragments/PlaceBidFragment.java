@@ -70,6 +70,7 @@ public class PlaceBidFragment extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        etBidPrice.setSelection(etBidPrice.getText().length());
     }
 
     private DatabaseReference mDatabase;

@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.litlgroup.litl"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -69,6 +69,8 @@ dependencies {
     compile 'com.github.jinatonic.confetti:confetti:1.0.0'
 
     compile 'com.robinhood.ticker:ticker:1.1.0'
+
+    compile 'com.toptoche.searchablespinner:searchablespinnerlibrary:1.3.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

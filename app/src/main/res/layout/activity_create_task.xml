@@ -41,13 +41,14 @@
                     android:id="@+id/etTitle"
                     android:layout_marginTop="14dp"
                     android:hint="Title"
+                    android:textColorHint="@color/taskHintColor"
 
                     android:layout_alignLeft="@+id/etDescription"
                     android:layout_alignStart="@+id/etDescription"
                     android:layout_alignRight="@+id/etDescription"
                     android:layout_alignEnd="@+id/etDescription"
 
-                    android:textColor="#ffffff" />
+                    android:textColor="@color/taskHintColor" />
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -62,7 +63,9 @@
                     android:layout_marginLeft="14dp"
                     android:layout_marginRight="14dp"
                     android:hint="Description"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:textColorHint="@color/taskHintColor"
+                    />
 
                 <EditText
                     android:layout_width="180dp"
@@ -75,11 +78,13 @@
                     android:layout_alignStart="@+id/spCategory"
                     android:layout_marginTop="14dp"
                     android:text="$"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:textColorHint="@color/taskHintColor"
+                    />
 
-                <Spinner
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:id="@+id/spCategory"
                     android:layout_below="@+id/etPrice"
                     android:layout_centerHorizontal="true"
@@ -88,7 +93,13 @@
                     android:layout_marginRight="14dp"
                     android:spinnerMode="dropdown"
                     android:entries="@array/categories_array_values"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    style="@style/spinnerTaskCategory"
+                    android:textColor = "@color/spinnerCategoryColor"
+                    android:background="#66ffffff"
+                    app:popupTheme="@color/colorAccent"
+                    />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -109,7 +120,9 @@
                     android:id="@+id/btnPostTask"
                     android:layout_below="@+id/spCategory"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="29dp" />
+                    android:layout_marginTop="29dp"
+                    style="@style/BidButton"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -125,7 +138,9 @@
                     android:paddingLeft="4dp"
                     android:layout_marginBottom="7dp"
                     android:textStyle="bold"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:textColorHint="@color/taskHintColor"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
