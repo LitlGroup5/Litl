@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,6 +17,7 @@ import com.litlgroup.litl.R;
 import com.litlgroup.litl.models.Bids;
 import com.litlgroup.litl.models.UserSummary;
 import com.litlgroup.litl.utils.Constants;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,9 +85,10 @@ public class PlaceBidFragment extends BottomSheetDialogFragment {
 
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                 writeNewOffer(price, taskKey, FirebaseAuth.getInstance().getCurrentUser(), bidBy);
-                Toast.makeText(getActivity(), "The bid has been placed!", Toast.LENGTH_SHORT).show();
+                TastyToast.makeText(getActivity(), "The bid has been placed!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+
             } else {
-                Toast.makeText(getActivity(), "User not logged in!", Toast.LENGTH_SHORT).show();
+                TastyToast.makeText(getActivity(), "User is not logged in", TastyToast.LENGTH_LONG, TastyToast.WARNING);
             }
 
             dismiss();

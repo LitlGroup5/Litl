@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -65,7 +64,7 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
+
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import timber.log.Timber;
@@ -113,7 +112,7 @@ public class CreateTaskActivity
     LinearLayout mViewPagerCountDots;
 
     @BindView(R.id.ivProfileImage)
-    CircleImageView ivProfileImage;
+    ImageView ivProfileImage;
 
     @BindView(R.id.ivDataBackground)
     ImageView ivDataBackground;
@@ -185,10 +184,7 @@ public class CreateTaskActivity
         spCategory.setTitle("Select Category");
         try {
             String profileImageUrl = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
-            Glide.with(this)
-                    .load(profileImageUrl)
-                    .placeholder(R.drawable.offer_profile_image)
-                    .into(ivProfileImage);
+            ImageUtils.setCircularImage(ivProfileImage, profileImageUrl);
         }
         catch (Exception ex)
         {
@@ -262,8 +258,7 @@ public class CreateTaskActivity
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
-
-                                    Toast.makeText(CreateTaskActivity.this, "There was an error when fetching data, please try again later", Toast.LENGTH_SHORT).show();
+                                    TastyToast.makeText(CreateTaskActivity.this, "There was an error when fetching data, please try again later", TastyToast.LENGTH_LONG, TastyToast.ERROR);
                                     Timber.e("Error fetching existing task data from firebase");
                                 }
                             }
@@ -349,9 +344,9 @@ public class CreateTaskActivity
                 } else {
                     writeNewTask(task);
                 }
-                Toast.makeText(this, "The task has been posted!", Toast.LENGTH_SHORT).show();
+                TastyToast.makeText(getApplicationContext(), "The task has been posted!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
             } else {
-                Toast.makeText(this, "The task could not be posted, please try again", Toast.LENGTH_SHORT).show();
+                TastyToast.makeText(getApplicationContext(), "The task could not be posted, please try again", TastyToast.LENGTH_LONG, TastyToast.WARNING);
             }
 
             finish();
@@ -548,7 +543,6 @@ public class CreateTaskActivity
 
                 if(mediaUrls == null || mediaUrls.size() == 0)
                 {
-                    //Toast.makeText(CreateTaskActivity.this, "Please add an image/video", Toast.LENGTH_SHORT).show();
                     TastyToast.makeText(CreateTaskActivity.this, "Please add an image/video", TastyToast.LENGTH_LONG, TastyToast.WARNING);
                     isValid = false;
                 }
@@ -703,7 +697,7 @@ public class CreateTaskActivity
                     launchCameraForImage();
                 else
                 {
-                    Toast.makeText(this, "No camera on device", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(CreateTaskActivity.this, "No camera on device", TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
                 }
             }
         } catch (Exception ex) {
@@ -723,7 +717,7 @@ public class CreateTaskActivity
                     launchCameraForVideo();
                 else
                 {
-                    Toast.makeText(this, "No camera on device", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(CreateTaskActivity.this, "No camera on device", TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
                 }
             }
         } catch (Exception ex) {
@@ -784,7 +778,7 @@ public class CreateTaskActivity
                 } else if (resultCode == RESULT_CANCELED) {
                     // User cancelled the image capture
                 } else { // Result was a failure
-                    Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(CreateTaskActivity.this, "Picture wasn't taken", TastyToast.LENGTH_LONG, TastyToast.ERROR);
                 }
             }
             else if(requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE)
@@ -802,7 +796,7 @@ public class CreateTaskActivity
                 } else if (resultCode == RESULT_CANCELED) {
                     // User cancelled the video capture
                 } else {
-                    Toast.makeText(this, "Failed to record video",  Toast.LENGTH_LONG).show();
+                    TastyToast.makeText(CreateTaskActivity.this, "Failed to record video", TastyToast.LENGTH_LONG, TastyToast.ERROR);
                 }
             }
 
@@ -928,7 +922,7 @@ public class CreateTaskActivity
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(CreateTaskActivity.this, "File upload failed", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(CreateTaskActivity.this, "File upload failed", TastyToast.LENGTH_LONG, TastyToast.ERROR);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override

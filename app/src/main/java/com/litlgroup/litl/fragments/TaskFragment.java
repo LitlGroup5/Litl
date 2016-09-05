@@ -4,6 +4,8 @@ package com.litlgroup.litl.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.view.animation.OvershootInterpolator;
 
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.TaskDetailActivity;
@@ -22,21 +24,27 @@ import com.litlgroup.litl.interfaces.SwipeToRefreshListener;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ItemClickSupport;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class TaskFragment extends Fragment {
 
-    private RecyclerView rvTasks;
     private LinearLayoutManager linearLayoutManager;
-    private TaskRecycleAdapter taskRecycleAdapter;
     private ArrayList<Task> tasks;
     private SwipeRefreshLayout swipeContainer;
+    private RecyclerView rvTasks;
+
+    public TaskRecycleAdapter taskRecycleAdapter;
     public String chosenCategory;
     public InfiniteScrollListener infiniteScrollListener;
     public SwipeToRefreshListener swipeToRefreshListener;
@@ -56,7 +64,8 @@ public class TaskFragment extends Fragment {
             setupSwipeToRefresh(view);
         } else {
             view = inflater.inflate(R.layout.fragment_no_tasks, container, false);
-            Toast.makeText(getActivity(), "No Tasks in this category. Tap the blue button and create one", Toast.LENGTH_SHORT).show();
+            TastyToast.makeText(getActivity(), "No Tasks in this category. You should tap the blue button and create one", TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
+//            Snackbar.make(view, "", Snackbar.LENGTH_SHORT).setDuration(3000).show();
         }
 
         return view;
@@ -70,8 +79,9 @@ public class TaskFragment extends Fragment {
     }
 
     public void addMoreTasksForEndlessScrolling(ArrayList<Task> moreTasks) {
+        int startingPoint = tasks.size();
         tasks.addAll(moreTasks);
-        taskRecycleAdapter.notifyDataSetChanged();
+        taskRecycleAdapter.notifyItemRangeChanged(startingPoint, moreTasks.size());
     }
 
     public void addAllNewTasksForRefresh(ArrayList<Task> newTasks) {
@@ -84,11 +94,18 @@ public class TaskFragment extends Fragment {
         swipeContainer.setRefreshing(false);
     }
 
+    public void removeTaskWithAnimation(int position) {
+        tasks.remove(position);
+        taskRecycleAdapter.notifyItemRemoved(position);
+    }
+
     private void setUpRecycleView(View v) {
         rvTasks = (RecyclerView) v.findViewById(R.id.taskRecycleView);
+        implementRecyclerViewAnimations();
+
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvTasks.setLayoutManager(linearLayoutManager);
-        rvTasks.setAdapter(taskRecycleAdapter);
+
         ItemClickSupport.addTo(rvTasks).setOnItemClickListener(
                 new ItemClickSupport.OnItemClickListener() {
                     @Override
@@ -102,6 +119,19 @@ public class TaskFragment extends Fragment {
                 infiniteScrollListener.userScrolledPastBenchmark(TaskFragment.this, totalItemsCount - 1);
             }
         });
+    }
+
+    private void implementRecyclerViewAnimations() {
+        //RecyclerView Animations from Library https://github.com/wasabeef/recyclerview-animators
+        rvTasks.setItemAnimator(new FlipInTopXAnimator(new OvershootInterpolator()));
+        rvTasks.getItemAnimator().setAddDuration(1000);
+        rvTasks.getItemAnimator().setRemoveDuration(1000);
+        rvTasks.getItemAnimator().setMoveDuration(1000);
+        rvTasks.getItemAnimator().setChangeDuration(1000);
+
+        ScaleInAnimationAdapter scaleInAdapter = new ScaleInAnimationAdapter(taskRecycleAdapter);
+        scaleInAdapter.setDuration(1500);
+        rvTasks.setAdapter(scaleInAdapter);
     }
 
     private void setupSwipeToRefresh(View view) {
@@ -122,7 +152,8 @@ public class TaskFragment extends Fragment {
     private void navigateToTaskDetailActivity(int position) {
         Intent i = new Intent(getActivity(), TaskDetailActivity.class);
         i.putExtra(Constants.SELECTED_TASK, Parcels.wrap(tasks.get(position)));
-        startActivity(i);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), (View)taskRecycleAdapter.getIvBackground() , "backgroundImage");
+        startActivity(i, options.toBundle());
     }
 
 }

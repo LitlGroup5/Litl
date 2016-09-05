@@ -60,7 +60,7 @@ public class OffersFragment extends TaskFragment {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Timber.d(dataSnapshot.toString());
-
+                            int currentNumberOfOffers = mOffers.size();
                             mOffers.clear();
 
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -70,7 +70,9 @@ public class OffersFragment extends TaskFragment {
                                 mOffers.add(task);
                             }
 
-                            setupData(isRefresh);
+                            if (currentNumberOfOffers != mOffers.size()) {
+                                setupData(isRefresh);
+                            }
                         }
 
                         @Override

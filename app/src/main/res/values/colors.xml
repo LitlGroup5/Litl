@@ -8,7 +8,7 @@
     <color name="colorSkyBlue">#7ECEFD</color>
     <color name="colorTransparent">#00ffffff</color>
     <color name="colorBackground">#66000000</color>
-
+    <color name="grey_200">#EEEEEE</color>
     <color name = "taskHintColor">#969696</color>
     <color name = "spinnerCategoryColor">#969696</color>
 </resources>

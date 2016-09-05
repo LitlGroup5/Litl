@@ -48,10 +48,17 @@
                 android:layout_gravity="start|bottom"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/profile_background"
+                android:elevation="8dp"
                 android:padding="@dimen/image_border"
                 android:scaleType="fitCenter" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey_200"
+                android:layout_gravity="center_horizontal|bottom" />
         </FrameLayout>
 
         <android.support.v7.widget.Toolbar

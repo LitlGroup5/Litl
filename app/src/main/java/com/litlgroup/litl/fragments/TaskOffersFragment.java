@@ -1,6 +1,7 @@
 package com.litlgroup.litl.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
@@ -26,7 +27,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.R;
-import com.litlgroup.litl.activities.BidSelectScreenActivity;
 import com.litlgroup.litl.activities.MediaFullScreenActivity;
 import com.litlgroup.litl.activities.ProfileActivity;
 import com.litlgroup.litl.models.Address;
@@ -34,6 +34,7 @@ import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
+import com.litlgroup.litl.utils.DateUtils;
 import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.ZoomOutPageTransformer;
 
@@ -50,8 +51,7 @@ import timber.log.Timber;
 
 public class TaskOffersFragment
         extends Fragment
-        implements AdvancedMediaPagerAdapter.StartOnItemViewClickListener
-{
+        implements AdvancedMediaPagerAdapter.StartOnItemViewClickListener {
 
     @BindView(R.id.tvTitle)
     TextView mTvTitle;
@@ -79,8 +79,8 @@ public class TaskOffersFragment
     CollapsingToolbarLayout mCollapsingToolbar;
     @BindView(R.id.vpIndicator)
     LinearLayout mViewPagerCountDots;
-    @BindView(R.id.tvLocation)
-    TextView mTvLocation;
+    @BindView(R.id.ivMaps)
+    ImageView mIvMaps;
 
     @BindColor(android.R.color.transparent)
     int mTransparent;
@@ -90,6 +90,7 @@ public class TaskOffersFragment
     int mPrimaryDark;
     @BindColor(R.color.colorPrimary)
     int mColorPrimary;
+
 
     private Unbinder unbinder;
 
@@ -198,8 +199,12 @@ public class TaskOffersFragment
             if (task.getTitle() != null)
                 mTvTitle.setText(task.getTitle());
 
+            if(task.getDeadlineDate() != null) {
+                mTvPostedDate.setText(DateUtils.getRelativeTimeAgo(task.getDeadlineDate()));
+            }
+
             if (task.getAddress() != null)
-                mTvLocation.setText(Address.getDisplayString(task.getAddress()));
+                ImageUtils.setMapBackground(task.getAddress(), mIvMaps);
 
             if (task.getDescription() != null)
                 mTvDescription.setText(task.getDescription());
@@ -276,40 +281,33 @@ public class TaskOffersFragment
         myDialog.show(fm, Constants.BID_NOW_FRAGMENT);
     }
 
-    @OnClick({R.id.ivBidBy, R.id.tvBidByCount})
-    public void bidBy() {
-        Intent i = new Intent(getActivity(), BidSelectScreenActivity.class);
-        i.putExtra(Constants.TASK_ID, mTask.getId());
-        startActivity(i);
-    }
-
     @OnClick(R.id.ivProfileImage)
-    public void startUserProfileScreen()
-    {
-        try
-        {
+    public void startUserProfileScreen() {
+        try {
             Intent intent = new Intent(getActivity(), ProfileActivity.class);
             intent.putExtra(getString(R.string.user_id), "GiJcFd59PlMK31bV17w6qV0GDn93");
             intent.putExtra("profileMode", ProfileActivity.ProfileMode.OTHER);
 
             startActivity(intent);
-        }
-        catch (Exception ex)
-        {
-            Timber.e("Error launching user profile screen",ex);
+        } catch (Exception ex) {
+            Timber.e("Error launching user profile screen", ex);
         }
     }
 
-    public void startFullScreenMedia()
-    {
-        try
-        {
+    @OnClick(R.id.ivMaps)
+    public void launchMaps() {
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Address.getMapAddress(mTask.getAddress()));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
+    }
+
+    public void startFullScreenMedia() {
+        try {
             Intent intent = new Intent(getActivity(), MediaFullScreenActivity.class);
-            intent.putExtra("urls", (ArrayList)mMediaPagerAdapter.getUrls());
+            intent.putExtra("urls", (ArrayList) mMediaPagerAdapter.getUrls());
             startActivity(intent);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Timber.e("Error starting full screen media");
         }
     }
@@ -317,12 +315,9 @@ public class TaskOffersFragment
 
     @Override
     public void onStartItemViewClicked(int pageIndex) {
-        try
-        {
+        try {
             startFullScreenMedia();
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Timber.e("Error launching full screen media", ex);
         }
     }

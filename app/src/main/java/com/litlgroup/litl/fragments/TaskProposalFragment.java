@@ -1,6 +1,7 @@
 package com.litlgroup.litl.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,7 @@ import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
+import com.litlgroup.litl.utils.DateUtils;
 import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.ZoomOutPageTransformer;
 
@@ -65,10 +67,6 @@ public class TaskProposalFragment
     ImageView mTvViewedBy;
     @BindView(R.id.tvViewedByCount)
     TextView mTvViewedByCount;
-    @BindView(R.id.tvBidByCount)
-    TextView mTvBidByCount;
-    @BindView(R.id.ivBidBy)
-    ImageView mTvBidBy;
     @BindView(R.id.vpMedia)
     ViewPager mVpMedia;
     @BindView(R.id.ivProfileImage)
@@ -79,8 +77,8 @@ public class TaskProposalFragment
     CollapsingToolbarLayout mCollapsingToolbar;
     @BindView(R.id.vpIndicator)
     LinearLayout mViewPagerCountDots;
-    @BindView(R.id.tvLocation)
-    TextView mTvLocation;
+    @BindView(R.id.ivMaps)
+    ImageView mIvMaps;
 
     @BindColor(android.R.color.transparent)
     int mTransparent;
@@ -238,19 +236,18 @@ public class TaskProposalFragment
             if (task.getTitle() != null)
                 mTvTitle.setText(task.getTitle());
 
+            if(task.getDeadlineDate() != null) {
+                mTvPostedDate.setText(DateUtils.getRelativeTimeAgo(task.getDeadlineDate()));
+            }
+
             if (task.getAddress() != null)
-                mTvLocation.setText(Address.getDisplayString(task.getAddress()));
+                ImageUtils.setMapBackground(task.getAddress(), mIvMaps);
 
             if (task.getDescription() != null)
                 mTvDescription.setText(task.getDescription());
 
             if (task.getUser() != null && task.getUser().getPhoto() != null)
                 ImageUtils.setCircularImage(mIvProfileImage, task.getUser().getPhoto());
-
-            if (task.getBidBy() != null)
-                mTvBidByCount.setText(String.valueOf(task.getBidBy()));
-            else
-                mTvBidByCount.setText("0");
 
             if (task.getViewedBy() != null)
                 mTvViewedByCount.setText(String.valueOf(task.getViewedBy()));
@@ -289,7 +286,7 @@ public class TaskProposalFragment
         }
     }
 
-    @OnClick({R.id.ivBidBy, R.id.tvBidByCount})
+    @OnClick(R.id.btnViewBids)
     public void bidBy() {
         Intent i = new Intent(getActivity(), BidSelectScreenActivity.class);
         i.putExtra(Constants.TASK_ID, mTask.getId());
@@ -308,6 +305,14 @@ public class TaskProposalFragment
             Timber.e("Error launching user profile screen", ex);
         }
 
+    }
+
+    @OnClick(R.id.ivMaps)
+    public void launchMaps() {
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Address.getMapAddress(mTask.getAddress()));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
     }
 
     public void startFullScreenMedia() {

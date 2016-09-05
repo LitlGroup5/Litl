@@ -62,6 +62,7 @@ public class ProposalsFragment extends TaskFragment {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Timber.d(dataSnapshot.toString());
+                            int currentNumberOfProposals = mProposals.size();
 
                             mProposals.clear();
 
@@ -72,7 +73,9 @@ public class ProposalsFragment extends TaskFragment {
                                 mProposals.add(task);
                             }
 
-                            setupData(isRefresh);
+                            if (currentNumberOfProposals != mProposals.size()) {
+                                setupData(isRefresh);
+                            }
                         }
 
                         @Override
