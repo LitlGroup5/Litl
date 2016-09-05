@@ -34,6 +34,7 @@ import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
+import com.litlgroup.litl.utils.DateUtils;
 import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.ZoomOutPageTransformer;
 
@@ -197,6 +198,10 @@ public class TaskOffersFragment
 
             if (task.getTitle() != null)
                 mTvTitle.setText(task.getTitle());
+
+            if(task.getDeadlineDate() != null) {
+                mTvPostedDate.setText(DateUtils.getRelativeTimeAgo(task.getDeadlineDate()));
+            }
 
             if (task.getAddress() != null)
                 ImageUtils.setMapBackground(task.getAddress(), mIvMaps);

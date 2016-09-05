@@ -1,5 +1,7 @@
 package com.litlgroup.litl.utils;
 
+import com.litlgroup.litl.models.Task;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -24,5 +26,18 @@ public class DateUtils {
             Timber.e("Error getting date time from timestamp");
         }
         return null;
+    }
+
+    public static String getRelativeTimeAgo(String timeStampMillis) {
+
+        if (!timeStampMillis.matches("[0-9]+"))
+            return "1 day ago";
+
+        String relativeDate = android.text.format.DateUtils.getRelativeTimeSpanString(
+                Long.parseLong(timeStampMillis),
+                System.currentTimeMillis(),
+                android.text.format.DateUtils.SECOND_IN_MILLIS).toString();
+
+        return relativeDate;
     }
 }
