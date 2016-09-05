@@ -24,6 +24,7 @@ import com.litlgroup.litl.interfaces.SwipeToRefreshListener;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ItemClickSupport;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import org.parceler.Parcels;
 
@@ -63,7 +64,8 @@ public class TaskFragment extends Fragment {
             setupSwipeToRefresh(view);
         } else {
             view = inflater.inflate(R.layout.fragment_no_tasks, container, false);
-            Snackbar.make(container, "No Tasks in this category. You should tap the blue button and create one", Snackbar.LENGTH_SHORT).setDuration(3000).show();
+            TastyToast.makeText(getActivity(), "No Tasks in this category. You should tap the blue button and create one", TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
+//            Snackbar.make(view, "", Snackbar.LENGTH_SHORT).setDuration(3000).show();
         }
 
         return view;
