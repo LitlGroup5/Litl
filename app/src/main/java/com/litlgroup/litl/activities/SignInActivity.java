@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -30,6 +29,7 @@ import com.litlgroup.litl.R;
 import com.litlgroup.litl.models.SignupItem;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.SignInPagerAdapter;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -105,7 +105,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         if (authResult != null) {
             // Welcome the user
             FirebaseUser user = authResult.getUser();
-            Toast.makeText(this, "Welcome " + user.getEmail(), Toast.LENGTH_SHORT).show();
+            TastyToast.makeText(this, "Welcome" + user.getEmail(), TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
 
             // Go back to the main activity
             startActivity(new Intent(this, WallActivity.class));
@@ -160,8 +160,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Timber.w("signInWithCredential", task.getException());
-                            Toast.makeText(SignInActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            TastyToast.makeText(SignInActivity.this, "Authentication failed", TastyToast.LENGTH_LONG, TastyToast.ERROR);
                         } else {
                             startActivity(new Intent(SignInActivity.this, WallActivity.class));
                             finish();
@@ -173,6 +172,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Timber.d("onConnectionFailed:" + connectionResult);
-        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
+        TastyToast.makeText(SignInActivity.this, "Google Play Services error", TastyToast.LENGTH_LONG, TastyToast.ERROR);
     }
 }

@@ -21,6 +21,7 @@ import com.litlgroup.litl.models.Bids;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.SpacesItemDecoration;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.ArrayList;
 
@@ -141,7 +142,7 @@ public class BidSelectScreenActivity
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    Toast.makeText(BidSelectScreenActivity.this, "There was an error when fetching bids data", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(getApplicationContext(), "There was an error when fetching bids data", TastyToast.LENGTH_LONG, TastyToast.ERROR);
                 }
             });
         } catch (Exception ex) {

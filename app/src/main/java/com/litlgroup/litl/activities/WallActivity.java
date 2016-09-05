@@ -25,7 +25,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
@@ -38,6 +37,7 @@ import com.litlgroup.litl.R;
 import com.litlgroup.litl.fragments.BookmarksFragment;
 import com.litlgroup.litl.fragments.WallFragment;
 import com.litlgroup.litl.utils.ImageUtils;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -176,10 +176,10 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
                 categorySpinnerTitle = "All Categories";
                 break;
             case R.id.nav_history:
-                Toast.makeText(WallActivity.this, "History is coming!", Toast.LENGTH_SHORT).show();
+                TastyToast.makeText(this, "History is coming!", TastyToast.LENGTH_LONG, TastyToast.INFO);
                 return;
             case R.id.nav_settings:
-                Toast.makeText(WallActivity.this, "Settings is coming!", Toast.LENGTH_SHORT).show();
+                TastyToast.makeText(this, "Settings is coming!", TastyToast.LENGTH_LONG, TastyToast.INFO);
                 return;
             case R.id.nav_logout:
                 signOutDialog();
@@ -271,7 +271,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(this, SignInActivity.class));
         finish();
-        Toast.makeText(WallActivity.this, "Signed Out!", Toast.LENGTH_SHORT).show();
+        TastyToast.makeText(this, "Signed Out!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
     }
 
     public void signOutDialog() {
