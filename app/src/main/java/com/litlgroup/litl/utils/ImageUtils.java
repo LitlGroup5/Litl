@@ -103,4 +103,66 @@ public class ImageUtils {
     }
 
 
+    public static void setMapBackground(Address address, ImageView imageView)
+    {
+        try {
+            String mapAddressQuery = "";
+
+            String streetAddress= address.getStreetAddress();
+            String city = address.getCity();
+            String state = address.getState();
+
+            if(streetAddress == null || streetAddress.isEmpty())
+                streetAddress = " ";
+
+            if(city == null || city.isEmpty())
+                city = " ";
+
+            if(state == null || state.isEmpty())
+                state = " ";
+
+            Context context = imageView.getContext();
+            String baseUrl = context.getString(R.string.static_map_base_url);
+            String scale = "2";
+            String mapType = "roadmap";
+            String zoom = "10";
+            String size = "400x200";
+            String markers = "color:orange|";
+            String apiKey = context.getString(R.string.static_map_api_key);
+
+
+            if (!streetAddress.isEmpty() && !city.isEmpty() && !state.isEmpty())
+                mapAddressQuery = String.format("%s,%s,%s", address.getStreetAddress(), address.getCity(), address.getState());
+            else if(streetAddress.equals(" ") && city.equals(" ") && state.equals(" "))
+            {
+                mapAddressQuery = "usa";
+                zoom = "4";
+            }
+
+            markers += mapAddressQuery;
+
+            if (mapAddressQuery.isEmpty())
+                return;
+            String url = String.format("%s?maptype=%s&scale=%s&center=%s&zoom=%s&size=%s&markers=%s&key=%s",
+                    baseUrl,
+                    mapType,
+                    scale,
+                    mapAddressQuery,
+                    zoom,
+                    size,
+                    markers,
+                    apiKey
+            );
+
+            Glide.with(context)
+                    .load(url)
+                    .centerCrop()
+                    .into(imageView);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error setting map background");
+        }
+    }
+
 }

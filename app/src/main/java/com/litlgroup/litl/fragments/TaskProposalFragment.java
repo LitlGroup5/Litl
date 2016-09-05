@@ -30,7 +30,6 @@ import com.litlgroup.litl.activities.BidSelectScreenActivity;
 import com.litlgroup.litl.activities.CreateTaskActivity;
 import com.litlgroup.litl.activities.MediaFullScreenActivity;
 import com.litlgroup.litl.activities.ProfileActivity;
-import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CircleIndicator;
@@ -65,10 +64,6 @@ public class TaskProposalFragment
     ImageView mTvViewedBy;
     @BindView(R.id.tvViewedByCount)
     TextView mTvViewedByCount;
-    @BindView(R.id.tvBidByCount)
-    TextView mTvBidByCount;
-    @BindView(R.id.ivBidBy)
-    ImageView mTvBidBy;
     @BindView(R.id.vpMedia)
     ViewPager mVpMedia;
     @BindView(R.id.ivProfileImage)
@@ -79,8 +74,8 @@ public class TaskProposalFragment
     CollapsingToolbarLayout mCollapsingToolbar;
     @BindView(R.id.vpIndicator)
     LinearLayout mViewPagerCountDots;
-    @BindView(R.id.tvLocation)
-    TextView mTvLocation;
+    @BindView(R.id.ivMaps)
+    ImageView mIvMaps;
 
     @BindColor(android.R.color.transparent)
     int mTransparent;
@@ -239,18 +234,13 @@ public class TaskProposalFragment
                 mTvTitle.setText(task.getTitle());
 
             if (task.getAddress() != null)
-                mTvLocation.setText(Address.getDisplayString(task.getAddress()));
+                ImageUtils.setMapBackground(task.getAddress(), mIvMaps);
 
             if (task.getDescription() != null)
                 mTvDescription.setText(task.getDescription());
 
             if (task.getUser() != null && task.getUser().getPhoto() != null)
                 ImageUtils.setCircularImage(mIvProfileImage, task.getUser().getPhoto());
-
-            if (task.getBidBy() != null)
-                mTvBidByCount.setText(String.valueOf(task.getBidBy()));
-            else
-                mTvBidByCount.setText("0");
 
             if (task.getViewedBy() != null)
                 mTvViewedByCount.setText(String.valueOf(task.getViewedBy()));
@@ -289,7 +279,7 @@ public class TaskProposalFragment
         }
     }
 
-    @OnClick({R.id.ivBidBy, R.id.tvBidByCount})
+    @OnClick(R.id.btnViewBids)
     public void bidBy() {
         Intent i = new Intent(getActivity(), BidSelectScreenActivity.class);
         i.putExtra(Constants.TASK_ID, mTask.getId());
