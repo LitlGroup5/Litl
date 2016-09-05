@@ -11,4 +11,5 @@
     <color name="grey_200">#EEEEEE</color>
     <color name = "taskHintColor">#969696</color>
     <color name = "spinnerCategoryColor">#969696</color>
+    <color name="colorHighlight">#B3E5FC</color>
 </resources>
