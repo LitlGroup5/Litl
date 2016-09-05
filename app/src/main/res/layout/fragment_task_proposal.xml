@@ -6,6 +6,7 @@
     <include layout="@layout/app_bar_task" />
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/rel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -24,19 +25,9 @@
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/tvPrice"
                 android:layout_toStartOf="@+id/tvPrice"
-                android:text="Move Out Move Out Move Out"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="28sp" />
-
-            <TextView
-                android:id="@+id/tvPostedDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/tvTitle"
-                android:text="posted 2 days ago"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:text="Move Out"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/tvPrice"
@@ -47,52 +38,48 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="16dp"
                 android:text="10$"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="28sp" />
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
 
             <ImageView
-                android:id="@+id/ivLocation"
+                android:id="@+id/ivPostedDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/tvPostedDate"
-                android:layout_alignStart="@+id/tvPostedDate"
-                android:layout_below="@+id/tvPostedDate"
-                android:paddingTop="16dp"
-                android:src="@drawable/ic_place" />
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tvTitle"
+                android:src="@drawable/ic_schedule" />
 
             <TextView
-                android:id="@+id/tvLocation"
+                android:id="@+id/tvPostedDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/ivLocation"
-                android:layout_toEndOf="@+id/ivLocation"
-                android:layout_toRightOf="@+id/ivLocation"
-                android:paddingLeft="16dp"
-                android:paddingTop="16dp"
-                android:text="7"
+                android:layout_alignBottom="@+id/ivViewedBy"
+                android:layout_toEndOf="@+id/ivPostedDate"
+                android:paddingLeft="8dp"
+                android:text="2 days ago"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/ivLocation"
-                android:layout_alignStart="@+id/ivLocation"
-                android:layout_below="@+id/ivLocation"
-                android:paddingTop="16dp"
+                android:layout_alignLeft="@+id/ivPostedDate"
+                android:layout_alignStart="@+id/ivPostedDate"
+                android:layout_below="@+id/tvPostedDate"
+                android:paddingTop="20dp"
                 android:text="This is the time to move out. This is really time to move out"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textSize="20sp" />
 
             <ImageView
                 android:id="@+id/ivViewedBy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/tvDescription"
-                android:layout_alignStart="@+id/tvDescription"
-                android:layout_below="@+id/tvDescription"
+                android:layout_alignBottom="@+id/ivPostedDate"
+                android:layout_marginLeft="16dp"
+                android:layout_toEndOf="@+id/tvPostedDate"
                 android:paddingTop="16dp"
-                android:src="@drawable/ic_viewed_by" />
+                android:src="@drawable/ic_trending" />
 
             <TextView
                 android:id="@+id/tvViewedByCount"
@@ -104,30 +91,29 @@
                 android:paddingLeft="8dp"
                 android:paddingTop="16dp"
                 android:text="7"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/tvBidByCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/tvDescription"
-                android:paddingLeft="8dp"
-                android:paddingTop="16dp"
-                android:text="23"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <ImageView
-                android:id="@+id/ivBidBy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/tvBidByCount"
-                android:layout_toLeftOf="@+id/tvBidByCount"
-                android:layout_toStartOf="@+id/tvBidByCount"
-                android:paddingTop="16dp"
-                android:src="@drawable/ic_bid_by"
-                android:textStyle="bold" />
+                android:id="@+id/ivMaps"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/tvDescription"
+                android:layout_marginTop="16dp" />
+
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btnViewBids"
+        style="@style/BigBidButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="VIEW BIDS"
+        app:layout_anchor="@id/rel"
+        app:layout_anchorGravity="bottom|center" />
+
 </android.support.design.widget.CoordinatorLayout>
