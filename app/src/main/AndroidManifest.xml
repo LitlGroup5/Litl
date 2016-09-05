@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.litlgroup.litl" >
+    package="com.litlgroup.litl">
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -18,8 +18,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".activities.WallActivity" >
+        android:theme="@style/AppTheme">
+        <activity android:name=".activities.WallActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,21 +30,22 @@
             android:name=".activities.TaskDetailActivity"
             android:parentActivityName=".activities.WallActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.BidSelectScreenActivity"
-            android:parentActivityName=".activities.TaskDetailActivity"
-            />
-        <activity android:name=".activities.CreateTaskActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/AppTheme.NoActionBar"
+        <activity
+            android:name=".activities.BidSelectScreenActivity"
+            android:label="@string/bids"
+            android:parentActivityName=".activities.TaskDetailActivity" />
+        <activity
+            android:name=".activities.CreateTaskActivity"
             android:parentActivityName=".activities.WallActivity"
-            />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.SignInActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.ProfileActivity"
-            android:windowSoftInputMode="adjustResize"
+        <activity
+            android:name=".activities.ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.MediaFullScreenActivity"
             android:theme="@style/AppTheme.NoActionBar" />
