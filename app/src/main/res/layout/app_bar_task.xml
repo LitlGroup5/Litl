@@ -23,6 +23,7 @@
 
             <FrameLayout
                 android:id="@+id/vpframe"
+                android:transitionName="backgroundImage"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_pager_height">
 

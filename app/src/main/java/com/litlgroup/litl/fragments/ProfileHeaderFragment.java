@@ -46,6 +46,7 @@ import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.Permissions;
+import com.litlgroup.litl.utils.ZoomOutPageTransformer;
 import com.sdsmdg.tastytoast.TastyToast;
 
 import java.io.File;
@@ -847,6 +848,7 @@ public class ProfileHeaderFragment
         }
 
         mVpMedia.setAdapter(mediaPagerAdapter);
+        mVpMedia.setPageTransformer(true, new ZoomOutPageTransformer());
         circleIndicator = new CircleIndicator(mViewPagerCountDots, mVpMedia);
         circleIndicator.setViewPagerIndicator();
     }

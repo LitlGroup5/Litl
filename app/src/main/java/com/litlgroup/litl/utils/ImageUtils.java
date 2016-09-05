@@ -39,7 +39,7 @@ public class ImageUtils {
                 .load(resourceId)
                 .centerCrop()
                 .crossFade()
-                .bitmapTransform(new BlurTransformation(imageView.getContext(), 10, 1))
+                .bitmapTransform(new BlurTransformation(imageView.getContext(), 3, 1))
                 .into(imageView);
     }
 
