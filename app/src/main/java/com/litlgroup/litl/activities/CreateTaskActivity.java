@@ -6,10 +6,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -58,6 +61,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -113,6 +117,17 @@ public class CreateTaskActivity
 
     @BindView(R.id.ivDataBackground)
     ImageView ivDataBackground;
+
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout mCollapsingToolbar;
+
+    @BindColor(android.R.color.transparent)
+    int mTransparent;
+    @BindColor(R.color.colorPrimaryDark)
+    int mPrimaryDark;
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     CircleIndicator circleIndicator;
 
@@ -190,7 +205,24 @@ public class CreateTaskActivity
             Timber.e("Error loading map background");
         }
 
+        setupActionBar();
+
     }
+
+    private void setupActionBar()
+    {
+
+        setSupportActionBar(mToolbar);
+        mCollapsingToolbar.setExpandedTitleColor(mTransparent);
+        mCollapsingToolbar.setContentScrimColor(mPrimaryDark);
+        mCollapsingToolbar.setStatusBarScrimColor(mPrimaryDark);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
 
     private void checkForExistingTaskData() {
         try {
