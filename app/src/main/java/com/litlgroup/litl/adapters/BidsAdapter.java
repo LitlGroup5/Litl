@@ -6,19 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.models.Bids;
 import com.litlgroup.litl.models.UserSummary;
+import com.litlgroup.litl.utils.ImageUtils;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 /**
@@ -34,7 +34,7 @@ public class BidsAdapter
         TextView tvUsername;
 
         @BindView(R.id.ivProfileImage)
-        CircleImageView ivProfileImage;
+        ImageView ivProfileImage;
 
         @BindView(R.id.tvOfferValue)
         TextView tvOfferValue;
@@ -99,11 +99,7 @@ public class BidsAdapter
             String profileImageUrl = user.getPhoto();
 
             if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
-                Glide.with(getContext())
-                        .load(profileImageUrl)
-                        .placeholder(R.drawable.offer_profile_image)
-                        .into(holder.ivProfileImage);
-
+                ImageUtils.setCircularImage(holder.ivProfileImage, profileImageUrl);
                 holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

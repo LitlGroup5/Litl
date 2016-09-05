@@ -4,17 +4,16 @@ package com.litlgroup.litl.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
-import android.widget.Toast;
 
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.TaskDetailActivity;
@@ -25,15 +24,14 @@ import com.litlgroup.litl.interfaces.SwipeToRefreshListener;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ItemClickSupport;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import timber.log.Timber;
 
 /**
@@ -66,7 +64,8 @@ public class TaskFragment extends Fragment {
             setupSwipeToRefresh(view);
         } else {
             view = inflater.inflate(R.layout.fragment_no_tasks, container, false);
-            Toast.makeText(getActivity(), "No Tasks in this category. Tap the blue button and create one", Toast.LENGTH_SHORT).show();
+            TastyToast.makeText(getActivity(), "No Tasks in this category. You should tap the blue button and create one", TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
+//            Snackbar.make(view, "", Snackbar.LENGTH_SHORT).setDuration(3000).show();
         }
 
         return view;
@@ -153,7 +152,8 @@ public class TaskFragment extends Fragment {
     private void navigateToTaskDetailActivity(int position) {
         Intent i = new Intent(getActivity(), TaskDetailActivity.class);
         i.putExtra(Constants.SELECTED_TASK, Parcels.wrap(tasks.get(position)));
-        startActivity(i);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), (View)taskRecycleAdapter.getIvBackground() , "backgroundImage");
+        startActivity(i, options.toBundle());
     }
 
 }

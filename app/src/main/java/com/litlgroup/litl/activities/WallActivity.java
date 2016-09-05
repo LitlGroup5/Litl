@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -24,7 +25,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
@@ -37,6 +37,7 @@ import com.litlgroup.litl.R;
 import com.litlgroup.litl.fragments.BookmarksFragment;
 import com.litlgroup.litl.fragments.WallFragment;
 import com.litlgroup.litl.utils.ImageUtils;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
     private Spinner categorySpinner;
-
+    private ImageView ivProfileImage;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
@@ -113,7 +114,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void setupHeaderDrawerLayout(View headerLayout) {
-        ImageView ivProfileImage = (ImageView) headerLayout.findViewById(R.id.ivProfileImage_header);
+        ivProfileImage = (ImageView) headerLayout.findViewById(R.id.ivProfileImage_header);
         ImageUtils.setCircularImage(ivProfileImage, mFirebaseUser.getPhotoUrl().toString());
 
         TextView userName = (TextView) headerLayout.findViewById(R.id.userName);
@@ -126,6 +127,13 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         TextView cityState = (TextView) headerLayout.findViewById(R.id.userCityState);
         cityState.setText("need getAddress method");
         // need to be able to get city and state for user
+
+        headerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startUserProfileScreen();
+            }
+        });
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -168,13 +176,10 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
                 categorySpinnerTitle = "All Categories";
                 break;
             case R.id.nav_history:
-                Toast.makeText(WallActivity.this, "History is coming!", Toast.LENGTH_SHORT).show();
-                return;
-            case R.id.nav_profile:
-                startUserProfileScreen();
+                TastyToast.makeText(this, "History is coming!", TastyToast.LENGTH_LONG, TastyToast.INFO);
                 return;
             case R.id.nav_settings:
-                Toast.makeText(WallActivity.this, "Settings is coming!", Toast.LENGTH_SHORT).show();
+                TastyToast.makeText(this, "Settings is coming!", TastyToast.LENGTH_LONG, TastyToast.INFO);
                 return;
             case R.id.nav_logout:
                 signOutDialog();
@@ -198,14 +203,15 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         drawerLayout.closeDrawers();
     }
 
-    public void startUserProfileScreen() {
+    private void startUserProfileScreen() {
         try {
             String userId = mFirebaseUser.getUid();
             Intent intent = new Intent(WallActivity.this, ProfileActivity.class);
             intent.putExtra(getString(R.string.user_id), userId);
             intent.putExtra("profileMode", ProfileActivity.ProfileMode.ME_VIEW);
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, (View)ivProfileImage ,"profile");
 
-            startActivity(intent);
+            startActivity(intent, options.toBundle());
         } catch (Exception ex) {
             Timber.e("Error launching user profile screen", ex);
         }
@@ -265,7 +271,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(this, SignInActivity.class));
         finish();
-        Toast.makeText(WallActivity.this, "Signed Out!", Toast.LENGTH_SHORT).show();
+        TastyToast.makeText(this, "Signed Out!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
     }
 
     public void signOutDialog() {
