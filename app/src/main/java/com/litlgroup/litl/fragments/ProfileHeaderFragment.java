@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -380,9 +379,7 @@ public class ProfileHeaderFragment
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            Toast.makeText(getActivity(),
-                                    "There was an error when fetching user data", Toast.LENGTH_SHORT).show();
-
+                            TastyToast.makeText(getActivity(), "There was an error when fetching user data", TastyToast.LENGTH_LONG, TastyToast.ERROR);
                         }
                     });
 
@@ -670,7 +667,7 @@ public class ProfileHeaderFragment
                     ||profileMode == ProfileActivity.ProfileMode.ME_VIEW ) {
                  user = getMeUser();
                 writeUser(user);
-                Toast.makeText(getActivity(), "User data has been saved!", Toast.LENGTH_SHORT).show();
+                TastyToast.makeText(getActivity(), "User data has been saved!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                 getActivity().finish();
             }
         }
@@ -858,7 +855,7 @@ public class ProfileHeaderFragment
                     launchCameraForVideo();
                 else
                 {
-                    Toast.makeText(getActivity(), "No camera on device", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(getActivity(), "No camera on device", TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
                 }
             }
         } catch (Exception ex) {
@@ -920,7 +917,7 @@ public class ProfileHeaderFragment
                 } else if (resultCode == getActivity().RESULT_CANCELED) {
                     // User cancelled the image capture
                 } else { // Result was a failure
-                    Toast.makeText(getActivity(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(getActivity(), "Picture waas not taken!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
                 }
             }
             else if(requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE)
@@ -938,7 +935,7 @@ public class ProfileHeaderFragment
                 } else if (resultCode == getActivity().RESULT_CANCELED) {
                     // User cancelled the video capture
                 } else {
-                    Toast.makeText(getActivity(), "Failed to record video",  Toast.LENGTH_LONG).show();
+                    TastyToast.makeText(getActivity(), "Failed to record video", TastyToast.LENGTH_LONG, TastyToast.ERROR);
                 }
             }
 
@@ -1053,8 +1050,7 @@ public class ProfileHeaderFragment
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-
-                    Toast.makeText(getActivity(), "File upload failed", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(getActivity(), "File failed to upload", TastyToast.LENGTH_LONG, TastyToast.ERROR);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override

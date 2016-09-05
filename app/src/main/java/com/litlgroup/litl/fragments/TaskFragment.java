@@ -4,18 +4,16 @@ package com.litlgroup.litl.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
-import android.widget.Toast;
 
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.TaskDetailActivity;
@@ -31,10 +29,8 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import timber.log.Timber;
 
 /**
@@ -67,7 +63,7 @@ public class TaskFragment extends Fragment {
             setupSwipeToRefresh(view);
         } else {
             view = inflater.inflate(R.layout.fragment_no_tasks, container, false);
-            Toast.makeText(getActivity(), "No Tasks in this category. Tap the blue button and create one", Toast.LENGTH_SHORT).show();
+            Snackbar.make(rvTasks, "No Tasks in this category. Tap the blue button and create one", Snackbar.LENGTH_SHORT).show();
         }
 
         return view;
