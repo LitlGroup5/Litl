@@ -1,6 +1,7 @@
 package com.litlgroup.litl.adapters;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +10,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.models.Bids;
 import com.litlgroup.litl.models.UserSummary;
 import com.litlgroup.litl.utils.ImageUtils;
+import com.robinhood.ticker.TickerUtils;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.util.List;
@@ -36,28 +39,75 @@ public class BidsAdapter
         @BindView(R.id.ivProfileImage)
         ImageView ivProfileImage;
 
-        @BindView(R.id.tvOfferValue)
-        TextView tvOfferValue;
-
         @BindView(R.id.ibOfferAccept)
         ImageButton ibOfferAccept;
 
         @BindView(R.id.ibOfferReject)
         ImageButton ibOfferReject;
 
+        @BindView(R.id.tickerPrice)
+        com.robinhood.ticker.TickerView tickerPrice;
+
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            tickerPrice.setCharacterList(TickerUtils.getDefaultListForUSCurrency());
         }
 
         public void setEnabled(boolean isEnabled)
         {
             tvUsername.setEnabled(isEnabled);
             ivProfileImage.setEnabled(isEnabled);
-            tvOfferValue.setEnabled(isEnabled);
             ibOfferAccept.setEnabled(isEnabled);
             ibOfferReject.setEnabled(isEnabled);
+
+            tickerPrice.setEnabled(isEnabled);
+            tickerPrice.setAlpha(0.1f);
         }
+
+        public void setTickerPrice(float price)
+        {
+            finalPrice = price;
+            handler.post(createRunnable());
+        }
+
+        float finalPrice;
+        int tickerSteps = 5;
+        long tickerStepDelayMillis = 200;
+
+        private Handler handler = new Handler();
+        private boolean resumed;
+
+        private Runnable createRunnable() {
+            return new Runnable() {
+                @Override
+                public void run() {
+                    onUpdate();
+                    if (resumed) {
+                        handler.postDelayed(createRunnable(), tickerStepDelayMillis);
+                    }
+                }
+            };
+        }
+
+        private float currentPrice = 0;
+        private void onUpdate(){
+            if(currentPrice < finalPrice) {
+                currentPrice += (finalPrice / tickerSteps);
+                resumed = true;
+            }
+            else {
+                currentPrice = finalPrice; //if currentPrice somehow went past final price
+                resumed = false;
+            }
+            tickerPrice.setText("$"+ prettyPrint(currentPrice), true);
+        }
+
+        public static String prettyPrint(double d) {
+            int i = (int) d;
+            return d == i ? String.valueOf(i) : String.format("%.2f",d);
+        }
+
     }
 
     private List<Bids> mBids;
@@ -91,29 +141,38 @@ public class BidsAdapter
 
         try {
             final Bids bid = mBids.get(position);
-            holder.tvOfferValue.setText(String.valueOf(bid.getPrice()));
+
+            holder.setTickerPrice(bid.getPrice());
 
             final UserSummary user = bid.getUser();
-            holder.tvUsername.setText(user.getName());
+            if(user != null && user.getName()!=null) {
+                holder.tvUsername.setText(user.getName());
+            }
 
-            String profileImageUrl = user.getPhoto();
+            if(user != null && user.getPhoto() != null) {
+                String profileImageUrl = user.getPhoto();
 
-            if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
-                ImageUtils.setCircularImage(holder.ivProfileImage, profileImageUrl);
-                holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        try
-                        {
-                            LaunchProfileListener launchProfileListener = (LaunchProfileListener) mContext;
-                            launchProfileListener.onLaunchProfileListener(user.getId());
-                        }
-                        catch (Exception ex)
-                        {
-                            Timber.e("Error launching profile screen from bid select screen");
-                        }
+                if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                    ImageUtils.setCircularImage(holder.ivProfileImage, profileImageUrl);
+                    if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                        Glide.with(getContext())
+                                .load(profileImageUrl)
+                                .placeholder(R.drawable.offer_profile_image)
+                                .into(holder.ivProfileImage);
+
+                        holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                try {
+                                    LaunchProfileListener launchProfileListener = (LaunchProfileListener) mContext;
+                                    launchProfileListener.onLaunchProfileListener(user.getId());
+                                } catch (Exception ex) {
+                                    Timber.e("Error launching profile screen from bid select screen");
+                                }
+                            }
+                        });
                     }
-                });
+                }
             }
 
             if(acceptedBidListIndex == -1)
@@ -139,10 +198,9 @@ public class BidsAdapter
             }
             else
             {
-                holder.ibOfferReject.setAlpha(0.2f);
-                holder.ibOfferAccept.setAlpha(0.2f);
-                holder.ibOfferReject.setEnabled(false);
-                holder.ibOfferAccept.setEnabled(false);
+                holder.ibOfferReject.setAlpha(0.1f);
+                holder.ibOfferAccept.setAlpha(0.1f);
+                holder.setEnabled(false);
             }
 
         } catch (Exception ex) {
@@ -225,4 +283,8 @@ public class BidsAdapter
     {
         void onLaunchProfileListener(String userId);
     }
+
+
+
+
 }

@@ -7,9 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +54,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -113,7 +117,6 @@ public class ProfileHeaderFragment
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-
     @BindView(R.id.vpMedia)
     ViewPager mVpMedia;
 
@@ -122,6 +125,16 @@ public class ProfileHeaderFragment
 
     @BindView(R.id.ivDataBackground)
     ImageView ivDataBackground;
+
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout mCollapsingToolbar;
+
+    @BindColor(android.R.color.transparent)
+    int mTransparent;
+    @BindColor(R.color.colorPrimaryDark)
+    int mPrimaryDark;
+
+
 
     ArrayList<String> mediaUrls;
 
@@ -166,6 +179,7 @@ public class ProfileHeaderFragment
             setEventListeners();
             setupViewPager();
             profileModeLayoutChanges();
+            setupActionBar();
         }
         catch (Exception ex)
         {
@@ -232,7 +246,18 @@ public class ProfileHeaderFragment
         }
     }
 
+    private void setupActionBar()
+    {
 
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        mCollapsingToolbar.setExpandedTitleColor(mTransparent);
+        mCollapsingToolbar.setContentScrimColor(mPrimaryDark);
+        mCollapsingToolbar.setStatusBarScrimColor(mPrimaryDark);
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
 
     private void setEventListeners() {
         rbUserRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {

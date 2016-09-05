@@ -50,4 +50,11 @@
     </style>
 
 
+    <style name="spinnerTaskCategory">
+        <item name="android:background">@drawable/spinner_background</item>
+        <item name="android:popupBackground">@color/colorPrimary</item>
+        <item name="android:textColor">@color/spinnerCategoryColor</item>
+    </style>
+
+
 </resources>

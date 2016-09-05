@@ -41,18 +41,18 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="15dp" />
 
-        <TextView
-            android:id="@+id/tvOfferValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_marginEnd="14dp"
-            android:layout_marginRight="14dp"
-            android:layout_toLeftOf="@+id/ibOfferAccept"
-            android:layout_toStartOf="@+id/ibOfferAccept"
-            android:text="$XX"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+    <com.robinhood.ticker.TickerView
+        android:id="@+id/tickerPrice"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/ibOfferAccept"
+        android:layout_toStartOf="@+id/ibOfferAccept"
+        android:layout_marginRight="2dp"
+        android:textAlignment="gravity"
+        app:ticker_animationDuration="5000"
+        />
 
         <ImageButton
             android:id="@+id/ibOfferAccept"

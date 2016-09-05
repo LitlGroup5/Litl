@@ -30,12 +30,21 @@
             android:name=".activities.TaskDetailActivity"
             android:parentActivityName=".activities.WallActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.BidSelectScreenActivity" />
-        <activity android:name=".activities.CreateTaskActivity" />
+        <activity android:name=".activities.BidSelectScreenActivity"
+            android:parentActivityName=".activities.TaskDetailActivity"
+            />
+        <activity android:name=".activities.CreateTaskActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activities.WallActivity"
+            />
         <activity
             android:name=".activities.SignInActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.ProfileActivity" />
+        <activity android:name=".activities.ProfileActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name=".activities.MediaFullScreenActivity"
             android:theme="@style/AppTheme.NoActionBar" />
