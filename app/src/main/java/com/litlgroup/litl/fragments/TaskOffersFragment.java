@@ -1,6 +1,7 @@
 package com.litlgroup.litl.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.MediaFullScreenActivity;
 import com.litlgroup.litl.activities.ProfileActivity;
+import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CircleIndicator;
@@ -285,6 +287,14 @@ public class TaskOffersFragment
         } catch (Exception ex) {
             Timber.e("Error launching user profile screen", ex);
         }
+    }
+
+    @OnClick(R.id.ivMaps)
+    public void launchMaps() {
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Address.getMapAddress(mTask.getAddress()));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
     }
 
     public void startFullScreenMedia() {

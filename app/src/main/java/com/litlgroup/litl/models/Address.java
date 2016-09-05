@@ -195,4 +195,23 @@ public class Address {
         }
         return "";
     }
+
+    public static String getMapAddress(Address address) {
+
+        String streetAddress= address.getStreetAddress();
+        String city = address.getCity();
+        String state = address.getState();
+
+        String mapAddressQuery = "";
+
+        if (!streetAddress.isEmpty() && !city.isEmpty() && !state.isEmpty())
+            mapAddressQuery = String.format("%s,%s,%s", address.getStreetAddress(), address.getCity(), address.getState());
+        else if(streetAddress.equals(" ") && city.equals(" ") && state.equals(" "))
+        {
+            mapAddressQuery = "usa";
+
+        }
+
+        return mapAddressQuery;
+    }
 }
