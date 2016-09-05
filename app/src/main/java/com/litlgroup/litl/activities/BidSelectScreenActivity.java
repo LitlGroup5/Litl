@@ -3,9 +3,12 @@ package com.litlgroup.litl.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -24,6 +27,7 @@ import com.litlgroup.litl.utils.SpacesItemDecoration;
 
 import java.util.ArrayList;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
@@ -43,6 +47,15 @@ public class BidSelectScreenActivity
 
     @BindView(R.id.rlContainer)
     RelativeLayout rlContainer;
+
+    @BindColor(android.R.color.transparent)
+    int mTransparent;
+    @BindColor(R.color.colorPrimaryDark)
+    int mPrimaryDark;
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
 
     private String thisTaskId;
     DatabaseReference database;
@@ -71,6 +84,13 @@ public class BidSelectScreenActivity
 
         GetThisTaskData();
         GetBidsData();
+
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
     }
 
 
@@ -219,5 +239,17 @@ public class BidSelectScreenActivity
         {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                //NavUtils.navigateUpFromSameTask(this);
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

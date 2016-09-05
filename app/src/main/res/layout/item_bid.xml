@@ -12,7 +12,6 @@
     android:elevation="5dp"
     >
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -45,18 +44,18 @@
         android:ellipsize="end"
         android:textSize="15dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.robinhood.ticker.TickerView
+        android:id="@+id/tickerPrice"
+        android:layout_width="55dp"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="$XX"
-        android:id="@+id/tvOfferValue"
-        android:layout_gravity="center"
+        android:layout_gravity="right"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/ibOfferAccept"
         android:layout_toStartOf="@+id/ibOfferAccept"
-        android:layout_marginRight="14dp"
-        android:layout_marginEnd="14dp" />
+        android:layout_marginRight="2dp"
+        android:textAlignment="gravity"
+        app:ticker_animationDuration="5000"
+        />
 
     <ImageButton
         android:layout_width="24dp"

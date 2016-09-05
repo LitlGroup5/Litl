@@ -8,10 +8,18 @@
     android:id="@+id/rlContainer"
     >
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="@drawable/toolbar_background"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvOffers"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar" />
 
 
 </RelativeLayout>

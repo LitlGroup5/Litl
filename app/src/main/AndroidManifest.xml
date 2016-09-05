@@ -30,7 +30,9 @@
             android:name=".activities.TaskDetailActivity"
             android:parentActivityName=".activities.WallActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.BidSelectScreenActivity" />
+        <activity android:name=".activities.BidSelectScreenActivity"
+            android:parentActivityName=".activities.TaskDetailActivity"
+            />
         <activity android:name=".activities.CreateTaskActivity"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.NoActionBar"
