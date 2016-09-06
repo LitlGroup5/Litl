@@ -125,10 +125,6 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         TextView email = (TextView) headerLayout.findViewById(R.id.tvUserEmail);
         email.setText(mFirebaseUser.getEmail());
 
-        TextView cityState = (TextView) headerLayout.findViewById(R.id.userCityState);
-        cityState.setText("need getAddress method");
-        // need to be able to get city and state for user
-
         headerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,6 +164,10 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
         CharSequence categorySpinnerTitle = menuItem.getTitle();
+        String selectedCategory = menuItem.toString();
+        if (selectedCategory.equalsIgnoreCase("Home")) {
+            selectedCategory = "All Categories";
+        }
         String toolbarTitle = "Litl";
 
         switch (menuItem.getItemId()) {
@@ -186,7 +186,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
                 signOutDialog();
                 return;
             default:
-                fragment = WallFragment.newInstance(menuItem.toString());
+                fragment = WallFragment.newInstance(selectedCategory);
         }
 
         toolbar.setTitle(toolbarTitle);

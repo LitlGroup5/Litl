@@ -30,6 +30,7 @@ import com.litlgroup.litl.interfaces.RemoveBookmarkListener;
 import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.Constants;
+import com.litlgroup.litl.utils.DateUtils;
 import com.litlgroup.litl.utils.ImageUtils;
 
 import org.parceler.Parcels;
@@ -132,7 +133,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         tvAddress.setText(Address.getDisplayString(task.getAddress()));
 
         TextView tvDeadlineDate = (TextView) taskCardView.findViewById(R.id.tvDeadlineDate);
-        tvDeadlineDate.setText(task.getDeadlineDate());
+        tvDeadlineDate.setText(DateUtils.getRelativeTimeAgo(task.getDeadlineDate()));
 
         LikeButton bookmarkButton = (LikeButton) taskCardView.findViewById(R.id.btnBookmark);
         setUpAndManageBookmarkButtonState(bookmarkButton, task, position);
