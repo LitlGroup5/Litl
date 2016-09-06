@@ -100,8 +100,7 @@ public class TaskFragment extends Fragment {
 
     public void setUpRecycleView(View v) {
         rvTasks = (RecyclerView) v.findViewById(R.id.taskRecycleView);
-//        implementRecyclerViewAnimations();
-        rvTasks.setAdapter(taskRecycleAdapter);
+        implementRecyclerViewAnimations();
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvTasks.setLayoutManager(linearLayoutManager);
