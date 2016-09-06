@@ -25,7 +25,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -107,9 +106,6 @@ public class ProfileHeaderFragment
     @BindView(R.id.ivProfileImage)
     ImageView ivProfileImage;
 
-    @BindView(R.id.rbUserRating)
-    RatingBar rbUserRating;
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -172,7 +168,6 @@ public class ProfileHeaderFragment
         View view = inflater.inflate(R.layout.fragment_profile_header, container, false);
         unbinder = ButterKnife.bind(this, view);
         try {
-            setEventListeners();
             setupViewPager();
 
             setupActionBar();
@@ -301,27 +296,6 @@ public class ProfileHeaderFragment
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-    }
-
-    private void setEventListeners() {
-        rbUserRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                userRating = v;
-
-                try
-                {
-                    mDatabase.child(Constants.TABLE_USERS)
-                            .child(onScreenUserId)
-                            .child(getString(R.string.user_rating_child))
-                            .setValue(userRating);
-                }
-                catch (Exception ex)
-                {
-                    Timber.e("Error writing user rating to firebase");
-                }
-            }
-        });
     }
 
     private void profileModeMenuOptionsChanges()
@@ -501,9 +475,6 @@ public class ProfileHeaderFragment
                 }
                 etSkills.setText(skills);
             }
-
-            if(user.getRating()!=null)
-                rbUserRating.setRating(user.getRating());
 
             if(address != null) {
                 this.address = address;
