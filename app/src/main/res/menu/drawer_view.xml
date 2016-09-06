@@ -6,34 +6,35 @@
         <item
             android:id="@+id/nav_bookmarks"
             android:icon="@drawable/bookmark"
-            android:title="@string/bookmarks"/>
+            android:title="@string/bookmarks" />
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/history"
-            android:title="@string/history"/>
+            android:title="@string/history" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/settings"
-            android:title="@string/settings"/>
+            android:title="@string/settings" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
-            android:title="@string/logout"/>
+            android:title="@string/logout" />
+
+        <item
+            android:id="@+id/home"
+            android:icon="@drawable/all_categories"
+            android:title="@string/home" />
+
         <item
             android:id="@+id/nav_categories"
             android:title="@string/categories">
-            <!--app:actionLayout="@layout/spinner_category"  this displays spinner in Navigation Drawer Layout-->
 
             <menu>
                 <group android:checkableBehavior="single">
                     <item
-                        android:id="@+id/allCategories"
-                        android:icon="@drawable/all_categories"
-                        android:title="@string/all_categories"/>
-                    <item
                         android:id="@+id/automotive"
                         android:icon="@drawable/automobile"
-                        android:title="@string/automotive"/>
+                        android:title="@string/automotive" />
 
                     <item
                         android:id="@+id/decorating"
