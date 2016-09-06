@@ -37,8 +37,7 @@
         <activity
             android:name=".activities.CreateTaskActivity"
             android:parentActivityName=".activities.WallActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.SignInActivity"
             android:theme="@style/AppTheme.NoActionBar" />
