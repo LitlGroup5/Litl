@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,7 +63,6 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import timber.log.Timber;
@@ -323,10 +321,12 @@ public class CreateTaskActivity
             }
 
             String profileImageUrl = task.getUser().getPhoto();
-            Glide.with(this)
-                    .load(profileImageUrl)
-                    .placeholder(R.drawable.offer_profile_image)
-                    .into(ivProfileImage);
+//            Glide.with(this)
+//                    .load(profileImageUrl)
+//                    .placeholder(R.drawable.offer_profile_image)
+//                    .into(ivProfileImage);
+            ImageUtils.setCircularImage(ivProfileImage, profileImageUrl);
+
 
         } catch (Exception ex) {
             Timber.e("Error populating task data");

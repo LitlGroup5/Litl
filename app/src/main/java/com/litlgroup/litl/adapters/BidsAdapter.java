@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.models.Bids;
 import com.litlgroup.litl.models.UserSummary;
@@ -157,24 +156,18 @@ public class BidsAdapter
 
                 if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
                     ImageUtils.setCircularImage(holder.ivProfileImage, profileImageUrl);
-                    if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
-                        Glide.with(getContext())
-                                .load(profileImageUrl)
-                                .placeholder(R.drawable.offer_profile_image)
-                                .into(holder.ivProfileImage);
 
-                        holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                try {
-                                    LaunchProfileListener launchProfileListener = (LaunchProfileListener) mContext;
-                                    launchProfileListener.onLaunchProfileListener(user.getId());
-                                } catch (Exception ex) {
-                                    Timber.e("Error launching profile screen from bid select screen");
-                                }
+                    holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            try {
+                                LaunchProfileListener launchProfileListener = (LaunchProfileListener) mContext;
+                                launchProfileListener.onLaunchProfileListener(user.getId());
+                            } catch (Exception ex) {
+                                Timber.e("Error launching profile screen from bid select screen");
                             }
-                        });
-                    }
+                        }
+                    });
                 }
             }
 
