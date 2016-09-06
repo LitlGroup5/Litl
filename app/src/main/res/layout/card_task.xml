@@ -79,7 +79,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="-2dp"
+            android:layout_marginTop="-3dp"
             android:id="@+id/btnBookmark"
             app:like_drawable="@drawable/ic_bookmark_filled"
             app:unlike_drawable="@drawable/ic_bookmark_border"

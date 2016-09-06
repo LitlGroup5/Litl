@@ -60,6 +60,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
     private static String BOOKMARKS_TITLE = "Bookmarks";
+    private static String ALL_CATEGORIES_TITLE = "All Categories";
     private GoogleApiClient mGoogleApiClient;
 
     @BindColor(R.color.colorAccent)
@@ -166,7 +167,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         CharSequence categorySpinnerTitle = menuItem.getTitle();
         String selectedCategory = menuItem.toString();
         if (selectedCategory.equalsIgnoreCase("Home")) {
-            selectedCategory = "All Categories";
+            selectedCategory = ALL_CATEGORIES_TITLE;
+            categorySpinnerTitle = ALL_CATEGORIES_TITLE;
         }
         String toolbarTitle = "Litl";
 
@@ -174,7 +176,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
             case R.id.nav_bookmarks:
                 fragment = new BookmarksFragment();
                 toolbarTitle = BOOKMARKS_TITLE;
-                categorySpinnerTitle = "All Categories";
+                categorySpinnerTitle = ALL_CATEGORIES_TITLE;
                 break;
             case R.id.nav_history:
                 TastyToast.makeText(this, "History is coming!", TastyToast.LENGTH_LONG, TastyToast.INFO);
