@@ -127,7 +127,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         });
 
         final TextView tvDescription = (TextView) taskCardView.findViewById(R.id.tvDescription);
-        tvDescription.setText(task.getDescription());
+        tvDescription.setText(task.getTitle());
 
         TextView tvAddress = (TextView) taskCardView.findViewById(R.id.tvAddress);
         tvAddress.setText(Address.getDisplayString(task.getAddress()));
