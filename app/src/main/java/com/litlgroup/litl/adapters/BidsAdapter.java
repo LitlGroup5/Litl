@@ -61,8 +61,11 @@ public class BidsAdapter
             ibOfferAccept.setEnabled(isEnabled);
             ibOfferReject.setEnabled(isEnabled);
 
-            tickerPrice.setEnabled(isEnabled);
-            tickerPrice.setAlpha(0.1f);
+            if(!isEnabled) {
+                ivProfileImage.setAlpha(0.1f);
+                tickerPrice.setAlpha(0.1f);
+            }
+
         }
 
         public void setTickerPrice(float price)

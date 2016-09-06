@@ -23,12 +23,12 @@
             <FrameLayout
                 android:id="@+id/vpframe"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/view_pager_height">
+                android:layout_height="match_parent">
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/vpMedia"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/view_pager_height" />
+                    android:layout_height="match_parent" />
 
                 <LinearLayout
                     android:id="@+id/vpIndicator"

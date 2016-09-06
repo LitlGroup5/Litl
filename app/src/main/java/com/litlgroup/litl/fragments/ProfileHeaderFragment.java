@@ -15,6 +15,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -135,7 +138,7 @@ public class ProfileHeaderFragment
     @BindColor(R.color.colorPrimaryDark)
     int mPrimaryDark;
 
-
+    private Menu mMenu;
 
     ArrayList<String> mediaUrls;
 
@@ -179,14 +182,37 @@ public class ProfileHeaderFragment
         try {
             setEventListeners();
             setupViewPager();
-            profileModeLayoutChanges();
+//            profileModeLayoutChanges();
+
             setupActionBar();
+            initToolbar();
+            profileModeMenuOptionsChanges();
         }
         catch (Exception ex)
         {
             Timber.e("Error creating View", ex);
         }
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_profile, menu);
+        mMenu = menu;
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.menu_item_edit: {
+//                updateBookmark();
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -222,6 +248,7 @@ public class ProfileHeaderFragment
             fileUri = savedInstanceState.getParcelable("file_uri");
         }
 
+        setHasOptionsMenu(true);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         FirebaseStorage storage = FirebaseStorage.getInstance();
         storageReference =
@@ -250,11 +277,16 @@ public class ProfileHeaderFragment
     private void setupActionBar()
     {
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         mCollapsingToolbar.setExpandedTitleColor(mTransparent);
         mCollapsingToolbar.setContentScrimColor(mPrimaryDark);
         mCollapsingToolbar.setStatusBarScrimColor(mPrimaryDark);
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+
+    }
+
+    private void initToolbar() {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -351,6 +383,48 @@ public class ProfileHeaderFragment
         catch (Exception ex)
         {
             Timber.e("Error when making profile-mode based layout changes",ex);
+        }
+    }
+
+    private void profileModeMenuOptionsChanges()
+    {
+        try
+        {
+            switch (profileMode)
+            {
+                case ME_CREATE:
+                    mMenu.getItem(0).setIcon(android.R.drawable.ic_menu_save);
+                    setPrivateInfoVisibility(true);
+                    setEditModeFieldsState(true);
+                    break;
+                case ME_VIEW:
+                    mMenu.getItem(0).setIcon(R.drawable.ic_menu_edit);
+                    setPrivateInfoVisibility(true);
+                    setEditModeFieldsState(false);
+                    break;
+                case ME_EDIT:
+                    mMenu.getItem(0).setIcon(android.R.drawable.ic_menu_save);
+                    setPrivateInfoVisibility(true);
+                    setEditModeFieldsState(true);
+
+                    break;
+                case CONNECTION:
+
+                    mMenu.getItem(0).setIcon(R.drawable.ic_connection_added);
+                    etProfileEmail.setVisibility(View.INVISIBLE);
+                    setEditModeFieldsState(false);
+                    break;
+                case OTHER:
+
+                    mMenu.getItem(0).setIcon(R.drawable.ic_add_to_connections);
+                    setPrivateInfoVisibility(false);
+                    setEditModeFieldsState(false);
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error when making profile-mode based menu options changes",ex);
         }
     }
 
@@ -577,7 +651,7 @@ public class ProfileHeaderFragment
     {
         try
         {
-            if (!onScreenUser.getConnections().contains(currentAuthorizedUId))
+            if (onScreenUser != null && !onScreenUser.getConnections().contains(currentAuthorizedUId))
                 return;
 
             if(isSetVisible) {

@@ -84,8 +84,14 @@ public class CreateTaskActivity
     @BindView(R.id.etTitle)
     EditText etTitle;
 
+    @BindView(R.id.tilTitle)
+    android.support.design.widget.TextInputLayout tilTitle;
+
     @BindView(R.id.etDescription)
     EditText etDescription;
+
+    @BindView(R.id.tilDescription)
+    android.support.design.widget.TextInputLayout tilDescription;
 
     @BindView(R.id.tvDueDate)
     TextView tvDueDate;
@@ -104,6 +110,9 @@ public class CreateTaskActivity
 
     @BindView(R.id.etPrice)
     EditText etPrice;
+
+    @BindView(R.id.tilPrice)
+    android.support.design.widget.TextInputLayout tilPrice;
 
     @BindView(R.id.vpMedia)
     ViewPager mVpMedia;
@@ -497,7 +506,7 @@ public class CreateTaskActivity
             String date = tvDueDate.getText().toString();
             String time = tvDueTime.getText().toString();
             String address = tvAddress.getText().toString();
-            String price = etPrice.getText().toString();
+            String price = etPrice.getText().toString().replace("$","");
             String category = spCategory.getSelectedItem().toString();
             List<String> mediaUrls = this.mediaUrls;
 
@@ -507,13 +516,14 @@ public class CreateTaskActivity
             {
                 if(title == null || title.trim().isEmpty())
                 {
-                    etTitle.setError("Title is required");
+//                    etTitle.setError("Title is required");
+                    tilTitle.setError("Title is required");
                     isValid = false;
                 }
 
                 if(description == null || description.trim().isEmpty())
                 {
-                    etDescription.setError("Description is required");
+                    tilDescription.setError("Description is required");
                     isValid = false;
                 }
 
@@ -537,7 +547,7 @@ public class CreateTaskActivity
 
                 if(price == null || price.trim().isEmpty())
                 {
-                    etPrice.setError("Price is required");
+                    tilPrice.setError("Price is required");
                     isValid = false;
                 }
 

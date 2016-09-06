@@ -10,12 +10,17 @@
     <include layout="@layout/app_bar_media_pager"
         android:id="@+id/include" />
 
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/rel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/include"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
         >
 
@@ -51,7 +56,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp">
+                android:layout_height="wrap_content">
 
             <EditText
                 android:layout_width="wrap_content"
@@ -68,59 +73,76 @@
                 android:enabled="false" />
 
 
-                <FrameLayout
+
+
+
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true">
+
+
+                <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true">
+                    android:id="@+id/ibAddConnection"
+                    android:layout_gravity="top"
+                    android:src="@drawable/ic_add_to_connections"
+                    android:background="@color/colorTransparent"
+                    android:adjustViewBounds="true"
+                    android:visibility="invisible"
 
+                    />
 
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/ibAddConnection"
-                        android:layout_gravity="top"
-                        android:src="@drawable/ic_add_to_connections"
-                        android:background="@color/colorTransparent"
-                        android:adjustViewBounds="true"
-                        android:visibility="invisible"
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ibProfileEdit"
+                    android:layout_gravity="top"
+                    android:adjustViewBounds="true"
+                    android:src="@android:drawable/ic_menu_edit"
+                    android:background="@color/colorTransparent"
+                    android:visibility="invisible"
+                    />
 
-                        />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ibRemoveConnection"
+                    android:layout_gravity="top"
+                    android:src="@drawable/ic_connection_added"
+                    android:background="@color/colorTransparent"
+                    android:visibility="invisible"
+                    />
 
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/ibProfileEdit"
-                        android:layout_gravity="top"
-                        android:adjustViewBounds="true"
-                        android:src="@android:drawable/ic_menu_edit"
-                        android:background="@color/colorTransparent"
-                        android:visibility="invisible"
-                        />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ibProfileSave"
+                    android:layout_gravity="top"
+                    android:adjustViewBounds="true"
+                    android:src="@android:drawable/ic_menu_save"
+                    android:background="@color/colorTransparent"
+                    android:visibility="invisible"
+                    />
 
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/ibRemoveConnection"
-                        android:layout_gravity="top"
-                        android:src="@drawable/ic_connection_added"
-                        android:background="@color/colorTransparent"
-                        android:visibility="invisible"
-                        />
+            </FrameLayout>
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
 
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/ibProfileSave"
-                        android:layout_gravity="top"
-                        android:adjustViewBounds="true"
-                        android:src="@android:drawable/ic_menu_save"
-                        android:background="@color/colorTransparent"
-                        android:visibility="invisible"
-                        />
-
-                </FrameLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_profile_email"
+                    android:layout_marginRight="7dp"
+                    android:layout_gravity="center" />
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -134,8 +156,29 @@
                     android:layout_below="@+id/etProfileName"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_marginTop="7dp"
-                    android:enabled="false" />
+                    android:enabled="false"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ibContactPhone"
+                    android:layout_alignBottom="@+id/etContactNo"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@color/colorTransparent"
+                    android:src="@drawable/ic_action_name"
+                    android:visibility="visible"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="7dp" />
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -153,32 +196,27 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="7dp"
-                    android:visibility="invisible" />
-
-                <ImageButton
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:id="@+id/ibContactPhone"
-                    android:layout_alignBottom="@+id/etContactNo"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/colorTransparent"
-                    android:src="@android:drawable/ic_menu_call"
-                    android:visibility="invisible" />
+                    android:visibility="visible"
+                    android:layout_weight="0.8" />
+            </LinearLayout>
 
 
-            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="About Me"
-                android:id="@+id/textView2"
-                android:layout_marginTop="14dp"
-                android:textColor="#ffffff" />
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_marginRight="7dp"
+                    android:src="@drawable/ic_profile_bio"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.2" />
 
-            <EditText
+                <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
@@ -189,8 +227,10 @@
                 tools:text="I&apos;m a freelance carpenter who enjoys giving woodwork an artistic touch that suits not just your needs but also your room."
                 android:layout_marginBottom="14dp"
                 android:hint="Say something about yourself"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff"
+                android:layout_weight="0.8" />
 
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -204,7 +244,7 @@
                     android:layout_gravity="center"
                     android:layout_marginRight="7dp"
                     android:adjustViewBounds="true"
-                    android:src="@android:drawable/ic_menu_mapmode" />
+                    android:src="@drawable/ic_profile_address" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -268,4 +308,8 @@
         </FrameLayout>
 
     </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
 </android.support.design.widget.CoordinatorLayout>
