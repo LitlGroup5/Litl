@@ -64,7 +64,7 @@ public class ImageUtils {
             Context context = imageView.getContext();
             String baseUrl = context.getString(R.string.static_map_base_url);
             String scale = "2";
-            String mapType = "hybrid";
+            String mapType = "roadmap";
             String zoom = "10";
             String size = "400x640";
             String apiKey = context.getString(R.string.static_map_api_key);

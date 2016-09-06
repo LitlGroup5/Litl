@@ -11,10 +11,16 @@
         android:id="@+id/include" />
 
 
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/rel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
         <FrameLayout
@@ -45,7 +51,6 @@
                     android:layout_alignEnd="@+id/tilDescription"
 
                     android:layout_marginTop="14dp"
-
                     android:id="@+id/tilTitle"
                     android:textColorHint="@color/taskHintColor"
                     android:textColor="#ffffff"
@@ -179,7 +184,7 @@
                     android:textStyle="bold"
                     android:textColor="#ffffff"
                     android:textColorHint="@color/taskHintColor"
-                    android:background="@color/colorAccent"
+                    android:background="#66ff7f66"
                     android:textAlignment="center"
                     android:gravity="center" />
 
@@ -189,17 +194,18 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="9:35 AM"
                     android:id="@+id/tvDueTime"
-                    android:layout_alignBottom="@+id/tilPrice"
-                    android:layout_marginTop="14dp"
-                    android:layout_alignRight="@+id/tvDueDate"
-                    android:layout_alignEnd="@+id/tvDueDate"
                     android:textStyle="bold"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:layout_below="@+id/tvDueDate"
+                    android:layout_alignEnd="@+id/tvDueDate"
+                    android:layout_marginTop="7dp" />
 
 
             </RelativeLayout>
         </FrameLayout>
     </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
 
 </android.support.design.widget.CoordinatorLayout>
