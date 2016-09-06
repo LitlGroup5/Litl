@@ -5,10 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:id="@+id/card_view"
     card_view:cardCornerRadius="5dp"
-    card_view:cardUseCompatPadding="true"
     android:background="?android:attr/selectableItemBackground">
 
     <RelativeLayout
@@ -19,8 +17,10 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxHeight="250dp"
+            android:maxHeight="260dp"
+            android:adjustViewBounds= "true"
             android:id="@+id/ivBackground"
+            android:scaleType="centerCrop"
             android:transitionName="backgroundImage"
             />
 

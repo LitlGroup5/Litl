@@ -1,11 +1,8 @@
 package com.litlgroup.litl.fragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,23 +13,18 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 
 import com.litlgroup.litl.R;
-import com.litlgroup.litl.activities.TaskDetailActivity;
 import com.litlgroup.litl.adapters.TaskRecycleAdapter;
 import com.litlgroup.litl.behaviors.EndlessRecyclerViewScrollListener;
 import com.litlgroup.litl.interfaces.InfiniteScrollListener;
 import com.litlgroup.litl.interfaces.SwipeToRefreshListener;
 import com.litlgroup.litl.models.Task;
-import com.litlgroup.litl.utils.Constants;
-import com.litlgroup.litl.utils.ItemClickSupport;
+import com.litlgroup.litl.utils.SpacesItemDecoration;
 import com.sdsmdg.tastytoast.TastyToast;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
-import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -104,6 +96,9 @@ public class TaskFragment extends Fragment {
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvTasks.setLayoutManager(linearLayoutManager);
+
+        SpacesItemDecoration decoration = new SpacesItemDecoration(20);
+        rvTasks.addItemDecoration(decoration);
 
         rvTasks.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
