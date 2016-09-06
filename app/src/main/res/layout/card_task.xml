@@ -27,13 +27,14 @@
         <LinearLayout
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:orientation="horizontal"
             android:background="#66000000">
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:id="@+id/ivAvatar"
                 />
@@ -49,6 +50,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tvDescription"
                     android:ellipsize="end"
+                    android:textStyle="bold"
                     android:maxLines="2"
                     android:textColor="@color/colorLight"
                     />
