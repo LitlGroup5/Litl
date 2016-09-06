@@ -374,7 +374,7 @@ public class CreateTaskActivity
             String time = tvDueTime.getText().toString();
             String timestampMillis = Task.getTimestampMillis(date, time);
             Address address = this.address;
-            String price = etPrice.getText().toString().replace("$","");
+            String price = etPrice.getText().toString();
             String category = spCategory.getSelectedItem().toString();
             List<String> categories = new ArrayList<>();
             categories.add(category);
@@ -422,7 +422,7 @@ public class CreateTaskActivity
             String time = tvDueTime.getText().toString();
             String timestampMillis = Task.getTimestampMillis(date, time);
             Address address = this.address;
-            String price = etPrice.getText().toString().replace("$","");
+            String price = etPrice.getText().toString();
             String category = spCategory.getSelectedItem().toString();
             List<String> categories = new ArrayList<>();
             categories.add(category);

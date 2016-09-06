@@ -47,7 +47,9 @@
             />
         <activity
             android:name=".activities.MediaFullScreenActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+
+            />
     </application>
 
 </manifest>
