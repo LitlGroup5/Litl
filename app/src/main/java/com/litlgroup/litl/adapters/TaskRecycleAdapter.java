@@ -24,6 +24,7 @@ import com.litlgroup.litl.R;
 import com.litlgroup.litl.interfaces.RemoveBookmarkListener;
 import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
+import com.litlgroup.litl.utils.ImageUtils;
 
 import java.util.ArrayList;
 
@@ -92,14 +93,15 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         }
 
         final ImageView ivAvatar = (ImageView) taskCardView.findViewById(R.id.ivAvatar);
-        Glide.with(taskCardView.getContext()).load(task.getUser().getPhoto()).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(new BitmapImageViewTarget(ivAvatar) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(taskCardView.getResources(), resource);
-                circularBitmapDrawable.setCircular(true);
-                ivAvatar.setImageDrawable(circularBitmapDrawable);
-            }
-        });
+        ImageUtils.setCircularImage(ivAvatar, task.getUser().getPhoto());
+//        Glide.with(taskCardView.getContext()).load(task.getUser().getPhoto()).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(new BitmapImageViewTarget(ivAvatar) {
+//            @Override
+//            protected void setResource(Bitmap resource) {
+//                RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(taskCardView.getResources(), resource);
+//                circularBitmapDrawable.setCircular(true);
+//                ivAvatar.setImageDrawable(circularBitmapDrawable);
+//            }
+//        });
 
         final TextView tvDescription = (TextView) taskCardView.findViewById(R.id.tvDescription);
         tvDescription.setText(task.getDescription());
