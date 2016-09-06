@@ -101,8 +101,9 @@ public class BookmarksFragment extends TaskFragment {
                             if (mBookmarks.size() != currentNumberOfBookmarks) {
                                 setupData(isRefresh);
                             }
-
-                            swipeContainer.setRefreshing(false);
+                            if (isRefresh) {
+                                swipeContainer.setRefreshing(false);
+                            }
                         }
 
                         @Override

@@ -76,8 +76,9 @@ public class ProposalsFragment extends TaskFragment {
                             if (currentNumberOfProposals != mProposals.size()) {
                                 setupData(isRefresh);
                             }
-
-                            swipeContainer.setRefreshing(false);
+                            if (isRefresh) {
+                                swipeContainer.setRefreshing(false);
+                            }
                         }
 
                         @Override
