@@ -6,6 +6,17 @@
     </style>
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowContentTransitions">true</item>
+        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+        <item name="android:timePickerDialogTheme">@style/AlertDialogCustom</item>
+        <item name="android:datePickerDialogTheme">@style/AlertDialogCustom</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogCustom</item>
+    </style>
+
+    <style name="AlertDialogCustom" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -48,13 +59,11 @@
         <item name="android:width">400dp</item>
         <item name="android:minWidth">64dp</item>
     </style>
-
-
+    
     <style name="spinnerTaskCategory">
         <item name="android:background">@drawable/spinner_background</item>
         <item name="android:popupBackground">@color/colorPrimary</item>
         <item name="android:textColor">@color/spinnerCategoryColor</item>
     </style>
-
 
 </resources>
