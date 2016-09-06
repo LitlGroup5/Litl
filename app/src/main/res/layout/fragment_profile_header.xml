@@ -74,62 +74,6 @@
 
 
 
-
-
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true">
-
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ibAddConnection"
-                    android:layout_gravity="top"
-                    android:src="@drawable/ic_add_to_connections"
-                    android:background="@color/colorTransparent"
-                    android:adjustViewBounds="true"
-                    android:visibility="invisible"
-
-                    />
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ibProfileEdit"
-                    android:layout_gravity="top"
-                    android:adjustViewBounds="true"
-                    android:src="@android:drawable/ic_menu_edit"
-                    android:background="@color/colorTransparent"
-                    android:visibility="invisible"
-                    />
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ibRemoveConnection"
-                    android:layout_gravity="top"
-                    android:src="@drawable/ic_connection_added"
-                    android:background="@color/colorTransparent"
-                    android:visibility="invisible"
-                    />
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ibProfileSave"
-                    android:layout_gravity="top"
-                    android:adjustViewBounds="true"
-                    android:src="@android:drawable/ic_menu_save"
-                    android:background="@color/colorTransparent"
-                    android:visibility="invisible"
-                    />
-
-            </FrameLayout>
             </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -137,12 +81,14 @@
                 android:orientation="horizontal"
                 >
 
-                <ImageView
+                <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_profile_email"
                     android:layout_marginRight="7dp"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:background="@color/colorTransparent"
+                    android:id="@+id/ibProfileEmail" />
 
                 <EditText
                     android:layout_width="wrap_content"
