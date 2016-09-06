@@ -97,7 +97,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
             @Override
             public void onClick(View view) {
                 try {
-                   navigateToTaskDetailActivity(task, ivBackground);
+                   navigateToTaskDetailActivity(task, (ImageView) view.findViewById(R.id.ivBackground));
                 } catch (Exception ex) {
                     Timber.e("Error launching task detail screen", ex);
                 }
@@ -127,7 +127,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         });
 
         final TextView tvDescription = (TextView) taskCardView.findViewById(R.id.tvDescription);
-        tvDescription.setText(task.getDescription());
+        tvDescription.setText(task.getTitle());
 
         TextView tvAddress = (TextView) taskCardView.findViewById(R.id.tvAddress);
         tvAddress.setText(Address.getDisplayString(task.getAddress()));
