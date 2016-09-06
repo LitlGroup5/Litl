@@ -33,7 +33,7 @@ public class TaskFragment extends Fragment {
 
     private LinearLayoutManager linearLayoutManager;
     private ArrayList<Task> tasks;
-    private SwipeRefreshLayout swipeContainer;
+    public SwipeRefreshLayout swipeContainer;
     private RecyclerView rvTasks;
 
     public TaskRecycleAdapter taskRecycleAdapter;
