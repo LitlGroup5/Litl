@@ -58,14 +58,13 @@ public class TaskFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view;
-        if (tasksForSpecificCategoryIsEmpty == false) {
+        if (!tasksForSpecificCategoryIsEmpty) {
             view = inflater.inflate(R.layout.fragment_task, container, false);
             setUpRecycleView(view);
             setupSwipeToRefresh(view);
         } else {
             view = inflater.inflate(R.layout.fragment_no_tasks, container, false);
             TastyToast.makeText(getActivity(), "No Tasks in this category. You should tap the blue button and create one", TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
-//            Snackbar.make(view, "", Snackbar.LENGTH_SHORT).setDuration(3000).show();
         }
 
         return view;
@@ -99,20 +98,13 @@ public class TaskFragment extends Fragment {
         taskRecycleAdapter.notifyItemRemoved(position);
     }
 
-    private void setUpRecycleView(View v) {
+    public void setUpRecycleView(View v) {
         rvTasks = (RecyclerView) v.findViewById(R.id.taskRecycleView);
         implementRecyclerViewAnimations();
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvTasks.setLayoutManager(linearLayoutManager);
 
-        ItemClickSupport.addTo(rvTasks).setOnItemClickListener(
-                new ItemClickSupport.OnItemClickListener() {
-                    @Override
-                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        navigateToTaskDetailActivity(position, v);
-                    }
-                });
         rvTasks.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
@@ -134,7 +126,7 @@ public class TaskFragment extends Fragment {
         rvTasks.setAdapter(scaleInAdapter);
     }
 
-    private void setupSwipeToRefresh(View view) {
+    public void setupSwipeToRefresh(View view) {
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -148,15 +140,4 @@ public class TaskFragment extends Fragment {
                 R.color.colorLight,
                 R.color.colorAccent);
     }
-
-    private void navigateToTaskDetailActivity(int position, View view) {
-        Intent i = new Intent(getActivity(), TaskDetailActivity.class);
-        i.putExtra(Constants.SELECTED_TASK, Parcels.wrap(tasks.get(position)));
-
-        View background = view.findViewById(R.id.ivBackground);
-
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), background , "backgroundImage");
-        startActivity(i, options.toBundle());
-    }
-
 }

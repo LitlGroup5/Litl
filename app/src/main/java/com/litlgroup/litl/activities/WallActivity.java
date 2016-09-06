@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.server.converter.StringToIntConverter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -58,7 +59,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
-
+    private static String BOOKMARKS_TITLE = "Bookmarks";
+    private static String ALL_CATEGORIES_TITLE = "All Categories";
     private GoogleApiClient mGoogleApiClient;
 
     @BindColor(R.color.colorAccent)
@@ -124,10 +126,6 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         TextView email = (TextView) headerLayout.findViewById(R.id.tvUserEmail);
         email.setText(mFirebaseUser.getEmail());
 
-        TextView cityState = (TextView) headerLayout.findViewById(R.id.userCityState);
-        cityState.setText("need getAddress method");
-        // need to be able to get city and state for user
-
         headerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,13 +165,18 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
         CharSequence categorySpinnerTitle = menuItem.getTitle();
+        String selectedCategory = menuItem.toString();
+        if (selectedCategory.equalsIgnoreCase("Home")) {
+            selectedCategory = ALL_CATEGORIES_TITLE;
+            categorySpinnerTitle = ALL_CATEGORIES_TITLE;
+        }
         String toolbarTitle = "Litl";
 
         switch (menuItem.getItemId()) {
             case R.id.nav_bookmarks:
                 fragment = new BookmarksFragment();
-                toolbarTitle = "Bookmarks";
-                categorySpinnerTitle = "All Categories";
+                toolbarTitle = BOOKMARKS_TITLE;
+                categorySpinnerTitle = ALL_CATEGORIES_TITLE;
                 break;
             case R.id.nav_history:
                 TastyToast.makeText(this, "History is coming!", TastyToast.LENGTH_LONG, TastyToast.INFO);
@@ -185,7 +188,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
                 signOutDialog();
                 return;
             default:
-                fragment = WallFragment.newInstance(menuItem.toString());
+                fragment = WallFragment.newInstance(selectedCategory);
         }
 
         toolbar.setTitle(toolbarTitle);
@@ -226,19 +229,27 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedCategory = categorySpinner.getSelectedItem().toString();
-                if (selectedCategory.equalsIgnoreCase("All Categories")) {
-                    selectedCategory = null;
+                if (toolbar.getTitle().toString().equalsIgnoreCase(BOOKMARKS_TITLE)) {
+                    BookmarksFragment bookmarksFragment = new BookmarksFragment();
+                    bookmarksFragment.tasksForSpecificCategoryIsEmpty = true;
+                    loadFragmentIntoFrameLayout(bookmarksFragment);
+                } else {
+                    returnToWallFragment();
                 }
-                loadFragmentIntoFrameLayout(WallFragment.newInstance(selectedCategory));
             }
-
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
         return true;
+    }
+
+    private void returnToWallFragment() {
+        String selectedCategory = categorySpinner.getSelectedItem().toString();
+        if (selectedCategory.equalsIgnoreCase("All Categories")) {
+            selectedCategory = null;
+        }
+        loadFragmentIntoFrameLayout(WallFragment.newInstance(selectedCategory));
     }
 
     @Override

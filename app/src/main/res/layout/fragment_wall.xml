@@ -16,7 +16,7 @@
             android:layout_height="48dp"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
-            app:pstsDividerColor="@color/colorSkyBlue"
+            app:pstsDividerColor="@color/colorTransparent"
             app:pstsIndicatorColor="@color/colorAccent"
             app:pstsShouldExpand="true"
             app:pstsTextAllCaps="true"

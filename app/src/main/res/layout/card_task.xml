@@ -5,8 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+
     android:id="@+id/card_view"
     card_view:cardCornerRadius="5dp"
+    card_view:cardUseCompatPadding="true"
     android:background="?android:attr/selectableItemBackground">
 
     <RelativeLayout
@@ -17,6 +19,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxHeight="250dp"
             android:id="@+id/ivBackground"
             android:transitionName="backgroundImage"
             />
@@ -29,8 +32,8 @@
             android:background="#66000000">
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_weight="1"
                 android:id="@+id/ivAvatar"
                 />
@@ -76,6 +79,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="-3dp"
             android:id="@+id/btnBookmark"
             app:like_drawable="@drawable/ic_bookmark_filled"
             app:unlike_drawable="@drawable/ic_bookmark_border"
