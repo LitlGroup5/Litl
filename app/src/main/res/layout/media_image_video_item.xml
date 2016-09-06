@@ -41,7 +41,7 @@
             android:layout_height="50dp"
             android:alpha="1"
             android:background="#00ffffff"
-            android:src="@android:drawable/ic_menu_camera" />
+            android:src="@drawable/ic_add_photo" />
 
 
         <ImageButton
@@ -49,8 +49,10 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:alpha="1"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
             android:background="#00ffffff"
-            android:src="@android:drawable/ic_menu_gallery" />
+            android:src="@drawable/ic_add_gallery" />
 
 
         <ImageButton
@@ -59,6 +61,6 @@
             android:layout_height="50dp"
             android:alpha="1"
             android:background="#00ffffff"
-            android:src="@drawable/ic_media_video_capture" />
+            android:src="@drawable/ic_add_video" />
     </LinearLayout>
 </FrameLayout>
