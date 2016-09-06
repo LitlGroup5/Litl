@@ -97,7 +97,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
             @Override
             public void onClick(View view) {
                 try {
-                   navigateToTaskDetailActivity(task, ivBackground);
+                   navigateToTaskDetailActivity(task, (ImageView) view.findViewById(R.id.ivBackground));
                 } catch (Exception ex) {
                     Timber.e("Error launching task detail screen", ex);
                 }
