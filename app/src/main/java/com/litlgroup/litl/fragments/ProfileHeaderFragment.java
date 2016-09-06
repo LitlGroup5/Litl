@@ -3,6 +3,7 @@ package com.litlgroup.litl.fragments;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -91,20 +92,11 @@ public class ProfileHeaderFragment
     @BindView(R.id.etSkills)
     EditText etSkills;
 
-    @BindView(R.id.ibAddConnection)
-    ImageButton ibAddConnection;
-
-    @BindView(R.id.ibProfileEdit)
-    ImageButton ibProfileEdit;
-
-    @BindView(R.id.ibProfileSave)
-    ImageButton ibProfileSave;
-
-    @BindView(R.id.ibRemoveConnection)
-    ImageButton ibRemoveConnection;
-
     @BindView(R.id.ibContactPhone)
     ImageButton ibContactPhone;
+
+    @BindView(R.id.ibProfileEmail)
+    ImageButton ibProfileEmail;
 
     @BindView(R.id.etContactNo)
     EditText etContactNo;
@@ -182,11 +174,9 @@ public class ProfileHeaderFragment
         try {
             setEventListeners();
             setupViewPager();
-//            profileModeLayoutChanges();
 
             setupActionBar();
             initToolbar();
-            profileModeMenuOptionsChanges();
         }
         catch (Exception ex)
         {
@@ -199,6 +189,11 @@ public class ProfileHeaderFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_profile, menu);
         mMenu = menu;
+        profileModeMenuOptionsChanges();
+        getAuthUserData();
+        if(!currentAuthorizedUId.equals(onScreenUserId)) {
+            getUserData();
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -208,7 +203,27 @@ public class ProfileHeaderFragment
 
         switch (id) {
             case R.id.menu_item_edit: {
-//                updateBookmark();
+
+                Drawable icon = mMenu.getItem(0).getIcon();
+                if(iconMode == IconMode.EDIT)
+                {
+                    startEditProfile();
+                }
+                else if(iconMode == IconMode.SAVE)
+                {
+                    startSaveProfile();
+                }
+                else if(iconMode == IconMode.ADD_CONNECTION)
+                {
+                    startAddConnection();
+                }
+                else if(iconMode == IconMode.REMOVE_CONNECTION)
+                {
+                    startRemoveConnection();
+
+                }
+
+
             }
         }
 
@@ -263,11 +278,7 @@ public class ProfileHeaderFragment
         try {
             currentAuthorizedUId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            getAuthUserData();
 
-            if(!currentAuthorizedUId.equals(onScreenUserId)) {
-                getUserData();
-            }
 
         } catch (Exception ex) {
             Timber.e("Error creating ProfileHeaderFragment", ex);
@@ -313,79 +324,6 @@ public class ProfileHeaderFragment
         });
     }
 
-    private void profileModeLayoutChanges()
-    {
-        try
-        {
-            switch (profileMode)
-            {
-                case ME_CREATE:
-                    ibProfileEdit.setVisibility(View.INVISIBLE);
-                    ibProfileSave.setVisibility(View.VISIBLE);
-                    ibAddConnection.setVisibility(View.INVISIBLE);
-                    ibRemoveConnection.setVisibility(View.INVISIBLE);
-
-                    setPrivateInfoVisibility(true);
-
-                    setEditModeFieldsState(true);
-                    break;
-                case ME_VIEW:
-                    ibProfileEdit.setVisibility(View.VISIBLE);
-                    ibProfileSave.setVisibility(View.INVISIBLE);
-                    ibAddConnection.setVisibility(View.INVISIBLE);
-                    ibRemoveConnection.setVisibility(View.INVISIBLE);
-
-                    etProfileEmail.setVisibility(View.VISIBLE);
-                    etContactNo.setVisibility(View.VISIBLE);
-                    ibContactPhone.setVisibility(View.VISIBLE);
-                    setPrivateInfoVisibility(true);
-                    setEditModeFieldsState(false);
-                    break;
-                case ME_EDIT:
-                    ibProfileEdit.setVisibility(View.INVISIBLE);
-                    ibProfileSave.setVisibility(View.VISIBLE);
-                    ibAddConnection.setVisibility(View.INVISIBLE);
-                    ibRemoveConnection.setVisibility(View.INVISIBLE);
-
-                    etProfileEmail.setVisibility(View.VISIBLE);
-                    etContactNo.setVisibility(View.VISIBLE);
-                    ibContactPhone.setVisibility(View.VISIBLE);
-
-                    setPrivateInfoVisibility(true);
-                    setEditModeFieldsState(true);
-
-                    break;
-                case CONNECTION:
-                    ibProfileEdit.setVisibility(View.INVISIBLE);
-                    ibProfileSave.setVisibility(View.INVISIBLE);
-                    ibAddConnection.setVisibility(View.INVISIBLE);
-                    ibRemoveConnection.setVisibility(View.VISIBLE);
-                    etProfileEmail.setVisibility(View.INVISIBLE);
-                    rbUserRating.setIsIndicator(false);
-
-                    setEditModeFieldsState(false);
-                    break;
-                case OTHER:
-                    ibProfileEdit.setVisibility(View.INVISIBLE);
-                    ibProfileSave.setVisibility(View.INVISIBLE);
-
-                    //Set the following two to invisible now and then reset when user data has been fetched
-                    ibAddConnection.setVisibility(View.INVISIBLE);
-                    ibRemoveConnection.setVisibility(View.INVISIBLE);
-                    rbUserRating.setIsIndicator(false);
-                    etProfileEmail.setVisibility(View.INVISIBLE);
-                    setPrivateInfoVisibility(false);
-                    setEditModeFieldsState(false);
-                    break;
-            }
-
-        }
-        catch (Exception ex)
-        {
-            Timber.e("Error when making profile-mode based layout changes",ex);
-        }
-    }
-
     private void profileModeMenuOptionsChanges()
     {
         try
@@ -393,30 +331,28 @@ public class ProfileHeaderFragment
             switch (profileMode)
             {
                 case ME_CREATE:
-                    mMenu.getItem(0).setIcon(android.R.drawable.ic_menu_save);
+                    setProfileSaveIcon();
                     setPrivateInfoVisibility(true);
                     setEditModeFieldsState(true);
                     break;
                 case ME_VIEW:
-                    mMenu.getItem(0).setIcon(R.drawable.ic_menu_edit);
+                    setProfileEditIcon();
                     setPrivateInfoVisibility(true);
                     setEditModeFieldsState(false);
                     break;
                 case ME_EDIT:
-                    mMenu.getItem(0).setIcon(android.R.drawable.ic_menu_save);
+                    setProfileSaveIcon();
                     setPrivateInfoVisibility(true);
                     setEditModeFieldsState(true);
 
                     break;
                 case CONNECTION:
-
-                    mMenu.getItem(0).setIcon(R.drawable.ic_connection_added);
+                    setRemoveConnectionIcon();
                     etProfileEmail.setVisibility(View.INVISIBLE);
                     setEditModeFieldsState(false);
                     break;
                 case OTHER:
-
-                    mMenu.getItem(0).setIcon(R.drawable.ic_add_to_connections);
+                    setAddConnectionIcon();
                     setPrivateInfoVisibility(false);
                     setEditModeFieldsState(false);
                     break;
@@ -428,19 +364,45 @@ public class ProfileHeaderFragment
         }
     }
 
+
+    enum IconMode {ADD_CONNECTION, REMOVE_CONNECTION, EDIT, SAVE};
+    IconMode iconMode;
+
+    private void setAddConnectionIcon()
+    {
+        mMenu.getItem(0).setIcon(R.drawable.ic_add_to_connections);
+        iconMode = IconMode.ADD_CONNECTION;
+    }
+
+    private void setRemoveConnectionIcon()
+    {
+        mMenu.getItem(0).setIcon(R.drawable.ic_connection_added);
+        iconMode = IconMode.REMOVE_CONNECTION;
+    }
+
+    private void setProfileEditIcon()
+    {
+        mMenu.getItem(0).setIcon(R.drawable.ic_menu_edit);
+        iconMode = IconMode.EDIT;
+    }
+
+    private void setProfileSaveIcon()
+    {
+        mMenu.getItem(0).setIcon(android.R.drawable.ic_menu_save);
+        iconMode = IconMode.SAVE;
+    }
+
     private void setEditModeFieldsState(Boolean isEditMode)
     {
         try
         {
-//            etProfileName.setEnabled(isEditMode);
-//            etProfileEmail.setEnabled(isEditMode);
             etContactNo.setEnabled(isEditMode);
             etAboutMe.setEnabled(isEditMode);
             etSkills.setEnabled(isEditMode);
 
 
             if(isEditMode) {
-                ibAddConnection.setVisibility(View.GONE);
+//                ibAddConnection.setVisibility(View.GONE);
                 etContactNo.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                 etAboutMe.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                 etSkills.setBackgroundColor(getResources().getColor(R.color.colorAccent));
@@ -583,7 +545,6 @@ public class ProfileHeaderFragment
         }
     }
 
-    @OnClick(R.id.ibProfileEdit)
     public void startEditProfile()
     {
         try
@@ -592,11 +553,12 @@ public class ProfileHeaderFragment
 
             mediaPagerAdapter.setAllowCapture(true);
             mediaPagerAdapter.notifyDataSetChanged();//to force capture controls to be displayed
+            setProfileSaveIcon();
 
-            ibProfileEdit.setVisibility(View.INVISIBLE);
-            ibProfileSave.setVisibility(View.VISIBLE);
-            ibAddConnection.setVisibility(View.INVISIBLE);
-            ibRemoveConnection.setVisibility(View.INVISIBLE);
+//            ibProfileEdit.setVisibility(View.INVISIBLE);
+//            ibProfileSave.setVisibility(View.VISIBLE);
+//            ibAddConnection.setVisibility(View.INVISIBLE);
+//            ibRemoveConnection.setVisibility(View.INVISIBLE);
         }
         catch (Exception ex)
         {
@@ -605,20 +567,18 @@ public class ProfileHeaderFragment
     }
 
     boolean isConnectionAdded = false;
-    @OnClick(R.id.ibAddConnection)
     public void startAddConnection()
     {
         try
         {
             isConnectionAdded = true;
 
-            ibAddConnection.setVisibility(View.INVISIBLE);
-            ibRemoveConnection.setVisibility(View.VISIBLE);
-
+            setRemoveConnectionIcon();
             TastyToast.makeText(getActivity(), "Added to your connections", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
 
             writeAddRemoveConnection(isConnectionAdded);
-            setPrivateInfoVisibility(true);
+            if(onScreenUser.getConnections().contains(currentAuthorizedUId))
+                setPrivateInfoVisibility(true);
         }
         catch (Exception ex)
         {
@@ -626,16 +586,13 @@ public class ProfileHeaderFragment
         }
     }
 
-    @OnClick(R.id.ibRemoveConnection)
     public void startRemoveConnection()
     {
         try
         {
             isConnectionAdded = false;
 
-            ibAddConnection.setVisibility(View.VISIBLE);
-            ibRemoveConnection.setVisibility(View.INVISIBLE);
-
+            setAddConnectionIcon();
             TastyToast.makeText(getActivity(), "Removed from your connections", TastyToast.LENGTH_LONG, TastyToast.INFO);
 
             writeAddRemoveConnection(isConnectionAdded);
@@ -651,11 +608,12 @@ public class ProfileHeaderFragment
     {
         try
         {
-            if (onScreenUser != null && !onScreenUser.getConnections().contains(currentAuthorizedUId))
-                return;
+//            if (onScreenUser != null && !onScreenUser.getConnections().contains(currentAuthorizedUId))
+//                return;
 
             if(isSetVisible) {
                 etProfileEmail.setVisibility(View.VISIBLE);
+                ibProfileEmail.setVisibility(View.VISIBLE);
                 etContactNo.setVisibility(View.VISIBLE);
                 ibContactPhone.setVisibility(View.VISIBLE);
             }
@@ -664,6 +622,7 @@ public class ProfileHeaderFragment
                 etProfileEmail.setVisibility(View.GONE);
                 etContactNo.setVisibility(View.GONE);
                 ibContactPhone.setVisibility(View.GONE);
+                ibProfileEmail.setVisibility(View.GONE);
             }
 
         }
@@ -692,13 +651,12 @@ public class ProfileHeaderFragment
                                     if (authUserconnections.contains(onScreenUserId)) //if onscreen user is in current authorized user's authUserconnections
                                     {
 
-                                        ibAddConnection.setVisibility(View.INVISIBLE);
-                                        ibRemoveConnection.setVisibility(View.VISIBLE);
-                                        setPrivateInfoVisibility(true);
+                                        setRemoveConnectionIcon();
+                                        if(onScreenUser.getConnections().contains(currentAuthorizedUId))
+                                            setPrivateInfoVisibility(true);
 
                                     } else {
-                                        ibAddConnection.setVisibility(View.VISIBLE);
-                                        ibRemoveConnection.setVisibility(View.INVISIBLE);
+                                        setAddConnectionIcon();
                                         setPrivateInfoVisibility(false);
                                     }
                                 }
@@ -752,7 +710,7 @@ public class ProfileHeaderFragment
     }
 
 
-    @OnClick(R.id.ibProfileSave)
+//    @OnClick(R.id.ibProfileSave)
     public void startSaveProfile()
     {
         try

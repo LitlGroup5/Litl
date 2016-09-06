@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,7 +63,6 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import timber.log.Timber;
@@ -155,7 +153,7 @@ public class CreateTaskActivity
     Boolean isEditMode = false;
 
     ArrayList<String> fileLocalUris;
-
+    ArrayList<String> fileLocalUrisToUpload;
 
     public enum TaskDataValidationMode { TASK_DEFAULT_MODE}
 
@@ -183,6 +181,7 @@ public class CreateTaskActivity
                         .child(getString(R.string.storage_reference_tasks_child));
         mediaUrls = new ArrayList<>();
         fileLocalUris = new ArrayList<>();
+        fileLocalUrisToUpload = new ArrayList<>();
         checkForExistingTaskData();
 
         tvDueDate.setText(getDefaultDeadlineDate());
@@ -322,10 +321,12 @@ public class CreateTaskActivity
             }
 
             String profileImageUrl = task.getUser().getPhoto();
-            Glide.with(this)
-                    .load(profileImageUrl)
-                    .placeholder(R.drawable.offer_profile_image)
-                    .into(ivProfileImage);
+//            Glide.with(this)
+//                    .load(profileImageUrl)
+//                    .placeholder(R.drawable.offer_profile_image)
+//                    .into(ivProfileImage);
+            ImageUtils.setCircularImage(ivProfileImage, profileImageUrl);
+
 
         } catch (Exception ex) {
             Timber.e("Error populating task data");
@@ -516,7 +517,6 @@ public class CreateTaskActivity
             {
                 if(title == null || title.trim().isEmpty())
                 {
-//                    etTitle.setError("Title is required");
                     tilTitle.setError("Title is required");
                     isValid = false;
                 }
@@ -779,6 +779,7 @@ public class CreateTaskActivity
                 if (resultCode == RESULT_OK) {
 
                     fileLocalUris.add(fileUri.toString());
+                    fileLocalUrisToUpload.add(fileUri.toString());
                     startFileUpload(fileUri, true);
 
                     mediaPagerAdapter.insert(fileUri, pageIndex);
@@ -796,8 +797,8 @@ public class CreateTaskActivity
                 if (resultCode == RESULT_OK) {
 
                     fileLocalUris.add(fileUri.toString());
+                    fileLocalUrisToUpload.add(fileUri.toString());
                     startFileUpload(fileUri, false);
-
 
                     mediaPagerAdapter.insert(fileUri, pageIndex);
                     mediaPagerAdapter.notifyDataSetChanged();
@@ -820,6 +821,7 @@ public class CreateTaskActivity
                 public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {
                     Uri fileUri = Uri.fromFile(imageFile);
                     fileLocalUris.add(fileUri.toString());
+                    fileLocalUrisToUpload.add(fileUri.toString());
 
                     startFileUpload(fileUri, true);
                     //Handle the image
@@ -905,6 +907,7 @@ public class CreateTaskActivity
         }
     }
 
+
     private void startFileUpload(final Uri fileUri, boolean isImage) {
         try {
 
@@ -932,15 +935,18 @@ public class CreateTaskActivity
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
+                    fileLocalUrisToUpload.remove(fileUri);
                     TastyToast.makeText(CreateTaskActivity.this, "File upload failed", TastyToast.LENGTH_LONG, TastyToast.ERROR);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    fileLocalUrisToUpload.remove(fileUri);
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                    if (downloadUrl != null)
+                    if (downloadUrl != null) {
                         mediaUrls.add(downloadUrl.toString());
+                    }
 
                     btnPostTask.setEnabled(true);
 
