@@ -45,7 +45,7 @@
         <activity
             android:name=".activities.ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            />
         <activity
             android:name=".activities.MediaFullScreenActivity"
             android:theme="@style/AppTheme.NoActionBar" />
