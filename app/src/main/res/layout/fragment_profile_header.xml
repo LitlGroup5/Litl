@@ -7,8 +7,8 @@
     android:layout_height="match_parent">
 
 
-    <include layout="@layout/app_bar_media_pager"
-        android:id="@+id/include" />
+    <!--<include layout="@layout/app_bar_media_pager"-->
+        <!--android:id="@+id/include" />-->
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/rel"
@@ -269,7 +269,7 @@
                     android:layout_gravity="center"
                     android:layout_marginRight="7dp"
                     android:adjustViewBounds="true"
-                    android:src="@android:drawable/ic_menu_manage" />
+                    android:src="@drawable/ic_profile_categories" />
 
                 <EditText
                     android:layout_width="match_parent"
