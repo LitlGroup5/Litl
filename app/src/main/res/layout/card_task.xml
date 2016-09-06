@@ -7,7 +7,9 @@
     android:layout_height="wrap_content"
     android:id="@+id/card_view"
     card_view:cardCornerRadius="5dp"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="?android:attr/selectableItemBackground"
+    android:elevation="5dp"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
