@@ -402,7 +402,6 @@ public class ProfileHeaderFragment
 
 
             if(isEditMode) {
-//                ibAddConnection.setVisibility(View.GONE);
                 etContactNo.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                 etAboutMe.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                 etSkills.setBackgroundColor(getResources().getColor(R.color.colorAccent));
@@ -553,12 +552,10 @@ public class ProfileHeaderFragment
 
             mediaPagerAdapter.setAllowCapture(true);
             mediaPagerAdapter.notifyDataSetChanged();//to force capture controls to be displayed
+            circleIndicator.refreshIndicator();
+
             setProfileSaveIcon();
 
-//            ibProfileEdit.setVisibility(View.INVISIBLE);
-//            ibProfileSave.setVisibility(View.VISIBLE);
-//            ibAddConnection.setVisibility(View.INVISIBLE);
-//            ibRemoveConnection.setVisibility(View.INVISIBLE);
         }
         catch (Exception ex)
         {
