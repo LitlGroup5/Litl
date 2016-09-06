@@ -7,4 +7,12 @@
             <corners android:radius="8dp" />
         </shape>
     </item>
+
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <gradient android:endColor="@color/colorAccentDisabled" android:startColor="@color/colorAccentDisabled" />
+            <padding android:left="8dp" android:right="8dp" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
 </selector>
