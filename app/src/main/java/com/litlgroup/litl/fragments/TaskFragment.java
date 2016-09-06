@@ -82,7 +82,6 @@ public class TaskFragment extends Fragment {
         if (newTasks.size() > 0) {
             linearLayoutManager.scrollToPosition(0);
         }
-        swipeContainer.setRefreshing(false);
     }
 
     public void removeTaskWithAnimation(int position) {
