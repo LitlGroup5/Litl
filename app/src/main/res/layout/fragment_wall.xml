@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:src="@android:drawable/ic_input_add"
-        android:tint="@color/colorAccent"
+        android:tint="@color/colorLight"
         app:backgroundTint="@color/colorPrimary"
         app:layout_behavior="com.litlgroup.litl.behaviors.ScrollAwareFABBehavior" />
 
