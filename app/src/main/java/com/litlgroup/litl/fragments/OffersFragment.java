@@ -73,7 +73,9 @@ public class OffersFragment extends TaskFragment {
                             if (currentNumberOfOffers != mOffers.size()) {
                                 setupData(isRefresh);
                             }
-                            swipeContainer.setRefreshing(false);
+                            if (isRefresh) {
+                                swipeContainer.setRefreshing(false);
+                            }
                         }
 
                         @Override
