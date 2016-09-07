@@ -22,6 +22,7 @@ import com.litlgroup.litl.utils.SpacesItemDecoration;
 import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
@@ -71,11 +72,13 @@ public class TaskFragment extends Fragment {
 
     public void addMoreTasksForEndlessScrolling(ArrayList<Task> moreTasks) {
         int startingPoint = tasks.size();
+        Collections.reverse(moreTasks);
         tasks.addAll(moreTasks);
         taskRecycleAdapter.notifyItemRangeChanged(startingPoint, moreTasks.size());
     }
 
     public void addAllNewTasksForRefresh(ArrayList<Task> newTasks) {
+        Collections.reverse(newTasks);
         tasks.addAll(0, newTasks);
         taskRecycleAdapter.notifyItemRangeInserted(0, newTasks.size() - 1);
 
