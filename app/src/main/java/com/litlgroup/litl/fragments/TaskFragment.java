@@ -24,7 +24,9 @@ import com.sdsmdg.tastytoast.TastyToast;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
 
 /**
@@ -111,12 +113,30 @@ public class TaskFragment extends Fragment {
     }
 
     private void implementRecyclerViewAnimations() {
+        SlideInBottomAnimationAdapter animator = new SlideInBottomAnimationAdapter(taskRecycleAdapter);
+        animator.setDuration(1000);
+        animator.setFirstOnly(false);
+        animator.setInterpolator(new OvershootInterpolator(1f));
+
+        AlphaInAnimationAdapter alphaAnimator = new AlphaInAnimationAdapter(animator);
+        alphaAnimator.setFirstOnly(false);
+        alphaAnimator.setDuration(600);
+
+        rvTasks.setAdapter(new ScaleInAnimationAdapter(alphaAnimator));
+
+    }
+
+
+
+    private void implementRecyclerViewAnimationsOld() {
+
+        int animationTime = 500;
         //RecyclerView Animations from Library https://github.com/wasabeef/recyclerview-animators
         rvTasks.setItemAnimator(new FlipInTopXAnimator(new OvershootInterpolator()));
-        rvTasks.getItemAnimator().setAddDuration(1000);
-        rvTasks.getItemAnimator().setRemoveDuration(1000);
-        rvTasks.getItemAnimator().setMoveDuration(1000);
-        rvTasks.getItemAnimator().setChangeDuration(1000);
+        rvTasks.getItemAnimator().setAddDuration(animationTime);
+        rvTasks.getItemAnimator().setRemoveDuration(animationTime);
+        rvTasks.getItemAnimator().setMoveDuration(animationTime);
+        rvTasks.getItemAnimator().setChangeDuration(animationTime);
 
         ScaleInAnimationAdapter scaleInAdapter = new ScaleInAnimationAdapter(taskRecycleAdapter);
         scaleInAdapter.setDuration(1500);
