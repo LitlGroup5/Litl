@@ -930,7 +930,7 @@ public class CreateTaskActivity
 
             UploadTask uploadTask = fileStorageReference.putStream(stream);
 
-            btnPostTask.setEnabled(false);
+//            btnPostTask.setEnabled(false);
 
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -948,7 +948,7 @@ public class CreateTaskActivity
                         mediaUrls.add(downloadUrl.toString());
                     }
 
-                    btnPostTask.setEnabled(true);
+//                    btnPostTask.setEnabled(true);
 
                 }
             });
