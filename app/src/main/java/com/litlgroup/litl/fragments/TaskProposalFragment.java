@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +38,8 @@ import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.DateUtils;
 import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.ZoomOutPageTransformer;
+import com.sdsmdg.tastytoast.TastyToast;
+import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import org.parceler.Parcels;
 
@@ -107,9 +108,11 @@ public class TaskProposalFragment
             Timber.d("Key: " + dataSnapshot.getKey());
             Timber.d("Value: " + String.valueOf(dataSnapshot.getValue()));
 
-            mTask = dataSnapshot.getValue(Task.class);
-            mTask.setId(dataSnapshot.getKey());
-            setData(mTask);
+            if (dataSnapshot.getValue()!=null) {
+                mTask = dataSnapshot.getValue(Task.class);
+                mTask.setId(dataSnapshot.getKey());
+                setData(mTask);
+            }
         }
 
         @Override
@@ -188,12 +191,8 @@ public class TaskProposalFragment
 
         switch (id) {
             case R.id.action_delete: {
-                mDatabase.removeEventListener(valueEventListener);
-                valueEventListener = null;
 
-                mDatabase.child(Constants.TABLE_TASKS).child(mTask.getId()).removeValue();
-                Toast.makeText(getActivity(), "Task Deleted", Toast.LENGTH_SHORT).show();
-                getActivity().finish();
+                showConfirmDeleteDialog();
 
                 break;
             }
@@ -220,10 +219,40 @@ public class TaskProposalFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.task_proposal_menu, menu);
         mMenu = menu;
-        initBookmark();
+//        initBookmark();
 
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+    private void showConfirmDeleteDialog()
+    {
+
+        new LovelyStandardDialog(getActivity())
+                .setTopColorRes(android.R.color.holo_orange_light)
+                .setButtonsColorRes(R.color.colorAccent)
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle("Are you sure?")
+                .setMessage("Are you sure you want to delete this task?")
+                .setPositiveButton("Yes", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDatabase.removeEventListener(valueEventListener);
+
+                        mDatabase.child(Constants.TABLE_TASKS).child(mTask.getId()).removeValue();
+                        TastyToast.makeText(getActivity(), "The task has been deleted", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+
+                        Intent data = new Intent();
+                        data.putExtra("isDeleted", true);
+                        data.putExtra("Task", Parcels.wrap(mTask));
+                        getActivity().setResult(getActivity().RESULT_OK, data);
+                        getActivity().finish();
+
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .show();
+    }
+
 
     private void getTaskData() {
         mDatabase.child(Constants.TABLE_TASKS).child(mTask.getId()).addValueEventListener(valueEventListener);
