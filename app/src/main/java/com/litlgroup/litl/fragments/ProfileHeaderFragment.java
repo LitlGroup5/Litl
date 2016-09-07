@@ -92,10 +92,10 @@ public class ProfileHeaderFragment
     EditText etSkills;
 
     @BindView(R.id.ibContactPhone)
-    ImageButton ibContactPhone;
+    ImageView ibContactPhone;
 
     @BindView(R.id.ibProfileEmail)
-    ImageButton ibProfileEmail;
+    ImageView ibProfileEmail;
 
     @BindView(R.id.etContactNo)
     EditText etContactNo;
@@ -115,8 +115,8 @@ public class ProfileHeaderFragment
     @BindView(R.id.vpIndicator)
     LinearLayout mViewPagerCountDots;
 
-    @BindView(R.id.ivDataBackground)
-    ImageView ivDataBackground;
+    @BindView(R.id.ivMaps)
+    ImageView ivMaps;
 
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbar;
@@ -362,7 +362,7 @@ public class ProfileHeaderFragment
 
     private void setProfileSaveIcon()
     {
-        mMenu.getItem(0).setIcon(android.R.drawable.ic_menu_save);
+        mMenu.getItem(0).setIcon(R.drawable.ic_save_white);
         iconMode = IconMode.SAVE;
     }
 
@@ -479,7 +479,7 @@ public class ProfileHeaderFragment
             if(address != null) {
                 this.address = address;
                 tvProfileAddress.setText(Address.getDisplayString(address));
-                ImageUtils.setBlurredMapBackground(address, ivDataBackground);
+                ImageUtils.setBlurredMapBackground(address, ivMaps);
             }
 
 
@@ -509,7 +509,7 @@ public class ProfileHeaderFragment
             this.address = address;
             tvProfileAddress.setText(Address.getDisplayString(address));
 
-            ImageUtils.setBlurredMapBackground(address, ivDataBackground);
+            ImageUtils.setBlurredMapBackground(address, ivMaps);
         } catch (Exception ex) {
             Timber.e("User entered address could not be parsed");
         }

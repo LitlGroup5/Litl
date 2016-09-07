@@ -39,21 +39,18 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:alpha="1"
-                android:background="#66000000">
+                android:alpha="1">
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_alignLeft="@+id/tilDescription"
                     android:layout_alignStart="@+id/tilDescription"
                     android:layout_alignRight="@+id/tilDescription"
                     android:layout_alignEnd="@+id/tilDescription"
-
                     android:layout_marginTop="14dp"
                     android:id="@+id/tilTitle"
                     android:textColorHint="@color/taskHintColor"
-                    android:textColor="#ffffff"
+                    android:textColor="@android:color/black"
                     >
 
                 <EditText
