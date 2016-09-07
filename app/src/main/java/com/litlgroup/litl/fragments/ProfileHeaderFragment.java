@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -442,10 +441,19 @@ public class ProfileHeaderFragment
                 media = (ArrayList<String>) user.getMedia();
                 mediaUrls = media;
                 fileLocalUris = media;
+                mediaPagerAdapter.removeAll();
                 for (int i =0 ; i  < mediaUrls.size(); i++) {
-                    mediaPagerAdapter.insertUri(Uri.parse(mediaUrls.get(i)), i);
-
-                    circleIndicator.refreshIndicator();
+                    try {
+                        if (mediaUrls.get(i) == null)
+                            continue;
+                        mediaPagerAdapter.addImage(mediaUrls.get(i));
+                        mediaPagerAdapter.notifyDataSetChanged();
+                        circleIndicator.refreshIndicator();
+                    }
+                    catch (Exception ex)
+                    {
+                        Timber.e(ex.toString());
+                    }
                 }
                 mediaPagerAdapter.notifyDataSetChanged();
             }
