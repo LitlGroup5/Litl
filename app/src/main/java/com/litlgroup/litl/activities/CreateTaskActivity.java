@@ -229,6 +229,14 @@ public class CreateTaskActivity
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            if(isEditMode)
+            {
+                setTitle("Edit Task");
+            }
+            else
+            {
+                setTitle("New Task");
+            }
         }
     }
 
