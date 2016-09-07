@@ -45,9 +45,17 @@
                 android:id="@+id/ivProfileImage"
                 android:layout_gravity="start|bottom"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:src="@drawable/offer_profile_image"
                 android:alpha="0.8"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/profile_background"
+                android:padding="@dimen/image_border"
                 android:transitionName="profile"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey_200"
+                android:layout_gravity="center_horizontal|bottom" />
 
         </FrameLayout>
 
