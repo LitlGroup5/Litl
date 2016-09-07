@@ -138,14 +138,11 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
     int REQUEST_CODE = 20;
     private void navigateToTaskDetailActivity(Task chosenTask, ImageView background) {
 
-//        LaunchTaskDetailListener launchTaskDetailListener = (LaunchTaskDetailListener) thisContext;
-//        launchTaskDetailListener.onLaunchTaskDetail(chosenTask, (View)background);
-
         Intent i = new Intent(thisContext, TaskDetailActivity.class);
         i.putExtra(Constants.SELECTED_TASK, Parcels.wrap(chosenTask));
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)thisContext, (View)background , "backgroundImage");
-//        thisContext.startActivity(i, options.toBundle());
-        ((Activity) thisContext).startActivityForResult(i, REQUEST_CODE, options.toBundle());
+        thisContext.startActivity(i, options.toBundle());
+//        ((Activity) thisContext).startActivityForResult(i, REQUEST_CODE, options.toBundle());
     }
 
     public void remove(Task task)
@@ -155,7 +152,6 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
             tasks.remove(task);
         }
     }
-
 
     private void setUpAndManageBookmarkButtonState(final LikeButton bookmarkButton, final Task task, final int position) {
         bookmarkButtonAnimation(bookmarkButton, task);

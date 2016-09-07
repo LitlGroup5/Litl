@@ -217,8 +217,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:layout_alignParentEnd="true"
-                        android:layout_below="@+id/tvDescription"
-                        android:src="@drawable/wood" />
+                        android:layout_below="@+id/tvDescription" />
                 </LinearLayout>
 
             </LinearLayout>

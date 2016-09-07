@@ -351,10 +351,7 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
 
     public void removeAll()
     {
-        for(int i = 0; i < mImageUrls.size(); i++)
-        {
-            mImageUrls.remove(0);
-        }
+        mImageUrls.clear();
     }
 
     public boolean isImageFile(String path) {
