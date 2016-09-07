@@ -22,6 +22,8 @@ public class TaskDetailActivity extends AppCompatActivity {
 
         Task selectedTask = Parcels.unwrap(getIntent().getParcelableExtra(Constants.SELECTED_TASK));
 
+        Task.writeIncrementedViewedBy(selectedTask);
+
         if (savedInstanceState == null)
             loadFragment(selectedTask);
     }
@@ -49,4 +51,5 @@ public class TaskDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

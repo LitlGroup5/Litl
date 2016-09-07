@@ -109,7 +109,6 @@ public class TaskProposalFragment
 
             mTask = dataSnapshot.getValue(Task.class);
             mTask.setId(dataSnapshot.getKey());
-
             setData(mTask);
         }
 
@@ -163,6 +162,7 @@ public class TaskProposalFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
         Glide.clear(mIvProfileImage);
 
         unbinder.unbind();
