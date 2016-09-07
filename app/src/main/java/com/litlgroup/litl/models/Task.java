@@ -1,8 +1,11 @@
 package com.litlgroup.litl.models;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.utils.Constants;
 
 import org.parceler.Parcel;
@@ -256,6 +259,39 @@ public class Task {
             bookmarks.remove(FirebaseAuth.getInstance().getCurrentUser().getUid());
             FirebaseDatabase.getInstance().getReference().child(Constants.TABLE_TASKS).child(task.getId()).child("bookmarks").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
         }
+    }
+
+    public static void writeIncrementedViewedBy(final Task task)
+    {
+        try
+        {
+            //task does not have the correct value for viewedByCount here, so get a copy from firebase
+            FirebaseDatabase.getInstance().getReference().child(Constants.TABLE_TASKS)
+                    .child(task.getId())
+                    .child("viewedBy")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            long currentViewedBy = (long)dataSnapshot.getValue();
+                            FirebaseDatabase.getInstance().getReference().child(Constants.TABLE_TASKS)
+                                    .child(task.getId())
+                                    .child("viewedBy")
+                                    .setValue(currentViewedBy+1);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                    //.setValue(task.getViewedBy()+1);
+
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error incrementing viewedBy count", ex);
+        }
+
     }
 
     public enum Type {
