@@ -3,30 +3,24 @@ package com.litlgroup.litl.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.ProfileActivity;
 import com.litlgroup.litl.activities.TaskDetailActivity;
-import com.litlgroup.litl.interfaces.RemoveBookmarkListener;
 import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.Constants;
@@ -141,11 +135,22 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         setUpAndManageBookmarkButtonState(bookmarkButton, task, position);
     }
 
+    int REQUEST_CODE = 20;
     private void navigateToTaskDetailActivity(Task chosenTask, ImageView background) {
+
         Intent i = new Intent(thisContext, TaskDetailActivity.class);
         i.putExtra(Constants.SELECTED_TASK, Parcels.wrap(chosenTask));
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)thisContext, (View)background , "backgroundImage");
         thisContext.startActivity(i, options.toBundle());
+//        ((Activity) thisContext).startActivityForResult(i, REQUEST_CODE, options.toBundle());
+    }
+
+    public void remove(Task task)
+    {
+        int position = tasks.indexOf(task);
+        if(position > -1) {
+            tasks.remove(task);
+        }
     }
 
     private void setUpAndManageBookmarkButtonState(final LikeButton bookmarkButton, final Task task, final int position) {
@@ -199,4 +204,11 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
         closedTaskImageView.setColorFilter(filter);
     }
+
+
+    public interface LaunchTaskDetailListener
+    {
+        public void onLaunchTaskDetail(Task task, View background);
+    }
 }
+

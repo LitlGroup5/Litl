@@ -310,7 +310,11 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
     }
 
     public void addImage(String url) {
-        if(mImageUrls.contains(null))
+
+        if(url == null)
+            return;
+
+        if(mImageUrls.contains(null)) //usually happens in capture mode
             mImageUrls.remove(null);
         mImageUrls.add(url);
         if(allowCapture)
