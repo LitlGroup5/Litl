@@ -108,8 +108,8 @@ public class WallFragment extends Fragment
 
         private int[] tabIcons =
                 {
-                        R.drawable.tab_icon_offers,
-                        R.drawable.tab_icon_proposals
+                        R.drawable.tabicon_proposals_vector,
+                        R.drawable.tabicon_offers_vector
 
                 };
 
