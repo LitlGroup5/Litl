@@ -28,8 +28,15 @@ import timber.log.Timber;
  * A placeholder fragment containing a simple view.
  */
 public class BookmarksFragment extends TaskFragment {
-
+    private static String NO_BOOKMARKS_MESSAGE = "No Bookmarks in this category";
     ArrayList<Task> mBookmarks = new ArrayList<>();
+
+    public static BookmarksFragment newInstance(String category) {
+        BookmarksFragment fragment = new BookmarksFragment();
+        fragment.chosenCategory = category;
+
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,22 +44,6 @@ public class BookmarksFragment extends TaskFragment {
         getData(false);
         setupBehaviors();
         setupRemoveBookmarkListenerImplementation();
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view;
-        if (!tasksForSpecificCategoryIsEmpty) {
-            view = inflater.inflate(R.layout.fragment_task, container, false);
-            setUpRecycleView(view);
-            setupSwipeToRefresh(view);
-        } else {
-            view = inflater.inflate(R.layout.fragment_no_bookmarks, container, false);
-            TastyToast.makeText(getActivity(), "No Bookmarks in this category", TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
-        }
-
-        return view;
     }
 
     private void setupRemoveBookmarkListenerImplementation() {
@@ -99,7 +90,11 @@ public class BookmarksFragment extends TaskFragment {
                                 mBookmarks.add(task);
                             }
                             if (mBookmarks.size() != currentNumberOfBookmarks) {
-                                setupData(isRefresh);
+                                if (chosenCategory != null) {
+                                    setupData(true);
+                                } else {
+                                    setupData(isRefresh);
+                                }
                             }
                             if (isRefresh) {
                                 swipeContainer.setRefreshing(false);
@@ -117,7 +112,7 @@ public class BookmarksFragment extends TaskFragment {
 
     public void setupData(boolean isRefresh) {
         if (isRefresh) {
-            addAllNewTasksForRefresh(mBookmarks);
+            addAllNewTasksForRefresh(Task.getSortedTasks(mBookmarks, chosenCategory));
         } else {
             addMoreTasksForEndlessScrolling(mBookmarks);
         }

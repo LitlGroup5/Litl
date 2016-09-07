@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.adapters.TaskRecycleAdapter;
@@ -43,8 +45,8 @@ public class TaskFragment extends Fragment {
     public String chosenCategory;
     public InfiniteScrollListener infiniteScrollListener;
     public SwipeToRefreshListener swipeToRefreshListener;
-    public boolean tasksForSpecificCategoryIsEmpty = false;
 
+    public static String NO_TASKS_MESSAGE = "No Tasks in this category. You should tap the blue button and create one";
     public TaskFragment() {
         // Required empty public constructor
     }
@@ -52,15 +54,9 @@ public class TaskFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view;
-        if (!tasksForSpecificCategoryIsEmpty) {
-            view = inflater.inflate(R.layout.fragment_task, container, false);
+        View view = inflater.inflate(R.layout.fragment_task, container, false);
             setUpRecycleView(view);
             setupSwipeToRefresh(view);
-        } else {
-            view = inflater.inflate(R.layout.fragment_no_tasks, container, false);
-            TastyToast.makeText(getActivity(), "No Tasks in this category. You should tap the blue button and create one", TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
-        }
 
         return view;
     }
@@ -110,6 +106,10 @@ public class TaskFragment extends Fragment {
                 infiniteScrollListener.userScrolledPastBenchmark(TaskFragment.this, totalItemsCount - 1);
             }
         });
+    }
+
+    public void displayNoTasksView(String noTaskMessage) {
+        TastyToast.makeText(getActivity(), noTaskMessage, TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
     }
 
     private void implementRecyclerViewAnimations() {

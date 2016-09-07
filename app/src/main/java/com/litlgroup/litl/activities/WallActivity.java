@@ -174,7 +174,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
 
         switch (menuItem.getItemId()) {
             case R.id.nav_bookmarks:
-                fragment = new BookmarksFragment();
+                fragment = BookmarksFragment.newInstance(ALL_CATEGORIES_TITLE);
                 toolbarTitle = BOOKMARKS_TITLE;
                 categorySpinnerTitle = ALL_CATEGORIES_TITLE;
                 break;
@@ -220,7 +220,6 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_wall, menu);
@@ -230,9 +229,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (toolbar.getTitle().toString().equalsIgnoreCase(BOOKMARKS_TITLE)) {
-                    BookmarksFragment bookmarksFragment = new BookmarksFragment();
-                    bookmarksFragment.tasksForSpecificCategoryIsEmpty = true;
-                    loadFragmentIntoFrameLayout(bookmarksFragment);
+                    loadFragmentIntoFrameLayout(BookmarksFragment.newInstance(categorySpinner.getSelectedItem().toString()));
                 } else {
                     returnToWallFragment();
                 }

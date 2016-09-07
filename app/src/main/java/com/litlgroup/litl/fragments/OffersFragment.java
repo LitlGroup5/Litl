@@ -27,11 +27,7 @@ public class OffersFragment extends TaskFragment {
     public static OffersFragment newInstance(String category) {
         OffersFragment fragment = new OffersFragment();
         fragment.chosenCategory = category;
-        if (category != null && !category.equalsIgnoreCase("All Categories")) {
-            fragment.tasksForSpecificCategoryIsEmpty = true;
-        } else {
-            fragment.tasksForSpecificCategoryIsEmpty = false;
-        }
+
         return fragment;
     }
 
@@ -71,7 +67,11 @@ public class OffersFragment extends TaskFragment {
                             }
 
                             if (currentNumberOfOffers != mOffers.size()) {
-                                setupData(isRefresh);
+                                if (chosenCategory != null) {
+                                    setupData(true);
+                                } else {
+                                    setupData(isRefresh);
+                                }
                             }
                             if (isRefresh) {
                                 swipeContainer.setRefreshing(false);
