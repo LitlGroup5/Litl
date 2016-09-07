@@ -238,7 +238,6 @@ public class TaskProposalFragment
         new LovelyStandardDialog(getActivity())
                 .setTopColorRes(android.R.color.holo_orange_light)
                 .setButtonsColorRes(R.color.colorAccent)
-                .setIcon(R.mipmap.ic_launcher)
                 .setTitle("Are you sure?")
                 .setMessage("Are you sure you want to delete this task?")
                 .setPositiveButton("Yes", new View.OnClickListener() {
