@@ -24,7 +24,8 @@ import com.litlgroup.litl.utils.ZoomOutPageTransformer;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WallFragment extends Fragment {
+public class WallFragment extends Fragment
+{
     private String chosenCategory;
 
     public WallFragment() {
@@ -77,7 +78,10 @@ public class WallFragment extends Fragment {
         startActivity(intent);
     }
 
-    public class TaskPagerAdapter extends FragmentStatePagerAdapter {
+    public class TaskPagerAdapter extends FragmentStatePagerAdapter
+            implements PagerSlidingTabStrip.IconTabProvider
+
+    {
         private String tabTitles[] = {"Offers", "Proposals"};
         private String chosenCategory;
 
@@ -101,14 +105,27 @@ public class WallFragment extends Fragment {
             return tabTitles.length;
         }
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return tabTitles[position];
-        }
+
+        private int[] tabIcons =
+                {
+                        R.drawable.tab_icon_offers,
+                        R.drawable.tab_icon_proposals
+
+                };
+
+//        @Override
+//        public CharSequence getPageTitle(int position) {
+//            return tabTitles[position];
+//        }
 
         @Override
         public int getItemPosition(Object object) {
             return PagerAdapter.POSITION_NONE;
+        }
+
+        @Override
+        public int getPageIconResId(int position) {
+            return  tabIcons[position];
         }
     }
 }
