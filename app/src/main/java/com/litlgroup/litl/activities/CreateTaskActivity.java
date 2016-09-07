@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -46,6 +47,7 @@ import com.litlgroup.litl.utils.DateUtils;
 import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.Permissions;
 import com.sdsmdg.tastytoast.TastyToast;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -83,13 +85,13 @@ public class CreateTaskActivity
     EditText etTitle;
 
     @BindView(R.id.tilTitle)
-    android.support.design.widget.TextInputLayout tilTitle;
+    TextInputLayout tilTitle;
 
     @BindView(R.id.etDescription)
     EditText etDescription;
 
     @BindView(R.id.tilDescription)
-    android.support.design.widget.TextInputLayout tilDescription;
+    TextInputLayout tilDescription;
 
     @BindView(R.id.tvDueDate)
     TextView tvDueDate;
@@ -98,7 +100,7 @@ public class CreateTaskActivity
     TextView tvDueTime;
 
     @BindView(R.id.spCategory)
-    com.toptoche.searchablespinnerlibrary.SearchableSpinner spCategory;
+    SearchableSpinner spCategory;
 
     @BindView(R.id.btnPostTask)
     Button btnPostTask;
@@ -110,7 +112,7 @@ public class CreateTaskActivity
     EditText etPrice;
 
     @BindView(R.id.tilPrice)
-    android.support.design.widget.TextInputLayout tilPrice;
+    TextInputLayout tilPrice;
 
     @BindView(R.id.vpMedia)
     ViewPager mVpMedia;
@@ -121,11 +123,17 @@ public class CreateTaskActivity
     @BindView(R.id.ivProfileImage)
     ImageView ivProfileImage;
 
-    @BindView(R.id.ivDataBackground)
-    ImageView ivDataBackground;
-
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbar;
+
+    @BindView(R.id.tilAddress)
+    TextInputLayout tilAddress;
+
+    @BindView(R.id.tilDueDate)
+    TextInputLayout tilDueDate;
+
+    @BindView(R.id.tilDueTime)
+    TextInputLayout tilDueTime;
 
     @BindColor(android.R.color.transparent)
     int mTransparent;
@@ -155,9 +163,10 @@ public class CreateTaskActivity
     ArrayList<String> fileLocalUris;
     ArrayList<String> fileLocalUrisToUpload;
 
-    public enum TaskDataValidationMode { TASK_DEFAULT_MODE}
 
-    public TaskDataValidationMode  taskDataValidationMode;
+    public enum TaskDataValidationMode {TASK_DEFAULT_MODE}
+
+    public TaskDataValidationMode taskDataValidationMode;
 
 
     @Override
@@ -193,28 +202,24 @@ public class CreateTaskActivity
         try {
             String profileImageUrl = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
             ImageUtils.setCircularImage(ivProfileImage, profileImageUrl);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Timber.e("Error Loading profile image");
         }
 
+        tvAddress.setFocusable(false);
+        tvAddress.setClickable(true);
 
-        try
-        {
-            ImageUtils.setBlurredMapBackground(address, ivDataBackground);
-        }
-        catch (Exception ex)
-        {
-            Timber.e("Error loading map background");
-        }
+        tvDueDate.setFocusable(false);
+        tvDueDate.setClickable(true);
+
+        tvDueTime.setFocusable(false);
+        tvDueTime.setClickable(true);
 
         setupActionBar();
 
     }
 
-    private void setupActionBar()
-    {
+    private void setupActionBar() {
 
         setSupportActionBar(mToolbar);
         mCollapsingToolbar.setExpandedTitleColor(mTransparent);
@@ -295,13 +300,6 @@ public class CreateTaskActivity
 
             Address address = task.getAddress();
             tvAddress.setText(Address.getDisplayString(address));
-            try {
-                ImageUtils.setBlurredMapBackground(address, ivDataBackground);
-            }
-            catch (Exception ex)
-            {
-                Timber.e("Error setting map background");
-            }
 
             etPrice.setText(task.getPrice());
             etPrice.setSelection(etPrice.getText().length());
@@ -314,7 +312,7 @@ public class CreateTaskActivity
 
             mediaUrls = (ArrayList) existingTask.getMedia();
 
-            for (int i =0 ; i  < mediaUrls.size(); i++) {
+            for (int i = 0; i < mediaUrls.size(); i++) {
                 mediaPagerAdapter.insertUri(Uri.parse(mediaUrls.get(i)), i);
                 mediaPagerAdapter.notifyDataSetChanged();
                 circleIndicator.refreshIndicator();
@@ -339,7 +337,7 @@ public class CreateTaskActivity
 
             boolean isTaskDataValid = validateTaskData();
 
-            if(!isTaskDataValid)
+            if (!isTaskDataValid)
                 return;
             Task task;
 
@@ -497,8 +495,7 @@ public class CreateTaskActivity
 
     }
 
-    private boolean validateTaskData()
-    {
+    private boolean validateTaskData() {
         try {
 
 
@@ -507,52 +504,44 @@ public class CreateTaskActivity
             String date = tvDueDate.getText().toString();
             String time = tvDueTime.getText().toString();
             String address = tvAddress.getText().toString();
-            String price = etPrice.getText().toString().replace("$","");
+            String price = etPrice.getText().toString().replace("$", "");
             String category = spCategory.getSelectedItem().toString();
             List<String> mediaUrls = this.mediaUrls;
 
-            boolean isValid  = true;
+            boolean isValid = true;
 
-            if(taskDataValidationMode == TaskDataValidationMode.TASK_DEFAULT_MODE)
-            {
-                if(title == null || title.trim().isEmpty())
-                {
+            if (taskDataValidationMode == TaskDataValidationMode.TASK_DEFAULT_MODE) {
+                if (title == null || title.trim().isEmpty()) {
                     tilTitle.setError("Title is required");
                     isValid = false;
                 }
 
-                if(description == null || description.trim().isEmpty())
-                {
+                if (description == null || description.trim().isEmpty()) {
                     tilDescription.setError("Description is required");
                     isValid = false;
                 }
 
-                if(date == null || date.trim().isEmpty())
-                {
-                    tvDueDate.setError("Date is required");
+                if (date == null || date.trim().isEmpty()) {
+                    tilDueDate.setError("Date is required");
                     isValid = false;
                 }
 
-                if(time == null || time.trim().isEmpty())
-                {
-                    tvDueTime.setError("Time is required");
+                if (time == null || time.trim().isEmpty()) {
+                    tilDueTime.setError("Time is required");
                     isValid = false;
                 }
 
-                if(address == null || address.trim().isEmpty())
-                {
-                    tvAddress.setError("Address is required");
+                if (address == null || address.trim().isEmpty()) {
+                    tilAddress.setError("Address is required");
                     isValid = false;
                 }
 
-                if(price == null || price.trim().isEmpty())
-                {
+                if (price == null || price.trim().isEmpty()) {
                     tilPrice.setError("Price is required");
                     isValid = false;
                 }
 
-                if(mediaUrls == null || mediaUrls.size() == 0)
-                {
+                if (mediaUrls == null || mediaUrls.size() == 0) {
                     TastyToast.makeText(CreateTaskActivity.this, "Please add an image/video", TastyToast.LENGTH_LONG, TastyToast.WARNING);
                     isValid = false;
                 }
@@ -561,9 +550,7 @@ public class CreateTaskActivity
             }
 
             return true;
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Timber.e("Error validating task data");
             return false;
         }
@@ -637,9 +624,7 @@ public class CreateTaskActivity
                 amPm = secondSplitString[1];
             DialogFragment timePickerFragment = TimePickerFragment.newInstance(minute, hour, amPm);
             timePickerFragment.show(getSupportFragmentManager(), "timePicker");
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Timber.e("Error launching time picker");
             ex.printStackTrace();
         }
@@ -678,16 +663,12 @@ public class CreateTaskActivity
         circleIndicator.setViewPagerIndicator();
     }
 
-    public void startFullScreenMedia()
-    {
-        try
-        {
+    public void startFullScreenMedia() {
+        try {
             Intent intent = new Intent(CreateTaskActivity.this, MediaFullScreenActivity.class);
             intent.putExtra("urls", fileLocalUris);
             startActivity(intent);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Timber.e("Error starting full screen media");
         }
     }
@@ -705,8 +686,7 @@ public class CreateTaskActivity
                 }
                 if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT))
                     launchCameraForImage();
-                else
-                {
+                else {
                     TastyToast.makeText(CreateTaskActivity.this, "No camera on device", TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
                 }
             }
@@ -725,8 +705,7 @@ public class CreateTaskActivity
                 }
                 if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT))
                     launchCameraForVideo();
-                else
-                {
+                else {
                     TastyToast.makeText(CreateTaskActivity.this, "No camera on device", TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
                 }
             }
@@ -791,9 +770,7 @@ public class CreateTaskActivity
                 } else { // Result was a failure
                     TastyToast.makeText(CreateTaskActivity.this, "Picture wasn't taken", TastyToast.LENGTH_LONG, TastyToast.ERROR);
                 }
-            }
-            else if(requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE)
-            {
+            } else if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
                 if (resultCode == RESULT_OK) {
 
                     fileLocalUris.add(fileUri.toString());
@@ -918,11 +895,9 @@ public class CreateTaskActivity
             StorageReference imagesStorageReference = storageReference.child("images");
             StorageReference videosStorageReference = storageReference.child("videos");
             StorageReference fileStorageReference;
-            if(isImage) {
+            if (isImage) {
                 fileStorageReference = imagesStorageReference.child(filename);
-            }
-            else
-            {
+            } else {
                 fileStorageReference = videosStorageReference.child(filename);
             }
 
@@ -978,15 +953,12 @@ public class CreateTaskActivity
                 for (String fileName : fileLocalUris) {
                     File file = new File(fileName);
                     if (file.exists())
-                        if(!file.delete())
-                        {
+                        if (!file.delete()) {
                             Timber.e(String.format("file %s could not be deleted", fileName));
                         }
                 }
             }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Timber.e("Error deleting captured files");
         }
     }
@@ -996,7 +968,7 @@ public class CreateTaskActivity
         try {
             this.address = address;
             tvAddress.setText(Address.getDisplayString(address));
-             ImageUtils.setBlurredMapBackground(address, ivDataBackground);
+            //ImageUtils.setBlurredMapBackground(address, ivDataBackground);
 
         } catch (Exception ex) {
             Timber.e("User entered address could not be parsed");
@@ -1008,8 +980,7 @@ public class CreateTaskActivity
         startFullScreenMedia();
     }
 
-    private String getDefaultDeadlineDate()
-    {
+    private String getDefaultDeadlineDate() {
         try {
 
             Calendar calendar = Calendar.getInstance();
@@ -1018,10 +989,8 @@ public class CreateTaskActivity
             int month = calendar.get(Calendar.MONTH) + 1;
             int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-            return String.format(Locale.US, "%02d/%02d/%d", month , day, year );
-        }
-        catch (Exception ex)
-        {
+            return String.format(Locale.US, "%02d/%02d/%d", month, day, year);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return null;
