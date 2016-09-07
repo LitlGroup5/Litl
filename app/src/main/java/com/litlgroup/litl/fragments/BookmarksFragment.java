@@ -112,7 +112,12 @@ public class BookmarksFragment extends TaskFragment {
 
     public void setupData(boolean isRefresh) {
         if (isRefresh) {
-            addAllNewTasksForRefresh(Task.getSortedTasks(mBookmarks, chosenCategory));
+            ArrayList<Task> list = Task.getSortedTasks(mBookmarks, chosenCategory);
+            if (list.size() == 0) {
+                TastyToast.makeText(getActivity(), NO_BOOKMARKS_MESSAGE, TastyToast.LENGTH_LONG, TastyToast.INFO);
+                return;
+            }
+            addAllNewTasksForRefresh(list);
         } else {
             addMoreTasksForEndlessScrolling(mBookmarks);
         }
