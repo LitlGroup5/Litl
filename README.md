@@ -1,7 +1,14 @@
 # Litl
-Marketplace that matches tasks with people by earning money or favor points
 
+For the little things in your daily life, especially errands or chores that would take a significant amount of effort or time for you to complete, let other people help you out.
 
+Litl is a powerful-but-fun app that provides means to broadcast tasks/chores you want done (like help you move to a new apartment, help setup an ikea bed, fix a leaky faucet etc.) along with the price that you're willing to pay to anyone who helps you out with them.
+
+A Litl user can post any task that they need help with, by including information like title, description, location, time and mandatory media items (images or videos).
+
+Other users of this app will be able to place bids for these listed chores with whatever price they think is reasonable.
+
+The original poster of the task gets to anonymously choose which bid to accept and which ones to reject. To help make this decision, every user of the app markets their skills on their profile screen which comprises of an elaborate biography and optionally (but higly recommended) includes images or videos showcasing their abilities.
 
 
 Required:
