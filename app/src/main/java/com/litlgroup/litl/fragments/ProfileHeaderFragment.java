@@ -270,8 +270,6 @@ public class ProfileHeaderFragment
         try {
             currentAuthorizedUId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-
-
         } catch (Exception ex) {
             Timber.e("Error creating ProfileHeaderFragment", ex);
         }
@@ -457,6 +455,8 @@ public class ProfileHeaderFragment
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             try {
                                 onScreenUser = dataSnapshot.getValue(User.class);
+                                if(onScreenUser.getConnections().contains(currentAuthorizedUId))
+                                    setPrivateInfoVisibility(true);
                                 populateUserData(onScreenUser);
                             } catch (Exception ex) {
                                 Timber.e("Error getting snapshot value", ex);
@@ -513,7 +513,10 @@ public class ProfileHeaderFragment
             Address address = user.getAddress();
 
             if(name != null && !name.isEmpty())
+            {
                 etProfileName.setText(name);
+                getActivity().setTitle(name.trim());
+            }
 
             if(email!=null && !email.isEmpty())
                 etProfileEmail.setText(email);
@@ -636,8 +639,6 @@ public class ProfileHeaderFragment
     {
         try
         {
-//            if (onScreenUser != null && !onScreenUser.getConnections().contains(currentAuthorizedUId))
-//                return;
 
             if(isSetVisible) {
                 etProfileEmail.setVisibility(View.VISIBLE);
@@ -656,7 +657,7 @@ public class ProfileHeaderFragment
         }
         catch (Exception ex)
         {
-            Timber.e("Error setting visiblity of private information");
+            Timber.e("Error setting visibility of private information");
         }
     }
 
@@ -674,14 +675,11 @@ public class ProfileHeaderFragment
                             authUserData = dataSnapshot.getValue(User.class);
                             authUserconnections = (ArrayList<String>) authUserData.getConnections();
 
-                            if(!currentAuthorizedUId.equals(onScreenUserId)) {
+                            if(!currentAuthorizedUId.equals(onScreenUserId)) { //If returned user id is not the authorized user's id
                                 try {
                                     if (authUserconnections.contains(onScreenUserId)) //if onscreen user is in current authorized user's authUserconnections
                                     {
-
                                         setRemoveConnectionIcon();
-                                        if(onScreenUser.getConnections().contains(currentAuthorizedUId))
-                                            setPrivateInfoVisibility(true);
 
                                     } else {
                                         setAddConnectionIcon();
@@ -697,7 +695,6 @@ public class ProfileHeaderFragment
                             {
                                 populateUserData(authUserData);
                             }
-
                         }
 
                         @Override

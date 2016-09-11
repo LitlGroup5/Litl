@@ -306,7 +306,7 @@ public class CreateTaskActivity
             tvDueDate.setText(dueDate);
             tvDueTime.setText(dueTime);
 
-            Address address = task.getAddress();
+            address = task.getAddress();
             tvAddress.setText(Address.getDisplayString(address));
 
             etPrice.setText(task.getPrice());
