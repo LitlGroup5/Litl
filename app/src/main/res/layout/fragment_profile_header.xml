@@ -108,7 +108,6 @@
                         android:layout_alignParentStart="true"
                         android:layout_below="@+id/etProfileEmail"
                         android:layout_weight="0.8"
-                        android:background="@color/colorTransparent"
                         android:ems="10"
                         android:hint="Phone"
                         android:inputType="phone"
@@ -138,7 +137,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.8"
-                        android:background="@color/colorTransparent"
                         android:ems="10"
                         android:hint="Say something about yourself"
                         android:inputType="textMultiLine"
@@ -170,12 +168,12 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="0.8"
-                        android:background="@color/colorTransparent"
                         android:ems="10"
                         android:inputType="textMultiLine"
                         android:text="Carpentry\nGeneral\nPlumbing"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#000000" />
+                        android:textColor="#000000"
+                        android:background="@color/colorTransparent" />
 
 
                 </LinearLayout>
@@ -200,7 +198,7 @@
                             android:adjustViewBounds="true"
                             android:src="@drawable/ic_person_location" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/tvProfileAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

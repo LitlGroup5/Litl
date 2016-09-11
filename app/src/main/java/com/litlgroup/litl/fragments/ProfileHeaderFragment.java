@@ -3,7 +3,7 @@ package com.litlgroup.litl.fragments;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -100,7 +99,7 @@ public class ProfileHeaderFragment
     EditText etContactNo;
 
     @BindView(R.id.tvProfileAddress)
-    TextView tvProfileAddress;
+    EditText etProfileAddress;
 
     @BindView(R.id.ivProfileImage)
     ImageView ivProfileImage;
@@ -198,7 +197,6 @@ public class ProfileHeaderFragment
         switch (id) {
             case R.id.menu_item_edit: {
 
-                Drawable icon = mMenu.getItem(0).getIcon();
                 if(iconMode == IconMode.EDIT)
                 {
                     startEditProfile();
@@ -372,21 +370,36 @@ public class ProfileHeaderFragment
             etContactNo.setEnabled(isEditMode);
             etAboutMe.setEnabled(isEditMode);
             etSkills.setEnabled(isEditMode);
-
+            etProfileAddress.setEnabled(isEditMode);
 
             if(isEditMode) {
-                etContactNo.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                etAboutMe.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                etSkills.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+
+                //Add the underbar to necessary edit-texts
+                etContactNo.getBackground()
+                        .setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+                etAboutMe.getBackground()
+                        .setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+                etProfileAddress.getBackground()
+                        .setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+
+
             }
             else
             {
-                etContactNo.setBackgroundColor(Color.TRANSPARENT);
-                etAboutMe.setBackgroundColor(Color.TRANSPARENT);
+                //Remove the underbar from edit-texts
+                etContactNo.getBackground()
+                        .setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN);
+
+                etAboutMe.getBackground()
+                        .setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN);
+
+                etProfileAddress.getBackground()
+                        .setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN);
+
                 etSkills.setBackgroundColor(Color.TRANSPARENT);
             }
 
-            tvProfileAddress.setClickable(isEditMode);
+            etProfileAddress.setClickable(isEditMode);
         }
         catch (Exception ex)
         {
@@ -486,7 +499,7 @@ public class ProfileHeaderFragment
 
             if(address != null) {
                 this.address = address;
-                tvProfileAddress.setText(Address.getDisplayString(address));
+                etProfileAddress.setText(Address.getDisplayString(address));
                 ImageUtils.setBlurredMapBackground(address, ivMaps);
             }
 
@@ -515,7 +528,7 @@ public class ProfileHeaderFragment
     public void onFinishAddressFragment(Address address) {
         try {
             this.address = address;
-            tvProfileAddress.setText(Address.getDisplayString(address));
+            etProfileAddress.setText(Address.getDisplayString(address));
 
             ImageUtils.setBlurredMapBackground(address, ivMaps);
         } catch (Exception ex) {
@@ -723,7 +736,7 @@ public class ProfileHeaderFragment
             String contactNo = etContactNo.getText().toString();
             String skillsString = etSkills.getText().toString();
 
-            String address = tvProfileAddress.getText().toString();
+            String address = etProfileAddress.getText().toString();
 
             boolean isValid = true;
             if(name == null || name.trim().isEmpty())
@@ -758,7 +771,7 @@ public class ProfileHeaderFragment
 
             if(address == null || address.trim().isEmpty())
             {
-                tvProfileAddress.setError("Address is required");
+                etProfileAddress.setError("Address is required");
                 isValid = false;
             }
             return isValid;
