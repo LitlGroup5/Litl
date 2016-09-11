@@ -277,6 +277,45 @@ public class ProfileHeaderFragment
         }
     }
 
+
+    @OnClick(R.id.ibContactPhone)
+    public void startCall()
+    {
+        try
+        {
+            String uri = "tel:" + etContactNo.getText().toString().trim();
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse(uri));
+            startActivity(intent);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error setting up call button", ex);
+        }
+    }
+
+    @OnClick(R.id.ibProfileEmail)
+    public void startEmail()
+    {
+        try
+        {
+
+            String[] emailRecipient = new String[] {etProfileEmail.getText().toString().trim()};
+            String emailSubject = String.format("%s - %s", getString(R.string.email_subject_base), etProfileName.getText().toString().trim());
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+            intent.putExtra(Intent.EXTRA_EMAIL, emailRecipient);
+            intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                startActivity(intent);
+            }
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error starting email", ex);
+        }
+    }
+
     private void setupActionBar()
     {
 
