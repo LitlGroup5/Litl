@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -35,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.MediaFullScreenActivity;
 import com.litlgroup.litl.activities.ProfileActivity;
+import com.litlgroup.litl.interfaces.OnBackPressedListener;
 import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
@@ -57,7 +57,7 @@ import timber.log.Timber;
 
 public class TaskOffersFragment
         extends Fragment
-        implements AdvancedMediaPagerAdapter.StartOnItemViewClickListener {
+        implements AdvancedMediaPagerAdapter.StartOnItemViewClickListener, OnBackPressedListener {
 
     @BindView(R.id.tvTitle)
     TextView mTvTitle;
@@ -151,10 +151,6 @@ public class TaskOffersFragment
         switch (id) {
             case R.id.action_bookmark: {
                 updateBookmark();
-            }
-            case android.R.id.home: {
-                exitReveal();
-                return true;
             }
         }
 
@@ -451,5 +447,10 @@ public class TaskOffersFragment
             }
         };
         getActivity().getWindow().getEnterTransition().addListener(mEnterTransitionListener);
+    }
+
+    @Override
+    public void onBackPressed() {
+        exitReveal();
     }
 }

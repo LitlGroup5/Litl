@@ -1,6 +1,7 @@
 package com.litlgroup.litl.activities;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -8,10 +9,13 @@ import android.view.MenuItem;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.fragments.TaskOffersFragment;
 import com.litlgroup.litl.fragments.TaskProposalFragment;
+import com.litlgroup.litl.interfaces.OnBackPressedListener;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.Constants;
 
 import org.parceler.Parcels;
+
+import java.util.List;
 
 public class TaskDetailActivity extends AppCompatActivity {
 
@@ -46,10 +50,28 @@ public class TaskDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                exitFragments();
                 supportFinishAfterTransition();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        exitFragments();
+        super.onBackPressed();
+    }
+
+    private void exitFragments() {
+        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+        if (fragmentList != null) {
+
+            for (Fragment fragment : fragmentList) {
+                if (fragment instanceof OnBackPressedListener) {
+                    ((OnBackPressedListener) fragment).onBackPressed();
+                }
+            }
+        }
+    }
 }

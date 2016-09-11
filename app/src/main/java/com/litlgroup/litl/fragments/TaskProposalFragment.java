@@ -34,6 +34,7 @@ import com.litlgroup.litl.activities.BidSelectScreenActivity;
 import com.litlgroup.litl.activities.CreateTaskActivity;
 import com.litlgroup.litl.activities.MediaFullScreenActivity;
 import com.litlgroup.litl.activities.ProfileActivity;
+import com.litlgroup.litl.interfaces.OnBackPressedListener;
 import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
@@ -58,7 +59,7 @@ import timber.log.Timber;
 
 public class TaskProposalFragment
         extends Fragment
-        implements AdvancedMediaPagerAdapter.StartOnItemViewClickListener {
+        implements AdvancedMediaPagerAdapter.StartOnItemViewClickListener, OnBackPressedListener {
 
     @BindView(R.id.tvTitle)
     TextView mTvTitle;
@@ -114,7 +115,7 @@ public class TaskProposalFragment
             Timber.d("Key: " + dataSnapshot.getKey());
             Timber.d("Value: " + String.valueOf(dataSnapshot.getValue()));
 
-            if (dataSnapshot.getValue()!=null) {
+            if (dataSnapshot.getValue() != null) {
                 mTask = dataSnapshot.getValue(Task.class);
                 mTask.setId(dataSnapshot.getKey());
                 setData(mTask);
@@ -227,13 +228,13 @@ public class TaskProposalFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.task_proposal_menu, menu);
         mMenu = menu;
-//        initBookmark();
+
+        initBookmark();
 
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private void showConfirmDeleteDialog()
-    {
+    private void showConfirmDeleteDialog() {
 
         new LovelyStandardDialog(getActivity())
                 .setTopColorRes(android.R.color.holo_orange_light)
@@ -272,7 +273,7 @@ public class TaskProposalFragment
             if (task.getTitle() != null)
                 mTvTitle.setText(task.getTitle());
 
-            if(task.getDeadlineDate() != null) {
+            if (task.getDeadlineDate() != null) {
                 mTvPostedDate.setText(DateUtils.getRelativeTimeAgo(task.getDeadlineDate()));
             }
 
@@ -480,5 +481,10 @@ public class TaskProposalFragment
             }
         };
         getActivity().getWindow().getEnterTransition().addListener(mEnterTransitionListener);
+    }
+
+    @Override
+    public void onBackPressed() {
+        exitReveal();
     }
 }
