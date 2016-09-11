@@ -44,8 +44,12 @@ public class WallFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wall, container, false);
+
+        getActivity().setTitle("Offers");
+
         setupViewPagerAndSlidingTabs(view);
         setupFloatingActionButton(view);
+
         return view;
     }
 
@@ -53,6 +57,26 @@ public class WallFragment extends Fragment
         ViewPager viewPager = (ViewPager) v.findViewById(R.id.viewpager);
         viewPager.setAdapter(new TaskPagerAdapter(getActivity().getSupportFragmentManager(), chosenCategory));
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0)
+                    getActivity().setTitle("Offers");
+                else
+                    getActivity().setTitle("Proposals");
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) v.findViewById(R.id.tabs);
         tabStrip.setViewPager(viewPager);
