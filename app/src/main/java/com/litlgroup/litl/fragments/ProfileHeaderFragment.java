@@ -245,6 +245,17 @@ public class ProfileHeaderFragment
             Timber.e("Error deleting captured files");
         }
 
+        if (mediaPagerAdapter != null)
+            mediaPagerAdapter = null;
+
+        if (permissions != null)
+            permissions = null;
+
+        if(mMenu != null)
+            mMenu = null;
+
+        if (circleIndicator != null)
+            circleIndicator = null;
     }
 
 
