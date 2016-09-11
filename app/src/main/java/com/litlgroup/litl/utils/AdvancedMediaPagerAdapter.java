@@ -138,7 +138,6 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
         final ImageButton ibCaptureVideo = (ImageButton) itemView.findViewById(R.id.ibCaptureVideo);
 
         final AVLoadingIndicatorView avi = (AVLoadingIndicatorView) itemView.findViewById(R.id.avi);
-//        avi.hide();
         ibCaptureImage.setVisibility(View.INVISIBLE);
         ibSelectImage.setVisibility(View.INVISIBLE);
         ibCaptureVideo.setVisibility(View.INVISIBLE);
@@ -150,6 +149,10 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
                 avi.hide();
                 mVideoView.setVisibility(View.GONE);
                 ivMediaImage.setVisibility(View.VISIBLE);
+
+                ibCaptureImage.setVisibility(View.GONE);
+                ibSelectImage.setVisibility(View.GONE);
+                ibCaptureVideo.setVisibility(View.GONE);
 
                 Glide.with(mContext)
                         .load(url)
@@ -166,6 +169,10 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
 
                     ivMediaImage.setVisibility(View.GONE);
                     mVideoView.setVisibility(View.VISIBLE);
+
+                    ibCaptureImage.setVisibility(View.GONE);
+                    ibSelectImage.setVisibility(View.GONE);
+                    ibCaptureVideo.setVisibility(View.GONE);
 
                     avi.show();
                     mVideoView.setDataSource(url);
