@@ -83,6 +83,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="-3dp"
+            android:layout_marginRight="16dp"
             android:id="@+id/btnBookmark"
             app:like_drawable="@drawable/ic_bookmark_filled"
             app:unlike_drawable="@drawable/ic_bookmark_border"
@@ -90,7 +91,7 @@
             app:dots_secondary_color="@color/colorPrimary"
             app:circle_start_color="@color/colorPrimary"
             app:circle_end_color="@color/colorAccent"
-            app:icon_size="50dp"
+            app:icon_size="30dp"
             app:anim_scale_factor="1"
             app:is_enabled="true"/>
 

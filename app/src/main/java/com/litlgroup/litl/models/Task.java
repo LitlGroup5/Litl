@@ -394,6 +394,9 @@ public class Task {
     }
 
     public static ArrayList<Task> getSortedTasks(ArrayList<Task> tasks, String sortByCategory) {
+        if (sortByCategory.equalsIgnoreCase("All Categories"))
+            return tasks;
+
         ArrayList<Task> taskList = new ArrayList<>();
 
         // Only getting the first item for now, as there would not be multiple categories
