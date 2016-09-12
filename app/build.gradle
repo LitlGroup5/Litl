@@ -70,6 +70,8 @@ dependencies {
 
     compile 'com.toptoche.searchablespinner:searchablespinnerlibrary:1.3.1'
 
+    compile('com.thomashaertel:multispinner:0.1.1@aar'){}
+
 }
 
 apply plugin: 'com.google.gms.google-services'

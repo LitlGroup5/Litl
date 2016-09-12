@@ -162,19 +162,31 @@
                         android:adjustViewBounds="true"
                         android:src="@drawable/ic_skillset" />
 
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        >
+
                     <EditText
                         android:id="@+id/etSkills"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_weight="0.8"
+
                         android:ems="10"
                         android:inputType="textMultiLine"
-                        android:text="Carpentry\nGeneral\nPlumbing"
+                        android:text="Automotive\nGroceries\nPlumbing"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="#000000"
                         android:background="@color/colorTransparent" />
 
+                    <com.thomashaertel.widget.MultiSpinner
+                        android:id="@+id/multispSkills"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="invisible" />
+                    </FrameLayout>
 
                 </LinearLayout>
 

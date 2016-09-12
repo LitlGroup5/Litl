@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,6 +50,7 @@ import com.litlgroup.litl.utils.ImageUtils;
 import com.litlgroup.litl.utils.Permissions;
 import com.litlgroup.litl.utils.ZoomOutPageTransformer;
 import com.sdsmdg.tastytoast.TastyToast;
+import com.thomashaertel.widget.MultiSpinner;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -88,6 +90,9 @@ public class ProfileHeaderFragment
 
     @BindView(R.id.etSkills)
     EditText etSkills;
+
+    @BindView(R.id.multispSkills)
+    MultiSpinner multiSpSkills;
 
     @BindView(R.id.ibContactPhone)
     ImageView ibContactPhone;
@@ -149,6 +154,9 @@ public class ProfileHeaderFragment
 
     ArrayList<String> fileLocalUris;
 
+    private ArrayAdapter<String> multiSpAdapter;
+    private boolean[] categorySelectedFlags;
+
     public static ProfileHeaderFragment newInstance(String userId, ProfileActivity.ProfileMode profileMode) {
         Bundle args = new Bundle();
         ProfileHeaderFragment fragment = new ProfileHeaderFragment();
@@ -170,6 +178,12 @@ public class ProfileHeaderFragment
 
             setupActionBar();
             initToolbar();
+
+            multiSpAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
+            multiSpAdapter.addAll(getResources().getStringArray(R.array.categories_array_values));
+            categorySelectedFlags = new boolean[multiSpAdapter.getCount()];
+            multiSpSkills.setAdapter(multiSpAdapter, false, onSelectedListener);
+            initializeMultiSpSkills();
         }
         catch (Exception ex)
         {
@@ -177,6 +191,53 @@ public class ProfileHeaderFragment
         }
         return view;
     }
+
+    private void initializeMultiSpSkills()
+    {
+        try
+        {
+            String[] categories = getResources().getStringArray(R.array.categories_array_values);
+            for (int i= 0; i < categories.length; i++) {
+               if(etSkills.getText().toString().contains(categories[i]))
+               {
+                   categorySelectedFlags[i] = true;
+               }
+            }
+            multiSpSkills.setSelected(categorySelectedFlags);
+            multiSpSkills.setText(etSkills.getText().toString());
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error initializing multi spinner");
+        }
+    }
+
+    private MultiSpinner.MultiSpinnerListener onSelectedListener = new MultiSpinner.MultiSpinnerListener() {
+
+        public void onItemsSelected(boolean[] selected) {
+            // Do something here with the selected items
+
+            StringBuilder builder = new StringBuilder();
+
+            boolean atleastOneSkillSelected = false;
+            for (int i = 0; i < selected.length; i++) {
+                if (selected[i]) {
+                    atleastOneSkillSelected = true;
+                    builder.append(multiSpAdapter.getItem(i)).append("\n");
+                }
+            }
+
+            if(atleastOneSkillSelected) {
+                multiSpSkills.setText(builder.toString());
+                etSkills.setText(builder.toString());
+            }
+            else
+            {
+                multiSpSkills.setText("Not Listed");
+                etSkills.setText("Not Listed");
+            }
+        }
+    };
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -285,7 +346,6 @@ public class ProfileHeaderFragment
             Timber.e("Error creating ProfileHeaderFragment", ex);
         }
     }
-
 
     @OnClick(R.id.ibContactPhone)
     public void startCall()
@@ -430,6 +490,11 @@ public class ProfileHeaderFragment
                 etProfileAddress.getBackground()
                         .setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
+                etSkills.setVisibility(View.INVISIBLE);
+                multiSpSkills.setVisibility(View.VISIBLE);
+                multiSpSkills.getBackground()
+                        .setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+
 
             }
             else
@@ -444,7 +509,12 @@ public class ProfileHeaderFragment
                 etProfileAddress.getBackground()
                         .setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN);
 
-                etSkills.setBackgroundColor(Color.TRANSPARENT);
+                etSkills.setVisibility(View.VISIBLE);
+                multiSpSkills.setVisibility(View.INVISIBLE);
+                multiSpSkills.getBackground()
+                        .setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN);
+                etSkills.getBackground()
+                        .setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN);
             }
 
             etProfileAddress.setClickable(isEditMode);
@@ -548,6 +618,7 @@ public class ProfileHeaderFragment
                         skills += String.format("%s",skillset.get(i));
                 }
                 etSkills.setText(skills);
+                multiSpSkills.setText(etSkills.getText().toString());
             }
 
             if(address != null) {
