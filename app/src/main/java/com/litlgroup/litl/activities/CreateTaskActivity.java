@@ -979,7 +979,7 @@ public class CreateTaskActivity
             //ImageUtils.setBlurredMapBackground(address, ivDataBackground);
 
         } catch (Exception ex) {
-            Timber.e("User entered address could not be parsed");
+            Timber.e("User-entered address could not be parsed");
         }
     }
 

@@ -12,8 +12,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.crystal.crystalpreloaders.widgets.CrystalPreloader;
 import com.litlgroup.litl.R;
-import com.wang.avi.AVLoadingIndicatorView;
 import com.yqritc.scalablevideoview.ScalableVideoView;
 
 import java.io.IOException;
@@ -137,16 +140,21 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
         final ImageButton ibCaptureImage = (ImageButton) itemView.findViewById(R.id.ibCaptureImage);
         final ImageButton ibCaptureVideo = (ImageButton) itemView.findViewById(R.id.ibCaptureVideo);
 
-        final AVLoadingIndicatorView avi = (AVLoadingIndicatorView) itemView.findViewById(R.id.avi);
+//        final AVLoadingIndicatorView avi = (AVLoadingIndicatorView) itemView.findViewById(R.id.avi);
+
+        final CrystalPreloader cyrstalPreLoader = (CrystalPreloader) itemView.findViewById(R.id.cyrstalPreLoader);
+        cyrstalPreLoader.setVisibility(View.INVISIBLE);
         ibCaptureImage.setVisibility(View.INVISIBLE);
         ibSelectImage.setVisibility(View.INVISIBLE);
         ibCaptureVideo.setVisibility(View.INVISIBLE);
 
-
         if(url != null && !url.isEmpty()) {
 
             if(isImageFile(url)) {
-                avi.hide();
+
+//                if(avi.getVisibility() == View.INVISIBLE | avi.getVisibility() == View.GONE)
+//                    avi.show();
+//                avi.setIndicatorColor(R.color.colorImageLoadingIndicator);
                 mVideoView.setVisibility(View.GONE);
                 ivMediaImage.setVisibility(View.VISIBLE);
 
@@ -159,7 +167,22 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
                         .fitCenter()
                         .sizeMultiplier(0.5f)
                         .centerCrop()
-                        .placeholder(R.drawable.load_placeholder)
+//                        .placeholder(R.drawable.load_placeholder)
+                        .listener(new RequestListener<String, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+//                                avi.hide();
+                                cyrstalPreLoader.setVisibility(View.GONE);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+//                                avi.hide();
+                                cyrstalPreLoader.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
                         .into(ivMediaImage);
 
             }
@@ -174,14 +197,16 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
                     ibSelectImage.setVisibility(View.GONE);
                     ibCaptureVideo.setVisibility(View.GONE);
 
-                    avi.show();
+//                    avi.setIndicatorColor(R.color.colorVideoLoadingIndicator);
+//                    if(avi.getVisibility() == View.INVISIBLE | avi.getVisibility() == View.GONE)
+//                        avi.show();
                     mVideoView.setDataSource(url);
 
                     mVideoView.prepareAsync(new MediaPlayer.OnPreparedListener() {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
                             mVideoView.start();
-                            avi.hide();
+//                            avi.hide();
                         }
                     });
                 } catch (IOException ioe) {
@@ -192,7 +217,7 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
         }
         else {
 
-            avi.hide();
+//            avi.hide();
             if(allowCapture) {
 
                 ibSelectImage.setVisibility(View.VISIBLE);
