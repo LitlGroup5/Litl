@@ -179,10 +179,10 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
                 categorySpinnerTitle = ALL_CATEGORIES_TITLE;
                 break;
             case R.id.nav_history:
-                TastyToast.makeText(this, "History is coming!", TastyToast.LENGTH_LONG, TastyToast.INFO);
+                TastyToast.makeText(this, "History is coming!", TastyToast.LENGTH_SHORT, TastyToast.INFO);
                 return;
             case R.id.nav_settings:
-                TastyToast.makeText(this, "Settings is coming!", TastyToast.LENGTH_LONG, TastyToast.INFO);
+                TastyToast.makeText(this, "Settings is coming!", TastyToast.LENGTH_SHORT, TastyToast.INFO);
                 return;
             case R.id.nav_logout:
                 signOutDialog();
@@ -279,7 +279,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(this, SignInActivity.class));
         finish();
-        TastyToast.makeText(this, "Signed Out!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+        TastyToast.makeText(this, "Signed Out!", TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
     }
 
     public void signOutDialog() {

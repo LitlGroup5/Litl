@@ -247,7 +247,7 @@ public class TaskProposalFragment
                         mDatabase.removeEventListener(valueEventListener);
 
                         mDatabase.child(Constants.TABLE_TASKS).child(mTask.getId()).removeValue();
-                        TastyToast.makeText(getActivity(), "The task has been deleted", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                        TastyToast.makeText(getActivity(), "The task has been deleted", TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
 
                         Intent data = new Intent();
                         data.putExtra("isDeleted", true);

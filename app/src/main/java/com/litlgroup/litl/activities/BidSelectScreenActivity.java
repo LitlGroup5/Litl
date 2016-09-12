@@ -162,7 +162,7 @@ public class BidSelectScreenActivity
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    TastyToast.makeText(getApplicationContext(), "There was an error when fetching bids data", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                    TastyToast.makeText(getApplicationContext(), "There was an error when fetching bids data", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
                 }
             });
         } catch (Exception ex) {

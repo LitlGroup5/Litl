@@ -85,10 +85,10 @@ public class PlaceBidFragment extends BottomSheetDialogFragment {
 
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                 writeNewOffer(price, taskKey, FirebaseAuth.getInstance().getCurrentUser(), bidBy);
-                TastyToast.makeText(getActivity(), "The bid has been placed!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                TastyToast.makeText(getActivity(), "The bid has been placed!", TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
 
             } else {
-                TastyToast.makeText(getActivity(), "User is not logged in", TastyToast.LENGTH_LONG, TastyToast.WARNING);
+                TastyToast.makeText(getActivity(), "User is not logged in", TastyToast.LENGTH_SHORT, TastyToast.WARNING);
             }
 
             dismiss();

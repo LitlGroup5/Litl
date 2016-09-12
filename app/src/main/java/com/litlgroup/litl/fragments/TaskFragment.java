@@ -109,7 +109,7 @@ public class TaskFragment extends Fragment {
     }
 
     public void displayNoTasksView(String noTaskMessage) {
-        TastyToast.makeText(getActivity(), noTaskMessage, TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
+        TastyToast.makeText(getActivity(), noTaskMessage, TastyToast.LENGTH_SHORT, TastyToast.DEFAULT);
     }
 
     private void implementRecyclerViewAnimations() {
