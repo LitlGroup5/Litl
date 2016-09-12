@@ -306,7 +306,7 @@ public class CreateTaskActivity
             tvDueDate.setText(dueDate);
             tvDueTime.setText(dueTime);
 
-            Address address = task.getAddress();
+            address = task.getAddress();
             tvAddress.setText(Address.getDisplayString(address));
 
             etPrice.setText(task.getPrice());
@@ -979,7 +979,7 @@ public class CreateTaskActivity
             //ImageUtils.setBlurredMapBackground(address, ivDataBackground);
 
         } catch (Exception ex) {
-            Timber.e("User entered address could not be parsed");
+            Timber.e("User-entered address could not be parsed");
         }
     }
 

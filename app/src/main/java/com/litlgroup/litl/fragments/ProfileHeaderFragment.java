@@ -3,7 +3,7 @@ package com.litlgroup.litl.fragments;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -100,7 +99,7 @@ public class ProfileHeaderFragment
     EditText etContactNo;
 
     @BindView(R.id.tvProfileAddress)
-    TextView tvProfileAddress;
+    EditText etProfileAddress;
 
     @BindView(R.id.ivProfileImage)
     ImageView ivProfileImage;
@@ -198,7 +197,6 @@ public class ProfileHeaderFragment
         switch (id) {
             case R.id.menu_item_edit: {
 
-                Drawable icon = mMenu.getItem(0).getIcon();
                 if(iconMode == IconMode.EDIT)
                 {
                     startEditProfile();
@@ -283,10 +281,47 @@ public class ProfileHeaderFragment
         try {
             currentAuthorizedUId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-
-
         } catch (Exception ex) {
             Timber.e("Error creating ProfileHeaderFragment", ex);
+        }
+    }
+
+
+    @OnClick(R.id.ibContactPhone)
+    public void startCall()
+    {
+        try
+        {
+            String uri = "tel:" + etContactNo.getText().toString().trim();
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse(uri));
+            startActivity(intent);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error setting up call button", ex);
+        }
+    }
+
+    @OnClick(R.id.ibProfileEmail)
+    public void startEmail()
+    {
+        try
+        {
+
+            String[] emailRecipient = new String[] {etProfileEmail.getText().toString().trim()};
+            String emailSubject = String.format("%s - %s", getString(R.string.email_subject_base), etProfileName.getText().toString().trim());
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+            intent.putExtra(Intent.EXTRA_EMAIL, emailRecipient);
+            intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                startActivity(intent);
+            }
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error starting email", ex);
         }
     }
 
@@ -383,21 +418,36 @@ public class ProfileHeaderFragment
             etContactNo.setEnabled(isEditMode);
             etAboutMe.setEnabled(isEditMode);
             etSkills.setEnabled(isEditMode);
-
+            etProfileAddress.setEnabled(isEditMode);
 
             if(isEditMode) {
-                etContactNo.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                etAboutMe.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                etSkills.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+
+                //Add the underbar to necessary edit-texts
+                etContactNo.getBackground()
+                        .setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+                etAboutMe.getBackground()
+                        .setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+                etProfileAddress.getBackground()
+                        .setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+
+
             }
             else
             {
-                etContactNo.setBackgroundColor(Color.TRANSPARENT);
-                etAboutMe.setBackgroundColor(Color.TRANSPARENT);
+                //Remove the underbar from edit-texts
+                etContactNo.getBackground()
+                        .setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN);
+
+                etAboutMe.getBackground()
+                        .setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN);
+
+                etProfileAddress.getBackground()
+                        .setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN);
+
                 etSkills.setBackgroundColor(Color.TRANSPARENT);
             }
 
-            tvProfileAddress.setClickable(isEditMode);
+            etProfileAddress.setClickable(isEditMode);
         }
         catch (Exception ex)
         {
@@ -416,6 +466,8 @@ public class ProfileHeaderFragment
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             try {
                                 onScreenUser = dataSnapshot.getValue(User.class);
+                                if(onScreenUser.getConnections().contains(currentAuthorizedUId))
+                                    setPrivateInfoVisibility(true);
                                 populateUserData(onScreenUser);
                             } catch (Exception ex) {
                                 Timber.e("Error getting snapshot value", ex);
@@ -472,7 +524,10 @@ public class ProfileHeaderFragment
             Address address = user.getAddress();
 
             if(name != null && !name.isEmpty())
+            {
                 etProfileName.setText(name);
+                getActivity().setTitle(name.trim());
+            }
 
             if(email!=null && !email.isEmpty())
                 etProfileEmail.setText(email);
@@ -497,7 +552,7 @@ public class ProfileHeaderFragment
 
             if(address != null) {
                 this.address = address;
-                tvProfileAddress.setText(Address.getDisplayString(address));
+                etProfileAddress.setText(Address.getDisplayString(address));
                 ImageUtils.setBlurredMapBackground(address, ivMaps);
             }
 
@@ -526,7 +581,7 @@ public class ProfileHeaderFragment
     public void onFinishAddressFragment(Address address) {
         try {
             this.address = address;
-            tvProfileAddress.setText(Address.getDisplayString(address));
+            etProfileAddress.setText(Address.getDisplayString(address));
 
             ImageUtils.setBlurredMapBackground(address, ivMaps);
         } catch (Exception ex) {
@@ -595,8 +650,6 @@ public class ProfileHeaderFragment
     {
         try
         {
-//            if (onScreenUser != null && !onScreenUser.getConnections().contains(currentAuthorizedUId))
-//                return;
 
             if(isSetVisible) {
                 etProfileEmail.setVisibility(View.VISIBLE);
@@ -615,7 +668,7 @@ public class ProfileHeaderFragment
         }
         catch (Exception ex)
         {
-            Timber.e("Error setting visiblity of private information");
+            Timber.e("Error setting visibility of private information");
         }
     }
 
@@ -633,14 +686,11 @@ public class ProfileHeaderFragment
                             authUserData = dataSnapshot.getValue(User.class);
                             authUserconnections = (ArrayList<String>) authUserData.getConnections();
 
-                            if(!currentAuthorizedUId.equals(onScreenUserId)) {
+                            if(!currentAuthorizedUId.equals(onScreenUserId)) { //If returned user id is not the authorized user's id
                                 try {
                                     if (authUserconnections.contains(onScreenUserId)) //if onscreen user is in current authorized user's authUserconnections
                                     {
-
                                         setRemoveConnectionIcon();
-                                        if(onScreenUser.getConnections().contains(currentAuthorizedUId))
-                                            setPrivateInfoVisibility(true);
 
                                     } else {
                                         setAddConnectionIcon();
@@ -656,7 +706,6 @@ public class ProfileHeaderFragment
                             {
                                 populateUserData(authUserData);
                             }
-
                         }
 
                         @Override
@@ -734,7 +783,7 @@ public class ProfileHeaderFragment
             String contactNo = etContactNo.getText().toString();
             String skillsString = etSkills.getText().toString();
 
-            String address = tvProfileAddress.getText().toString();
+            String address = etProfileAddress.getText().toString();
 
             boolean isValid = true;
             if(name == null || name.trim().isEmpty())
@@ -769,7 +818,7 @@ public class ProfileHeaderFragment
 
             if(address == null || address.trim().isEmpty())
             {
-                tvProfileAddress.setError("Address is required");
+                etProfileAddress.setError("Address is required");
                 isValid = false;
             }
             return isValid;
