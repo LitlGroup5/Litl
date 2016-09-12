@@ -105,7 +105,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         if (authResult != null) {
             // Welcome the user
             FirebaseUser user = authResult.getUser();
-            TastyToast.makeText(this, "Welcome" + user.getEmail(), TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+            TastyToast.makeText(this, "Welcome" + user.getEmail(), TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
 
             // Go back to the main activity
             startActivity(new Intent(this, WallActivity.class));
@@ -160,7 +160,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Timber.w("signInWithCredential", task.getException());
-                            TastyToast.makeText(SignInActivity.this, "Authentication failed", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                            TastyToast.makeText(SignInActivity.this, "Authentication failed", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
                         } else {
                             startActivity(new Intent(SignInActivity.this, WallActivity.class));
                             finish();
@@ -172,6 +172,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Timber.d("onConnectionFailed:" + connectionResult);
-        TastyToast.makeText(SignInActivity.this, "Google Play Services error", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+        TastyToast.makeText(SignInActivity.this, "Google Play Services error", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
     }
 }

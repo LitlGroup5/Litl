@@ -476,7 +476,7 @@ public class ProfileHeaderFragment
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            TastyToast.makeText(getActivity(), "There was an error when fetching user data", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                            TastyToast.makeText(getActivity(), "There was an error when fetching user data", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
                         }
                     });
 
@@ -616,7 +616,7 @@ public class ProfileHeaderFragment
             isConnectionAdded = true;
 
             setRemoveConnectionIcon();
-            TastyToast.makeText(getActivity(), "Added to your connections", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+            TastyToast.makeText(getActivity(), "Added to your connections", TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
 
             writeAddRemoveConnection(isConnectionAdded);
             if(onScreenUser.getConnections().contains(currentAuthorizedUId))
@@ -635,7 +635,7 @@ public class ProfileHeaderFragment
             isConnectionAdded = false;
 
             setAddConnectionIcon();
-            TastyToast.makeText(getActivity(), "Removed from your connections", TastyToast.LENGTH_LONG, TastyToast.INFO);
+            TastyToast.makeText(getActivity(), "Removed from your connections", TastyToast.LENGTH_SHORT, TastyToast.INFO);
 
             writeAddRemoveConnection(isConnectionAdded);
             setPrivateInfoVisibility(false);
@@ -761,7 +761,7 @@ public class ProfileHeaderFragment
                     ||profileMode == ProfileActivity.ProfileMode.ME_VIEW ) {
                  user = getMeUser();
                 writeUser(user);
-                TastyToast.makeText(getActivity(), "User data has been saved!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                TastyToast.makeText(getActivity(), "User data has been saved!", TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
                 getActivity().finish();
             }
         }
@@ -950,7 +950,7 @@ public class ProfileHeaderFragment
                     launchCameraForVideo();
                 else
                 {
-                    TastyToast.makeText(getActivity(), "No camera on device", TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
+                    TastyToast.makeText(getActivity(), "No camera on device", TastyToast.LENGTH_SHORT, TastyToast.DEFAULT);
                 }
             }
         } catch (Exception ex) {
@@ -1012,7 +1012,7 @@ public class ProfileHeaderFragment
                 } else if (resultCode == getActivity().RESULT_CANCELED) {
                     // User cancelled the image capture
                 } else { // Result was a failure
-                    TastyToast.makeText(getActivity(), "Picture waas not taken!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                    TastyToast.makeText(getActivity(), "Picture waas not taken!", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
                 }
             }
             else if(requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE)
@@ -1030,7 +1030,7 @@ public class ProfileHeaderFragment
                 } else if (resultCode == getActivity().RESULT_CANCELED) {
                     // User cancelled the video capture
                 } else {
-                    TastyToast.makeText(getActivity(), "Failed to record video", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                    TastyToast.makeText(getActivity(), "Failed to record video", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
                 }
             }
 
@@ -1145,7 +1145,7 @@ public class ProfileHeaderFragment
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    TastyToast.makeText(getActivity(), "File failed to upload", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                    TastyToast.makeText(getActivity(), "File failed to upload", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override

@@ -279,7 +279,7 @@ public class CreateTaskActivity
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
-                                    TastyToast.makeText(CreateTaskActivity.this, "There was an error when fetching data, please try again later", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                                    TastyToast.makeText(CreateTaskActivity.this, "There was an error when fetching data, please try again later", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
                                     Timber.e("Error fetching existing task data from firebase");
                                 }
                             }
@@ -360,9 +360,9 @@ public class CreateTaskActivity
                 } else {
                     writeNewTask(task);
                 }
-                TastyToast.makeText(getApplicationContext(), "The task has been posted!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                TastyToast.makeText(getApplicationContext(), "The task has been posted!", TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
             } else {
-                TastyToast.makeText(getApplicationContext(), "The task could not be posted, please try again", TastyToast.LENGTH_LONG, TastyToast.WARNING);
+                TastyToast.makeText(getApplicationContext(), "The task could not be posted, please try again", TastyToast.LENGTH_SHORT, TastyToast.WARNING);
             }
 
             finish();
@@ -550,7 +550,7 @@ public class CreateTaskActivity
                 }
 
                 if (mediaUrls == null || mediaUrls.size() == 0) {
-                    TastyToast.makeText(CreateTaskActivity.this, "Please add an image/video", TastyToast.LENGTH_LONG, TastyToast.WARNING);
+                    TastyToast.makeText(CreateTaskActivity.this, "Please add an image/video", TastyToast.LENGTH_SHORT, TastyToast.WARNING);
                     isValid = false;
                 }
 
@@ -695,7 +695,7 @@ public class CreateTaskActivity
                 if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT))
                     launchCameraForImage();
                 else {
-                    TastyToast.makeText(CreateTaskActivity.this, "No camera on device", TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
+                    TastyToast.makeText(CreateTaskActivity.this, "No camera on device", TastyToast.LENGTH_SHORT, TastyToast.DEFAULT);
                 }
             }
         } catch (Exception ex) {
@@ -714,7 +714,7 @@ public class CreateTaskActivity
                 if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT))
                     launchCameraForVideo();
                 else {
-                    TastyToast.makeText(CreateTaskActivity.this, "No camera on device", TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
+                    TastyToast.makeText(CreateTaskActivity.this, "No camera on device", TastyToast.LENGTH_SHORT, TastyToast.DEFAULT);
                 }
             }
         } catch (Exception ex) {
@@ -776,7 +776,7 @@ public class CreateTaskActivity
                 } else if (resultCode == RESULT_CANCELED) {
                     // User cancelled the image capture
                 } else { // Result was a failure
-                    TastyToast.makeText(CreateTaskActivity.this, "Picture wasn't taken", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                    TastyToast.makeText(CreateTaskActivity.this, "Picture wasn't taken", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
                 }
             } else if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
                 if (resultCode == RESULT_OK) {
@@ -792,7 +792,7 @@ public class CreateTaskActivity
                 } else if (resultCode == RESULT_CANCELED) {
                     // User cancelled the video capture
                 } else {
-                    TastyToast.makeText(CreateTaskActivity.this, "Failed to record video", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                    TastyToast.makeText(CreateTaskActivity.this, "Failed to record video", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
                 }
             }
 
@@ -919,7 +919,7 @@ public class CreateTaskActivity
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     fileLocalUrisToUpload.remove(fileUri);
-                    TastyToast.makeText(CreateTaskActivity.this, "File upload failed", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                    TastyToast.makeText(CreateTaskActivity.this, "File upload failed", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override

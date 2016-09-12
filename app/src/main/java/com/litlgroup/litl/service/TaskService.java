@@ -78,7 +78,7 @@ public class TaskService extends IntentService {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-//                    TastyToast.makeText(CreateTaskActivity.this, "File upload failed", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+//                    TastyToast.makeText(CreateTaskActivity.this, "File upload failed", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
