@@ -50,7 +50,8 @@ public class TaskService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         // This describes what will happen when service is triggered
         Uri fileUri = (Uri)intent.getExtras().get("uri");
-        startFileUpload(fileUri, true);
+        boolean isImage = intent.getBooleanExtra("isImage", true);
+        startFileUpload(fileUri, isImage);
     }
 
     private void startFileUpload(final Uri fileUri, boolean isImage) {
@@ -78,6 +79,9 @@ public class TaskService extends IntentService {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
+
+                    Timber.e("Error uploading file", exception);
+
 //                    TastyToast.makeText(CreateTaskActivity.this, "File upload failed", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -89,6 +93,7 @@ public class TaskService extends IntentService {
                         mediaUrls.add(downloadUrl.toString());
                     }
 
+                    Timber.d("File upload by service has been completed");
 //                    btnPostTask.setEnabled(true);
 
                 }

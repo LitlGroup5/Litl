@@ -39,6 +39,7 @@ import com.litlgroup.litl.fragments.TimePickerFragment;
 import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.models.UserSummary;
+import com.litlgroup.litl.service.TaskService;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CameraUtils;
 import com.litlgroup.litl.utils.CircleIndicator;
@@ -809,6 +810,7 @@ public class CreateTaskActivity
                     fileLocalUrisToUpload.add(fileUri.toString());
 
                     startFileUpload(fileUri, true);
+                    
                     //Handle the image
                     mediaPagerAdapter.insert(Uri.parse(imageFile.getAbsolutePath()), pageIndex);
                     mediaPagerAdapter.notifyDataSetChanged();
@@ -829,6 +831,23 @@ public class CreateTaskActivity
         }
     }
 
+
+    private void startFileUploadService(final Uri fileUri, boolean isImage)
+    {
+        try
+        {
+            Intent i = new Intent(this, TaskService.class);
+            i.putExtra("uri", fileUri);
+            i.putExtra("isImage", isImage);
+            startService(i);
+
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error starting file upload service");
+        }
+
+    }
 
     private void startImageSelect() {
         try {
