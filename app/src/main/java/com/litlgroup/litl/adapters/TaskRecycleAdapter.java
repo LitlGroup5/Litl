@@ -99,7 +99,11 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         });
 
         if (task.getMedia().size() > 0) {
-            Glide.with(taskCardView.getContext()).load(task.getMedia().get(0)).diskCacheStrategy(DiskCacheStrategy.ALL).into(ivBackground);
+            Glide.with(taskCardView.getContext()).load(task.getMedia().get(0))
+                    .sizeMultiplier(0.5f)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(ivBackground);
             convertClosedTaskBackgroundImageToBlackAndWhite(ivBackground, task.getType());
         } else {
             Glide.clear(ivBackground);
@@ -211,4 +215,3 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         public void onLaunchTaskDetail(Task task, View background);
     }
 }
-
