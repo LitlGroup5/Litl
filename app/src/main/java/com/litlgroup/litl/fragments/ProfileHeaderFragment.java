@@ -38,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.MediaFullScreenActivity;
 import com.litlgroup.litl.activities.ProfileActivity;
@@ -82,6 +83,9 @@ public class ProfileHeaderFragment
 
     @BindView(R.id.etProfileName)
     EditText etProfileName;
+
+    @BindView(R.id.srbProfileRating)
+    SimpleRatingBar srbProfileRating;
 
     @BindView(R.id.tvRating)
     TextView tvRating;
@@ -634,7 +638,14 @@ public class ProfileHeaderFragment
             Float avgRating = user.getAverageRating();
             int numRatings = user.getNumberRatings();
             if(avgRating >= 0) {
-                String ratingText = String.format("%.1f/5.0 (%d)", avgRating, numRatings);
+//                SimpleRatingBar.AnimationBuilder builder =
+//                        srbProfileRating.getAnimationBuilder()
+//                        .setRatingTarget(avgRating)
+//                        .setDuration(2000)
+//                        .setInterpolator(new OvershootInterpolator());
+//                builder.start();
+                srbProfileRating.setRating(avgRating);
+                String ratingText = String.format("(%d)", numRatings);
                 tvRating.setText(ratingText);
             }
 
