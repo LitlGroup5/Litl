@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -81,6 +82,9 @@ public class ProfileHeaderFragment
 
     @BindView(R.id.etProfileName)
     EditText etProfileName;
+
+    @BindView(R.id.tvRating)
+    TextView tvRating;
 
     @BindView(R.id.etProfileEmail)
     EditText etProfileEmail;
@@ -627,6 +631,13 @@ public class ProfileHeaderFragment
                 ImageUtils.setBlurredMapBackground(address, ivMaps);
             }
 
+            Float avgRating = user.getAverageRating();
+            int numRatings = user.getNumberRatings();
+            if(avgRating >= 0) {
+                String ratingText = String.format("%.1f/5.0 (%d)", avgRating, numRatings);
+                tvRating.setText(ratingText);
+            }
+
 
         } catch (Exception ex) {
             Timber.e("Error populating user data onto screen", ex);
@@ -949,7 +960,7 @@ public class ProfileHeaderFragment
             ArrayList<String> connections = new ArrayList<>();
 
             ArrayList<String> media = mediaUrls;//new ArrayList<>();
-            Float rating = authUserData.getRating(); //rbUserRating.getRating();
+            List<String> rating = authUserData.getRating(); //rbUserRating.getRating();
             User user = new User(
                     bookmarks,
                     contactNo,

@@ -50,6 +50,16 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textColor="#000000" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="3.0/5.0 (120)"
+                        android:id="@+id/tvRating"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="8dp" />
+
                 </RelativeLayout>
 
                 <LinearLayout

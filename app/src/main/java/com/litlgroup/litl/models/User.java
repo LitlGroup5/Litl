@@ -5,6 +5,8 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by monusurana on 8/26/16.
  */
@@ -18,7 +20,7 @@ public class User {
     private List<String> media = new ArrayList<String>();
     private String name;
     private String photo;
-    private Float rating;
+    private List<String> rating;
     private List<String> skillSet = new ArrayList<String>();
     private Address address;
     private String biography;
@@ -158,7 +160,7 @@ public class User {
      * @return
      * The rating
      */
-    public Float getRating() {
+    public List<String> getRating() {
         return rating;
     }
 
@@ -167,7 +169,7 @@ public class User {
      * @param rating
      * The rating
      */
-    public void setRating(Float rating) {
+    public void setRating(List<String> rating) {
         this.rating = rating;
     }
 
@@ -248,7 +250,7 @@ public class User {
             List<String> media,
             String name,
             String photo,
-            Float rating,
+            List<String> rating,
             List<String> skillSet,
             Address address,
             String biography,
@@ -266,6 +268,55 @@ public class User {
         this.address = address;
         this.biography = biography;
         this.connections = connections;
+    }
+
+    public float getAverageRating()
+    {
+        try
+        {
+            int total = 0;
+            int numRatings = 0;
+            for (int i =0; i<rating.size(); i++)
+            {
+                int ratingInt = Integer.parseInt(rating.get(i));
+                if( ratingInt > 0) {
+                    total += (ratingInt * (i + 1));
+                    numRatings += ratingInt;
+                }
+            }
+
+            if(numRatings == 0 || total == 0)
+                return 0;
+
+            float avgRating = (float)total / numRatings;
+            return avgRating;
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error computing average rating");
+        }
+        return 0;
+    }
+
+    public Integer getNumberRatings()
+    {
+        try
+        {
+            int numRatings = 0;
+            for (int i =0; i<rating.size(); i++)
+            {
+                if(Integer.parseInt(rating.get(i)) > 0)
+                {
+                    numRatings += Integer.parseInt(rating.get(i));
+                }
+            }
+            return numRatings;
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error getting number of ratings");
+        }
+        return -1;
     }
 
 }
