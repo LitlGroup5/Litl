@@ -14,6 +14,7 @@ public class Constants {
     public static final String TABLE_USERS = "Users";
     public static final String TABLE_REVIEWS = "Reviews";
     public static final String TABLE_BIDS = "Bids";
+    public static final String TABLE_NOTIFICATIONS = "Notifications";
 
     public static final String TABLE_TASKS_COLUMN_BID_BY = "bidBy";
     public static final String TABLE_TASKS_COLUMN_VIEWED_BY = "viewedBy";
