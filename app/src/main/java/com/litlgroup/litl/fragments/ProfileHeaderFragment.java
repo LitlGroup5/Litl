@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -638,13 +639,14 @@ public class ProfileHeaderFragment
             Float avgRating = user.getAverageRating();
             int numRatings = user.getNumberRatings();
             if(avgRating >= 0) {
-//                SimpleRatingBar.AnimationBuilder builder =
-//                        srbProfileRating.getAnimationBuilder()
-//                        .setRatingTarget(avgRating)
-//                        .setDuration(2000)
-//                        .setInterpolator(new OvershootInterpolator());
-//                builder.start();
-                srbProfileRating.setRating(avgRating);
+                SimpleRatingBar.AnimationBuilder builder =
+                        srbProfileRating.getAnimationBuilder()
+                        .setRatingTarget(avgRating)
+                        .setDuration(2000)
+                        .setInterpolator(new DecelerateInterpolator(1.5f))
+                        .setRepeatCount(0);
+                builder.start();
+
                 String ratingText = String.format("(%d)", numRatings);
                 tvRating.setText(ratingText);
             }
