@@ -21,7 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -326,7 +326,6 @@ public class ProfileHeaderFragment
             circleIndicator = null;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -355,6 +354,43 @@ public class ProfileHeaderFragment
             Timber.e("Error creating ProfileHeaderFragment", ex);
         }
     }
+
+    @OnClick(R.id.tvRating)
+    public void startRadarChart()
+    {
+        try
+        {
+            launchRadarChart();
+
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error starting radar chart");
+        }
+    }
+
+    public void launchRadarChart()
+    {
+        try
+        {
+//            bottomSheetLayout
+//                    .showWithSheetView
+//                            (LayoutInflater.from(getActivity())
+//                    .inflate(R.layout.fragment_rating_radar, bottomSheetLayout, false));
+
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            RatingRadarChartFragment ratingRadarChartFragment  =
+                    RatingRadarChartFragment.newInstance(onScreenUser.getRating(), onScreenUser.getAverageRating());
+            ratingRadarChartFragment.show(fm, "fragment_rating_radar");
+
+
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error launching bottom sheet");
+        }
+    }
+
 
     @OnClick(R.id.ibContactPhone)
     public void startCall()
@@ -451,7 +487,6 @@ public class ProfileHeaderFragment
             Timber.e("Error when making profile-mode based menu options changes",ex);
         }
     }
-
 
     enum IconMode {ADD_CONNECTION, REMOVE_CONNECTION, EDIT, SAVE};
     IconMode iconMode;
@@ -643,7 +678,7 @@ public class ProfileHeaderFragment
                         srbProfileRating.getAnimationBuilder()
                         .setRatingTarget(avgRating)
                         .setDuration(2000)
-                        .setInterpolator(new DecelerateInterpolator(1.5f))
+                        .setInterpolator(new LinearInterpolator())
                         .setRepeatCount(0);
                 builder.start();
 
