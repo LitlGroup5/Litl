@@ -183,7 +183,7 @@ public class BidsAdapter
                 holder.ibOfferReject.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        showConfirmRejectDialog(holder);
+                        showConfirmRejectDialog(holder, position);
                     }
                 });
 
@@ -224,7 +224,7 @@ public class BidsAdapter
                 .show();
     }
 
-    private boolean showConfirmRejectDialog(final ViewHolder holder)
+    private boolean showConfirmRejectDialog(final ViewHolder holder, final int position)
     {
         final boolean[] isConfirmedReject = {false};
         new LovelyStandardDialog(mContext)
@@ -239,6 +239,9 @@ public class BidsAdapter
                         holder.ibOfferReject.setAlpha(0.1f);
                         holder.ibOfferAccept.setAlpha(0.1f);
                         holder.setEnabled(false);
+
+                        RejectBidListener rejectBidListener = (RejectBidListener) mContext;
+                        rejectBidListener.onRejectBidListener(position);
                     }
                 })
                 .setNegativeButton(android.R.string.no, null)
@@ -279,8 +282,4 @@ public class BidsAdapter
     {
         void onLaunchProfileListener(String userId);
     }
-
-
-
-
 }
