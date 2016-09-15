@@ -12,6 +12,7 @@
 
         <com.astuetz.PagerSlidingTabStrip
             android:id="@+id/tabs"
+            android:elevation="8dp"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:textColor="@color/colorPrimary"
@@ -40,7 +41,9 @@
         android:layout_margin="16dp"
         android:src="@android:drawable/ic_input_add"
         android:tint="@color/colorLight"
+        android:layout_gravity="bottom|right"
         app:backgroundTint="@color/colorAccent"
+        android:elevation="8dp"
         app:layout_behavior="com.litlgroup.litl.behaviors.ScrollAwareFABBehavior" />
 
 </android.support.design.widget.CoordinatorLayout>
