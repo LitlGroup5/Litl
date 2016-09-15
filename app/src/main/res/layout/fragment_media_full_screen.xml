@@ -5,11 +5,6 @@
     android:background="#000000">
 
 
-    <!--<include layout="@layout/app_bar_media_pager"-->
-        <!--android:id="@+id/include"-->
-        <!--/>-->
-
-
     <FrameLayout
         android:id="@+id/vpframe"
         android:layout_width="match_parent"
@@ -27,6 +22,27 @@
             android:gravity="bottom|center"
             android:orientation="horizontal"
             android:paddingBottom="@dimen/padding_general" />
+
+        <com.litlgroup.litl.utils.CanvasView
+            android:id="@+id/canvas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:alpha="0.1" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:id="@+id/flAnnotationControls"
+            android:visibility="invisible"
+            >
+
+            <include layout="@layout/fragment_annotation_controls"
+                android:id="@+id/panelAnnotationControls"
+                />
+
+        </FrameLayout>
 
     </FrameLayout>
 

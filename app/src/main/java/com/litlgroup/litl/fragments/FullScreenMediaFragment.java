@@ -1,15 +1,25 @@
 package com.litlgroup.litl.fragments;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.github.pwittchen.swipe.library.Swipe;
+import com.github.pwittchen.swipe.library.SwipeListener;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
+import com.litlgroup.litl.utils.CanvasView;
 import com.litlgroup.litl.utils.CircleIndicator;
 
 import java.util.ArrayList;
@@ -17,6 +27,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import timber.log.Timber;
 
@@ -44,10 +55,42 @@ public class FullScreenMediaFragment
     @BindView(R.id.vpIndicator)
     LinearLayout mViewPagerCountDots;
 
+    @BindView(R.id.flAnnotationControls)
+    FrameLayout flAnnotationControls;
+
+    @BindView(R.id.canvas)
+    CanvasView canvas;
+
+    @BindView(R.id.ibDraw)
+    ImageButton ibDraw;
+
+    @BindView(R.id.ibText)
+    ImageButton ibText;
+
+    @BindView(R.id.ibRectangle)
+    ImageButton ibRectangle;
+
+    @BindView(R.id.ibEllipse)
+    ImageButton ibEllipse;
+
+    @BindView(R.id.ibLine)
+    ImageButton ibLine;
+
+    @BindView(R.id.ibClear)
+    ImageButton ibClear;
+
+    @BindView(R.id.ibClose)
+    ImageButton ibClose;
+
+    @BindView(R.id.etAnnotationText)
+    EditText etAnnotationText;
+
     CircleIndicator circleIndicator;
     AdvancedMediaPagerAdapter mediaPagerAdapter;
 
     private Unbinder unbinder;
+
+    public Swipe swipe;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +111,11 @@ public class FullScreenMediaFragment
 
             mediaPagerAdapter.notifyDataSetChanged();
             circleIndicator.refreshIndicator();
+
+            swipe = new Swipe();
+            swipe.addListener(swipeListener);
+
+            initializeCanvas();
         }
         catch (Exception ex)
         {
@@ -75,6 +123,234 @@ public class FullScreenMediaFragment
         }
         return view;
     }
+
+    private void initializeCanvas()
+    {
+        canvas.setMode(CanvasView.Mode.ERASER);
+        canvas.setPaintStrokeWidth(0F);
+    }
+
+
+    SwipeListener swipeListener = new SwipeListener() {
+        @Override
+        public void onSwipingLeft(MotionEvent event) {
+
+        }
+
+        @Override
+        public void onSwipedLeft(MotionEvent event) {
+
+        }
+
+        @Override
+        public void onSwipingRight(MotionEvent event) {
+
+        }
+
+        @Override
+        public void onSwipedRight(MotionEvent event) {
+
+        }
+
+        @Override
+        public void onSwipingUp(MotionEvent event) {
+
+        }
+
+        @Override
+        public void onSwipedUp(MotionEvent event) {
+            flAnnotationControls.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onSwipingDown(MotionEvent event) {
+
+        }
+
+        @Override
+        public void onSwipedDown(MotionEvent event) {
+
+        }
+    };
+
+    float defaultAlpha = 0.5f;
+    float highlightAlpha = 1.0f;
+    float defaultStrokeWidth = 12F;
+
+    private void removeHighlight()
+    {
+        try
+        {
+            ibDraw.setAlpha(defaultAlpha);
+            ibText.setAlpha(defaultAlpha);
+            ibRectangle.setAlpha(defaultAlpha);
+            ibEllipse.setAlpha(defaultAlpha);
+            ibLine.setAlpha(defaultAlpha);
+            ibClear.setAlpha(defaultAlpha);
+        }
+        catch (Exception ex)
+        {
+            Timber.e(ex.toString());
+        }
+    }
+
+    private void highlightIB(ImageButton ib)
+    {
+        try
+        {
+            ib.setAlpha(highlightAlpha);
+        }catch (Exception ex)
+        {
+            Timber.e(ex.toString());
+        }
+    }
+
+    private void resetAnnotationControlsToInitialState()
+    {
+        removeHighlight();
+        etAnnotationText.setVisibility(View.INVISIBLE);
+    }
+
+    @OnClick(R.id.ibClose)
+    public void startClose()
+    {
+        try
+        {
+            flAnnotationControls.setVisibility(View.INVISIBLE);
+            removeHighlight();
+            initializeCanvas();
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error closing annotations control panel");
+        }
+    }
+
+
+    @OnClick(R.id.ibDraw)
+    public void startDraw()
+    {
+        try
+        {
+            resetAnnotationControlsToInitialState();
+
+            highlightIB(ibDraw);
+
+            canvas.setPaintStrokeWidth(defaultStrokeWidth);
+
+            canvas.setDrawer(CanvasView.Drawer.PEN);
+            canvas.setMode(CanvasView.Mode.DRAW);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error starting Draw function");
+        }
+    }
+
+    @OnClick(R.id.ibText)
+    public void startText()
+    {
+        try
+        {
+            resetAnnotationControlsToInitialState();
+            highlightIB(ibText);
+            canvas.setFontFamily(Typeface.SANS_SERIF);
+            canvas.setFontSize(96F);
+            etAnnotationText.setVisibility(View.VISIBLE);
+            etAnnotationText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    canvas.setText(etAnnotationText.getText().toString().trim());
+                }
+            });
+            canvas.setMode(CanvasView.Mode.TEXT);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error starting Text function");
+        }
+    }
+
+    @OnClick(R.id.ibRectangle)
+    public void startRectangle()
+    {
+        try
+        {
+            resetAnnotationControlsToInitialState();
+            highlightIB(ibRectangle);
+            canvas.setPaintStrokeWidth(defaultStrokeWidth);
+
+            canvas.setMode(CanvasView.Mode.DRAW);
+            canvas.setDrawer(CanvasView.Drawer.RECTANGLE);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error starting Rectangle function");
+        }
+    }
+
+
+    @OnClick(R.id.ibEllipse)
+    public void startEllipse()
+    {
+        try
+        {
+            resetAnnotationControlsToInitialState();
+            highlightIB(ibEllipse);
+            canvas.setPaintStrokeWidth(defaultStrokeWidth);
+
+            canvas.setMode(CanvasView.Mode.DRAW);
+            canvas.setDrawer(CanvasView.Drawer.ELLIPSE);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error starting Ellipse function");
+        }
+    }
+
+    @OnClick(R.id.ibLine)
+    public void startLine()
+    {
+        try
+        {
+            resetAnnotationControlsToInitialState();
+            highlightIB(ibLine);
+            canvas.setPaintStrokeWidth(defaultStrokeWidth);
+
+            canvas.setMode(CanvasView.Mode.DRAW);
+            canvas.setDrawer(CanvasView.Drawer.LINE);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error starting Text function");
+        }
+    }
+
+    @OnClick(R.id.ibClear)
+    public void startClear()
+    {
+        try
+        {
+            resetAnnotationControlsToInitialState();
+            highlightIB(ibClear);
+            canvas.clear();
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error starting Clear function");
+        }
+    }
+
 
     private void setupViewPager() {
         mediaPagerAdapter = new AdvancedMediaPagerAdapter(getActivity(), false, false);

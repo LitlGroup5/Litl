@@ -4,6 +4,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class MediaFullScreenActivity extends AppCompatActivity {
 
     List<String> mediaUrls;
-
+    FullScreenMediaFragment fullScreenMediaFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,16 +36,21 @@ public class MediaFullScreenActivity extends AppCompatActivity {
         if(savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-            FullScreenMediaFragment fullScreenMediaFragment
+            fullScreenMediaFragment
                     = FullScreenMediaFragment.newInstance(mediaUrls);
 
             ft.replace(R.id.flFullScreenMedia, fullScreenMediaFragment);
             ft.commit();
-
         }
 
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        fullScreenMediaFragment = (FullScreenMediaFragment)getSupportFragmentManager().findFragmentById(R.id.flFullScreenMedia);
+        fullScreenMediaFragment.swipe.dispatchTouchEvent(ev);
+        return super.dispatchTouchEvent(ev);
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
