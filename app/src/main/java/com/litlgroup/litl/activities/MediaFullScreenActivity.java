@@ -1,5 +1,6 @@
 package com.litlgroup.litl.activities;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -14,9 +15,11 @@ import com.litlgroup.litl.fragments.FullScreenMediaFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class MediaFullScreenActivity extends AppCompatActivity {
 
-    List<String> mediaUrls;
+    public List<String> mediaUrls;
 
     boolean isEditMode;
     FullScreenMediaFragment fullScreenMediaFragment;
@@ -76,4 +79,32 @@ public class MediaFullScreenActivity extends AppCompatActivity {
         isEditMode = savedInstanceState.getBoolean("isEditMode");
     }
 
+
+    public void updateMediaUrls(List<String> urls, List<Integer> annotatedIndices)
+    {
+        try
+        {
+            boolean isModified = false;
+            if(annotatedIndices.size() > 0) {
+                isModified = true;
+                for (int i = 0; i < annotatedIndices.size(); i++) {
+                    mediaUrls.set(annotatedIndices.get(i), urls.get(annotatedIndices.get(i)));
+                }
+
+            }
+
+            Intent intent = new Intent();
+            intent.putExtra("urls", (ArrayList<String>) mediaUrls);
+            intent.putExtra("isModified", isModified);
+
+            setResult(RESULT_OK, intent);
+//            finish();
+
+        }
+        catch (Exception ex)
+        {
+            Timber.e(ex.toString());
+        }
+
+    }
 }

@@ -1,7 +1,10 @@
 package com.litlgroup.litl.fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -19,10 +22,15 @@ import android.widget.LinearLayout;
 import com.github.pwittchen.swipe.library.Swipe;
 import com.github.pwittchen.swipe.library.SwipeListener;
 import com.litlgroup.litl.R;
+import com.litlgroup.litl.activities.MediaFullScreenActivity;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
+import com.litlgroup.litl.utils.CameraUtils;
 import com.litlgroup.litl.utils.CanvasView;
 import com.litlgroup.litl.utils.CircleIndicator;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +58,9 @@ public class FullScreenMediaFragment
         frag.isEditMode = isEditMode;
         return frag;
     }
+
+    @BindView(R.id.vpframe)
+    FrameLayout vpframe;
 
     @BindView(R.id.vpMedia)
     ViewPager mVpMedia;
@@ -83,6 +94,9 @@ public class FullScreenMediaFragment
 
     @BindView(R.id.ibClose)
     ImageButton ibClose;
+
+    @BindView(R.id.ibSave)
+    ImageButton ibSave;
 
     @BindView(R.id.etAnnotationText)
     EditText etAnnotationText;
@@ -246,7 +260,6 @@ public class FullScreenMediaFragment
 
             canvas.setPaintStrokeWidth(defaultStrokeWidth);
             canvas.setPaintStyle(Paint.Style.STROKE);
-            canvas.setOpacity(255);
 
             canvas.setDrawer(CanvasView.Drawer.PEN);
             canvas.setMode(CanvasView.Mode.DRAW);
@@ -268,7 +281,6 @@ public class FullScreenMediaFragment
             canvas.setFontSize(96F);
             canvas.setPaintStyle(Paint.Style.FILL_AND_STROKE);
 
-            canvas.setOpacity(255);
 
             etAnnotationText.setVisibility(View.VISIBLE);
             etAnnotationText.addTextChangedListener(new TextWatcher() {
@@ -305,7 +317,6 @@ public class FullScreenMediaFragment
             canvas.setPaintStrokeWidth(defaultStrokeWidth);
             canvas.setPaintStyle(Paint.Style.STROKE);
 
-            canvas.setOpacity(255);
 
             canvas.setMode(CanvasView.Mode.DRAW);
             canvas.setDrawer(CanvasView.Drawer.RECTANGLE);
@@ -327,8 +338,6 @@ public class FullScreenMediaFragment
             canvas.setPaintStrokeWidth(defaultStrokeWidth);
             canvas.setPaintStyle(Paint.Style.STROKE);
 
-            canvas.setOpacity(255);
-
             canvas.setMode(CanvasView.Mode.DRAW);
             canvas.setDrawer(CanvasView.Drawer.ELLIPSE);
         }
@@ -348,7 +357,6 @@ public class FullScreenMediaFragment
             canvas.setPaintStrokeWidth(defaultStrokeWidth);
             canvas.setPaintStyle(Paint.Style.STROKE);
 
-            canvas.setOpacity(255);
 
             canvas.setMode(CanvasView.Mode.DRAW);
             canvas.setDrawer(CanvasView.Drawer.LINE);
@@ -377,6 +385,69 @@ public class FullScreenMediaFragment
         }
     }
 
+    @OnClick(R.id.ibSave)
+    public void startSave()
+    {
+        try
+        {
+            saveAnnotatedImage();
+            startClose();
+        }
+        catch (Exception ex)
+        {
+            Timber.e(ex.toString());
+        }
+    }
+
+    ArrayList<Integer> updatedIndices = new ArrayList<>();
+    private void saveAnnotatedImage()
+    {
+        try
+        {
+            mViewPagerCountDots.setVisibility(View.INVISIBLE);
+            flAnnotationControls.setVisibility(View.INVISIBLE);
+
+            vpframe.setVisibility(View.VISIBLE);
+            mVpMedia.setVisibility(View.VISIBLE);
+            canvas.setVisibility(View.VISIBLE);
+
+            Bitmap annotatedBmp = viewToBitmap(vpframe);
+
+            Uri fileUri = CameraUtils.getOutputMediaFileUri(CameraUtils.MEDIA_TYPE_IMAGE);
+
+            int pageIndex = mVpMedia.getCurrentItem();
+            updatedIndices.add(pageIndex);
+
+            mediaUrls.set(pageIndex, fileUri.toString());
+
+            try {
+//                FileOutputStream outputJpg = new FileOutputStream(Environment.getExternalStorageDirectory() + "/file219.jpg");
+                FileOutputStream outputJpg = new FileOutputStream(fileUri.getPath());
+                FileOutputStream outputPng = new FileOutputStream(fileUri.getPath());
+                annotatedBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputJpg);
+                annotatedBmp.compress(Bitmap.CompressFormat.PNG, 100, outputPng);
+                outputJpg.close();
+                outputPng.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        catch (Exception ex)
+        {
+            Timber.e(ex.toString());
+        }
+    }
+
+    public Bitmap viewToBitmap(View view) {
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap;
+    }
 
     private void setupViewPager() {
         mediaPagerAdapter = new AdvancedMediaPagerAdapter(getActivity(), false, false);
@@ -389,6 +460,7 @@ public class FullScreenMediaFragment
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        ((MediaFullScreenActivity)getActivity()).updateMediaUrls(mediaUrls, updatedIndices);
     }
 
     @Override
