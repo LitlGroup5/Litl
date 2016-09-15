@@ -1,8 +1,12 @@
 package com.litlgroup.litl.activities;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +14,8 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -29,16 +35,24 @@ import android.widget.TextView;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.server.converter.StringToIntConverter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.fragments.BookmarksFragment;
 import com.litlgroup.litl.fragments.WallFragment;
+import com.litlgroup.litl.models.Address;
+import com.litlgroup.litl.models.Notifications;
+import com.litlgroup.litl.models.Task;
+import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.ImageUtils;
 import com.sdsmdg.tastytoast.TastyToast;
+
+import org.parceler.Parcels;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -65,6 +79,26 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
 
     @BindColor(R.color.colorAccent)
     int mAccentColor;
+
+    private ValueEventListener notificationListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            Timber.d("Key: " + dataSnapshot.getKey());
+            Timber.d("Value: " + String.valueOf(dataSnapshot.getValue()));
+
+            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                Notifications notifications = snapshot.getValue(Notifications.class);
+                notifications.setId(snapshot.getKey());
+
+                getTask(notifications);
+            }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +131,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
 
         ButterKnife.bind(this);
         setupNavigationDrawerLayout();
+
+        setupNotificationListener();
     }
 
     private void setupNavigationDrawerLayout() {
@@ -316,5 +352,85 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         }
 
         dialog.show();
+    }
+
+    private void getTask(final Notifications notifications) {
+        mDatabase.child(Constants.TABLE_TASKS).child(notifications.getTaskId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Task task = dataSnapshot.getValue(Task.class);
+
+                Timber.d("Notification: " + task.getTitle());
+
+                showNotification(notifications, task);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void setupNotificationListener() {
+        String uid = mFirebaseUser.getUid();
+
+        mDatabase.child(Constants.TABLE_NOTIFICATIONS).orderByChild(uid)
+                .equalTo(true)
+                .addValueEventListener(notificationListener);
+    }
+
+    private void showNotification(Notifications notifications, Task task) {
+        Intent intent = new Intent(this, TaskDetailActivity.class);
+        task.setId(notifications.getTaskId());
+        task.setType(Task.Type.OFFER);
+        intent.putExtra(Constants.SELECTED_TASK, Parcels.wrap(task));
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(TaskDetailActivity.class);
+        stackBuilder.addNextIntent(intent);
+
+        PendingIntent detailPendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent callIntent = new Intent(Intent.ACTION_DIAL);
+        callIntent.setData(Uri.parse("tel: 8587768432"));
+        PendingIntent callPendingIntent = PendingIntent.getActivity(this, 1, callIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Address.getMapAddress(task.getAddress()));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        PendingIntent mapPendingIntent = PendingIntent.getActivity(this, 2, mapIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Action callAction = new NotificationCompat.Action.Builder(
+                R.drawable.ic_phone, "Call", callPendingIntent)
+                .build();
+
+        NotificationCompat.Action mapAction = new NotificationCompat.Action.Builder(
+                R.drawable.ic_person_location, "Directions", mapPendingIntent)
+                .build();
+
+        String state = "rejected";
+
+        if (notifications.getAccepted())
+            state = "accepted";
+
+        NotificationCompat.Builder n  = new NotificationCompat.Builder(this)
+                .setContentTitle("Offer " + state)
+                .setContentText("Your offer for Litl task " + task.getTitle() + " has been " + state)
+                .setSmallIcon(R.drawable.proposals_icon)
+                .setContentIntent(detailPendingIntent)
+                .setColor(mAccentColor)
+                .addAction(callAction)
+                .addAction(mapAction)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setAutoCancel(true);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0, n.build());
+
+        mDatabase.child(Constants.TABLE_NOTIFICATIONS).child(notifications.getId()).removeValue();
     }
 }

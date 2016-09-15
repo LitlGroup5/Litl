@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.github.jinatonic.confetti.CommonConfetti;
 import com.google.firebase.database.DataSnapshot;
@@ -21,12 +20,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.adapters.BidsAdapter;
 import com.litlgroup.litl.models.Bids;
+import com.litlgroup.litl.models.Notifications;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.SpacesItemDecoration;
 import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -36,6 +37,7 @@ import timber.log.Timber;
 public class BidSelectScreenActivity
         extends AppCompatActivity
     implements BidsAdapter.AcceptBidListener,
+        BidsAdapter.RejectBidListener,
         BidsAdapter.LaunchProfileListener
 {
 
@@ -203,9 +205,17 @@ public class BidSelectScreenActivity
         }
     }
 
+
+    @Override
+    public void onRejectBidListener(int position) {
+        updateNotifications(false, position);
+    }
+
     @Override
     public void onAcceptBidListener(int bidIndex) {
         try {
+            updateNotifications(true, bidIndex);
+
             CommonConfetti.rainingConfetti(rlContainer, new int[] { Color.BLUE, Color.GREEN, Color.MAGENTA, Color.CYAN })
                     .infinite();
             updateAcceptedBidId(bidIndex);
@@ -252,5 +262,20 @@ public class BidSelectScreenActivity
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateNotifications(boolean isTaskBidAccepted, int position) {
+
+        String key = database.child(Constants.TABLE_NOTIFICATIONS).push().getKey();
+
+        Notifications notifications = new Notifications();
+        notifications.setAccepted(isTaskBidAccepted);
+        notifications.setTaskId(thisTaskId);
+
+        database.child(Constants.TABLE_NOTIFICATIONS).child(key).setValue(notifications);
+
+        HashMap<String, Object> usermap = new HashMap<>();
+        usermap.put(mBids.get(position).getUser().getId(), true);
+        database.child(Constants.TABLE_NOTIFICATIONS).child(key).updateChildren(usermap);
     }
 }
