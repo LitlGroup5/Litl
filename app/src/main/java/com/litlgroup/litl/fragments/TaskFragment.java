@@ -97,7 +97,7 @@ public class TaskFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvTasks.setLayoutManager(linearLayoutManager);
 
-        SpacesItemDecoration decoration = new SpacesItemDecoration(20);
+        SpacesItemDecoration decoration = new SpacesItemDecoration(30);
         rvTasks.addItemDecoration(decoration);
 
         rvTasks.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
