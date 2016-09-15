@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -395,11 +396,11 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
 
         Intent callIntent = new Intent(Intent.ACTION_DIAL);
         callIntent.setData(Uri.parse("tel: 8587768432"));
-        PendingIntent callPendingIntent = PendingIntent.getActivity(this, 0, callIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent callPendingIntent = PendingIntent.getActivity(this, 1, callIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Address.getMapAddress(task.getAddress()));
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        PendingIntent mapPendingIntent = PendingIntent.getActivity(this, 0, mapIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent mapPendingIntent = PendingIntent.getActivity(this, 2, mapIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Action callAction = new NotificationCompat.Action.Builder(
                 R.drawable.ic_phone, "Call", callPendingIntent)
@@ -419,8 +420,10 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
                 .setContentText("Your offer for Litl task " + task.getTitle() + " has been " + state)
                 .setSmallIcon(R.drawable.proposals_icon)
                 .setContentIntent(detailPendingIntent)
+                .setColor(mAccentColor)
                 .addAction(callAction)
                 .addAction(mapAction)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setAutoCancel(true);
 
         NotificationManager notificationManager =
