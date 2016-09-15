@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:alpha="0.5">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibSave"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_save_white"
+        android:background="#00ffffff"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_alignParentLeft="true" />
+
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibClose"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_close_white_24px"
+        android:background="#00ffffff"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp" />
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+
+        <com.vatsal.imagezoomer.ImageZoomButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibDraw"
+            android:layout_gravity="top|center"
+            android:src="@drawable/ic_create_white_24px"
+            android:background="#00ffffff"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="22dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:alpha="0.5"
+
+            app:duration = "400"
+            app:modeReverse="true"
+
+            />
+
+        <com.vatsal.imagezoomer.ImageZoomButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibText"
+            android:layout_gravity="top|center"
+            android:src="@drawable/ic_text_format_white_24px"
+            android:background="#00ffffff"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="22dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:alpha="0.5"
+
+            app:duration = "400"
+            app:modeReverse="true"
+
+            />
+
+        <com.vatsal.imagezoomer.ImageZoomButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibRectangle"
+            android:layout_gravity="top|center"
+            android:src="@drawable/ic_check_box_outline_blank_white_24px"
+            android:background="#00ffffff"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="22dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:alpha="0.5"
+
+            app:duration = "400"
+            app:modeReverse="true"
+
+            />
+
+        <com.vatsal.imagezoomer.ImageZoomButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibEllipse"
+            android:layout_gravity="top|center"
+            android:src="@drawable/ic_radio_button_unchecked_white_24px"
+            android:background="#00ffffff"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="22dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:alpha="0.5"
+
+            app:duration = "400"
+            app:modeReverse="true"
+
+            />
+
+        <com.vatsal.imagezoomer.ImageZoomButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibLine"
+            android:layout_gravity="top|center"
+            android:src="@drawable/ic_remove_white_24px"
+            android:background="#00ffffff"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="22dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:alpha="0.5"
+
+            app:duration = "400"
+            app:modeReverse="true"
+
+            />
+
+        <com.vatsal.imagezoomer.ImageZoomButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibClear"
+            android:layout_gravity="top|center"
+            android:src="@drawable/ic_backspace_white_24px"
+            android:background="#00ffffff"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="22dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:alpha="0.5"
+
+            app:duration = "400"
+            app:modeReverse="true"
+
+            />
+
+
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:hint="Add text"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textColor="#ffffff"
+        android:textAlignment="textStart"
+        android:id="@+id/etAnnotationText"
+        android:visibility="invisible"
+        android:layout_marginTop="8dp" />
+</RelativeLayout>

@@ -1317,6 +1317,10 @@ public class ProfileHeaderFragment
         {
             Intent intent = new Intent(getActivity(), MediaFullScreenActivity.class);
             intent.putExtra("urls", fileLocalUris);
+            if(profileMode == ProfileActivity.ProfileMode.ME_CREATE || profileMode == ProfileActivity.ProfileMode.ME_EDIT)
+            {
+                intent.putExtra("isEditMode", true); //actually means iscreate/isedit mode
+            }
             startActivity(intent);
         }
         catch (Exception ex)

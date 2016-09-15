@@ -671,11 +671,16 @@ public class CreateTaskActivity
         circleIndicator.setViewPagerIndicator();
     }
 
+    public final static int FULL_SCREEN_MEDIA_ACTIVITY_REQUEST_CODE = 1044;
+
     public void startFullScreenMedia() {
         try {
             Intent intent = new Intent(CreateTaskActivity.this, MediaFullScreenActivity.class);
             intent.putExtra("urls", fileLocalUris);
-            startActivity(intent);
+            intent.putExtra("isEditMode", true); //actually means iscreate/isedit mode
+//            startActivity(intent);
+
+            startActivityForResult(intent, FULL_SCREEN_MEDIA_ACTIVITY_REQUEST_CODE);
         } catch (Exception ex) {
             Timber.e("Error starting full screen media");
         }
@@ -793,6 +798,34 @@ public class CreateTaskActivity
                     // User cancelled the video capture
                 } else {
                     TastyToast.makeText(CreateTaskActivity.this, "Failed to record video", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+                }
+            }
+            else  if(requestCode == FULL_SCREEN_MEDIA_ACTIVITY_REQUEST_CODE )
+            {
+                if(resultCode == RESULT_OK)
+                {
+                    boolean isModified = data.getBooleanExtra("isModified", false);
+                    if(!isModified)
+                        return;
+                    ArrayList<String> urls = (ArrayList<String>) data.getExtras().get("urls");
+                    fileLocalUris.clear();
+
+                    mediaUrls.clear();
+
+                    mediaPagerAdapter.notifyDataSetChanged();
+
+
+                    for(int i =0; i < urls.size(); i++)
+                    {
+                        String url = urls.get(i);
+                        Uri thisFileUri = Uri.parse(url);
+                        fileLocalUris.add(thisFileUri.toString());
+                        startFileUpload(thisFileUri, true);
+
+                        mediaPagerAdapter.insert(thisFileUri, i);
+                        mediaPagerAdapter.notifyDataSetChanged();
+                        circleIndicator.refreshIndicator();
+                    }
                 }
             }
 
