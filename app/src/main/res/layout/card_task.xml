@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     card_view:cardCornerRadius="5dp"
     android:background="?android:attr/selectableItemBackground"
-    android:elevation="5dp"
-    >
+    android:elevation="8dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,6 +29,7 @@
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal"
             android:background="#66000000">
 
@@ -37,7 +37,7 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_gravity="center"
-                android:padding="5dp"
+                android:padding="8dp"
                 android:id="@+id/ivAvatar"/>
 
             <LinearLayout
@@ -51,18 +51,20 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tvDescription"
                     android:ellipsize="end"
-                    android:textStyle="bold"
                     android:maxLines="2"
+                    tools:text="Description"
+                    android:textSize="18sp"
                     android:textColor="@color/colorLight"
                     />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tvDeadlineDate"
-                    android:maxLines="1"
-                    android:textColor="@color/colorLight"
-                    />
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:id="@+id/tvDeadlineDate"-->
+                    <!--android:maxLines="1"-->
+                    <!--tools:text="date"-->
+                    <!--android:textColor="@color/colorLight"-->
+                    <!--/>-->
 
                 <TextView
                     android:layout_width="wrap_content"
