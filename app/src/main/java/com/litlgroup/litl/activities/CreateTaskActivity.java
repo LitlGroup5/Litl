@@ -675,6 +675,7 @@ public class CreateTaskActivity
         try {
             Intent intent = new Intent(CreateTaskActivity.this, MediaFullScreenActivity.class);
             intent.putExtra("urls", fileLocalUris);
+            intent.putExtra("isEditMode", true); //actually means iscreate/isedit mode
             startActivity(intent);
         } catch (Exception ex) {
             Timber.e("Error starting full screen media");

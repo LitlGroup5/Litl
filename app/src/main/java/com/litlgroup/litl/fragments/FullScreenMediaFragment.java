@@ -1,5 +1,6 @@
 package com.litlgroup.litl.fragments;
 
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,14 +39,15 @@ public class FullScreenMediaFragment
         extends Fragment
 {
 
-
     List<String> mediaUrls;
+    Boolean isEditMode;
 
-    public static FullScreenMediaFragment newInstance(List<String> mediaUrls)
+    public static FullScreenMediaFragment newInstance(List<String> mediaUrls, Boolean isEditMode)
     {
         FullScreenMediaFragment frag = new FullScreenMediaFragment();
 
         frag.mediaUrls = mediaUrls;
+        frag.isEditMode = isEditMode;
         return frag;
     }
 
@@ -102,6 +104,7 @@ public class FullScreenMediaFragment
             if(savedInstanceState != null)
             {
                 mediaUrls = savedInstanceState.getStringArrayList("mediaUrls");
+                isEditMode = savedInstanceState.getBoolean("isEditMode");
             }
 
             setupViewPager();
@@ -113,6 +116,7 @@ public class FullScreenMediaFragment
             circleIndicator.refreshIndicator();
 
             swipe = new Swipe();
+
             swipe.addListener(swipeListener);
 
             initializeCanvas();
@@ -126,6 +130,7 @@ public class FullScreenMediaFragment
 
     private void initializeCanvas()
     {
+        canvas.setVisibility(View.INVISIBLE);
         canvas.setMode(CanvasView.Mode.ERASER);
         canvas.setPaintStrokeWidth(0F);
     }
@@ -159,7 +164,10 @@ public class FullScreenMediaFragment
 
         @Override
         public void onSwipedUp(MotionEvent event) {
-            flAnnotationControls.setVisibility(View.VISIBLE);
+            if(isEditMode) {
+                canvas.setVisibility(View.VISIBLE);
+                flAnnotationControls.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
@@ -237,6 +245,8 @@ public class FullScreenMediaFragment
             highlightIB(ibDraw);
 
             canvas.setPaintStrokeWidth(defaultStrokeWidth);
+            canvas.setPaintStyle(Paint.Style.STROKE);
+            canvas.setOpacity(255);
 
             canvas.setDrawer(CanvasView.Drawer.PEN);
             canvas.setMode(CanvasView.Mode.DRAW);
@@ -254,8 +264,12 @@ public class FullScreenMediaFragment
         {
             resetAnnotationControlsToInitialState();
             highlightIB(ibText);
-            canvas.setFontFamily(Typeface.SANS_SERIF);
+            canvas.setFontFamily(Typeface.DEFAULT_BOLD);
             canvas.setFontSize(96F);
+            canvas.setPaintStyle(Paint.Style.FILL_AND_STROKE);
+
+            canvas.setOpacity(255);
+
             etAnnotationText.setVisibility(View.VISIBLE);
             etAnnotationText.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -289,6 +303,9 @@ public class FullScreenMediaFragment
             resetAnnotationControlsToInitialState();
             highlightIB(ibRectangle);
             canvas.setPaintStrokeWidth(defaultStrokeWidth);
+            canvas.setPaintStyle(Paint.Style.STROKE);
+
+            canvas.setOpacity(255);
 
             canvas.setMode(CanvasView.Mode.DRAW);
             canvas.setDrawer(CanvasView.Drawer.RECTANGLE);
@@ -308,6 +325,9 @@ public class FullScreenMediaFragment
             resetAnnotationControlsToInitialState();
             highlightIB(ibEllipse);
             canvas.setPaintStrokeWidth(defaultStrokeWidth);
+            canvas.setPaintStyle(Paint.Style.STROKE);
+
+            canvas.setOpacity(255);
 
             canvas.setMode(CanvasView.Mode.DRAW);
             canvas.setDrawer(CanvasView.Drawer.ELLIPSE);
@@ -326,6 +346,9 @@ public class FullScreenMediaFragment
             resetAnnotationControlsToInitialState();
             highlightIB(ibLine);
             canvas.setPaintStrokeWidth(defaultStrokeWidth);
+            canvas.setPaintStyle(Paint.Style.STROKE);
+
+            canvas.setOpacity(255);
 
             canvas.setMode(CanvasView.Mode.DRAW);
             canvas.setDrawer(CanvasView.Drawer.LINE);
@@ -343,7 +366,10 @@ public class FullScreenMediaFragment
         {
             resetAnnotationControlsToInitialState();
             highlightIB(ibClear);
+            canvas.setMode(CanvasView.Mode.ERASER);
+            canvas.setPaintStrokeWidth(0F);
             canvas.clear();
+            removeHighlight();
         }
         catch (Exception ex)
         {
@@ -371,7 +397,8 @@ public class FullScreenMediaFragment
 
         // save file url in bundle as it will be null on screen orientation
         // changes
-        outState.putStringArrayList("mediaUrls", (ArrayList)mediaUrls);
+        outState.putStringArrayList("mediaUrls", (ArrayList) mediaUrls);
+        outState.putBoolean("isEditMode", isEditMode);
 
     }
 

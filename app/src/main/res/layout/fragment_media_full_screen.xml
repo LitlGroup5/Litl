@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:alpha="0.1" />
+            android:alpha="0.3" />
 
         <FrameLayout
             android:layout_width="match_parent"

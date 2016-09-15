@@ -17,6 +17,8 @@ import java.util.List;
 public class MediaFullScreenActivity extends AppCompatActivity {
 
     List<String> mediaUrls;
+
+    boolean isEditMode;
     FullScreenMediaFragment fullScreenMediaFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +35,13 @@ public class MediaFullScreenActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         mediaUrls = (List<String>) getIntent().getExtras().get("urls");
 
+        isEditMode = getIntent().getBooleanExtra("isEditMode", false);
+
         if(savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
             fullScreenMediaFragment
-                    = FullScreenMediaFragment.newInstance(mediaUrls);
+                    = FullScreenMediaFragment.newInstance(mediaUrls, isEditMode);
 
             ft.replace(R.id.flFullScreenMedia, fullScreenMediaFragment);
             ft.commit();
@@ -59,6 +63,7 @@ public class MediaFullScreenActivity extends AppCompatActivity {
         // save file url in bundle as it will be null on screen orientation
         // changes
         outState.putStringArrayList("mediaUrls", (ArrayList)mediaUrls);
+        outState.putBoolean("isEditMode", isEditMode);
 
     }
 
@@ -68,6 +73,7 @@ public class MediaFullScreenActivity extends AppCompatActivity {
 
         // get the file url
         mediaUrls = savedInstanceState.getStringArrayList("mediaUrls");
+        isEditMode = savedInstanceState.getBoolean("isEditMode");
     }
 
 }
