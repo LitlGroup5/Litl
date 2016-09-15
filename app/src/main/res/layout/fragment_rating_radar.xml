@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+<FrameLayout android:id="@+id/root"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.github.mikephil.charting.charts.RadarChart
+        android:id="@+id/chartRatingRadar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="#525776" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rating Distribution"
+        android:layout_gravity="top|center_horizontal"
+        android:textColor="#FFFFFF"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_marginTop="8dp" />
+
+
+
+    <com.iarcuschin.simpleratingbar.SimpleRatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srb_starSize="25dp"
+        app:srb_numberOfStars="5"
+        app:srb_rating="3"
+        app:srb_stepSize="0.5"
+        app:srb_borderColor="@color/colorAccentDisabled"
+        app:srb_fillColor="@color/colorAccent"
+        app:srb_isIndicator="true"
+        android:id="@+id/srbProfileRating"
+
+        android:layout_centerHorizontal="true"
+
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="75dp" />
+
+
+</FrameLayout>
+
+    </RelativeLayout>
