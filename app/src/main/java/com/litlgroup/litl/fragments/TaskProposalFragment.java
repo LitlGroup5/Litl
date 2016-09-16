@@ -86,6 +86,8 @@ public class TaskProposalFragment
     LinearLayout mViewPagerCountDots;
     @BindView(R.id.ivMaps)
     ImageView mIvMaps;
+    @BindView(R.id.ivTaskCompletedIndicator)
+    ImageView ivTaskCompletedIndicator;
 
     @BindColor(android.R.color.transparent)
     int mTransparent;
@@ -272,6 +274,8 @@ public class TaskProposalFragment
                         getActivity().setResult(getActivity().RESULT_OK, data);
                         getActivity().finish();
 
+                        ivTaskCompletedIndicator.setVisibility(View.VISIBLE);
+
                     }
                 })
                 .setNegativeButton(android.R.string.no, null)
@@ -320,6 +324,15 @@ public class TaskProposalFragment
                 }
 
                 mCircleIndicator.refreshIndicator();
+            }
+
+            if(task.getStatus().equals(Task.State.COMPLETE.toString()))
+            {
+                ivTaskCompletedIndicator.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                ivTaskCompletedIndicator.setVisibility(View.INVISIBLE);
             }
         }
     }
