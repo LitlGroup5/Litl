@@ -387,7 +387,7 @@ public class CreateTaskActivity
             categories.add(category);
             List<String> mediaUrls = this.mediaUrls;
 
-            String status = "IN_BID_PROCESS";
+            String status = Task.State.IN_BIDDING_PROCESS.toString();
 
             Task task =
                     new Task(
@@ -435,7 +435,7 @@ public class CreateTaskActivity
             categories.add(category);
             List<String> mediaUrls = this.mediaUrls;
 
-            String status = getString(R.string.task_in_bid_process);
+            String status = Task.State.IN_BIDDING_PROCESS.toString();
             int viewedBy = existingTask.getViewedBy();
             int bidBy = existingTask.getBidBy();
 

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="How did John Doe do?"
+        android:id="@+id/tvBody"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textAlignment="center"
+        android:layout_below="@+id/ivProfileImage"
+        android:layout_centerHorizontal="true" />
+
+
+    <com.iarcuschin.simpleratingbar.SimpleRatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srb_starSize="50dp"
+        app:srb_numberOfStars="5"
+        app:srb_rating="0"
+        app:srb_stepSize="1"
+        app:srb_borderColor="@color/colorAccentDisabled"
+        app:srb_fillColor="@color/colorAccent"
+        app:srb_isIndicator="false"
+        android:id="@+id/srbRating"
+
+        android:layout_below="@+id/tvBody"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
+
+    <ImageView
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:id="@+id/ivProfileImage"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_profile_placeholder"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
+
+</RelativeLayout>

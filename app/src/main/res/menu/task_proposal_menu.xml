@@ -23,4 +23,12 @@
         android:title="Delete"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/action_mark_complete"
+        android:icon="@drawable/ic_done_white_24px"
+        android:orderInCategory="103"
+        android:title="Delete"
+        app:showAsAction="always" />
+
+
 </menu>
