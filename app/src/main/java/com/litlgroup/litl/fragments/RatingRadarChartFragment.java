@@ -81,7 +81,6 @@ public class RatingRadarChartFragment extends DialogFragment{
 
 
         radarChart = (RadarChart) view.findViewById(R.id.chartRatingRadar);
-//        radarChart.setBackgroundColor(Color.rgb(60, 65, 82));
 
         radarChart.setDescription("");
 

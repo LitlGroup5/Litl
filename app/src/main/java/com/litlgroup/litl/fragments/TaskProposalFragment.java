@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -112,8 +113,8 @@ public class TaskProposalFragment
     private ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
-            Timber.d("Key: " + dataSnapshot.getKey());
-            Timber.d("Value: " + String.valueOf(dataSnapshot.getValue()));
+//            Timber.d("Key: " + dataSnapshot.getKey());
+//            Timber.d("Value: " + String.valueOf(dataSnapshot.getValue()));
 
             if (dataSnapshot.getValue() != null) {
                 mTask = dataSnapshot.getValue(Task.class);
@@ -219,6 +220,12 @@ public class TaskProposalFragment
 
                 break;
             }
+
+            case R.id.action_mark_complete:
+            {
+                startMarkComplete();
+                break;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -230,6 +237,16 @@ public class TaskProposalFragment
         mMenu = menu;
 
         initBookmark();
+
+        //hide mark-complete option if a bid has not been accepted yet
+        MenuItem markComplete = mMenu.findItem(R.id.action_mark_complete);
+        if(mTask.getStatus().equals(Task.State.IN_BIDDING_PROCESS.toString())
+            ||
+                mTask.getStatus().equals(Task.State.COMPLETE.toString()))
+        {
+            markComplete.setVisible(false);
+
+        }
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -386,6 +403,40 @@ public class TaskProposalFragment
         } else {
             mMenu.getItem(0).setIcon(R.drawable.ic_menu_bookmark_filled);
             Task.updateBookmark(mTask, true);
+        }
+    }
+
+
+    private void startMarkComplete()
+    {
+        try
+        {
+            new LovelyStandardDialog(getActivity())
+                    .setButtonsColorRes(R.color.colorAccent)
+                    .setTitle("Are you sure?")
+                    .setMessage("Are you sure you want to mark this task complete?")
+                    .setPositiveButton("Yes", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            String status = Task.State.COMPLETE.toString();
+                            mDatabase.child(Constants.TABLE_TASKS)
+                                    .child(mTask.getId())
+                                    .child(getString(R.string.task_status_child))
+                                    .setValue(status);
+                            FragmentManager fm = getActivity().getSupportFragmentManager();
+                            TaskMarkedCompleteFragment taskMarkedCompleteFragment  =
+                                    TaskMarkedCompleteFragment.newInstance(mTask.getUser());
+                            taskMarkedCompleteFragment.show(fm, "fragment_rating_radar");
+
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error starting to mark complete");
         }
     }
 

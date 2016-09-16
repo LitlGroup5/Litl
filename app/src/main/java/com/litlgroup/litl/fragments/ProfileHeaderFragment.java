@@ -373,21 +373,29 @@ public class ProfileHeaderFragment
     {
         try
         {
-//            bottomSheetLayout
-//                    .showWithSheetView
-//                            (LayoutInflater.from(getActivity())
-//                    .inflate(R.layout.fragment_rating_radar, bottomSheetLayout, false));
-
             FragmentManager fm = getActivity().getSupportFragmentManager();
+            List<String> ratings;
+            float avgRating;
+            if(profileMode == ProfileActivity.ProfileMode.ME_VIEW) {
+
+                ratings = authUserData.getRating();
+                avgRating = authUserData.getAverageRating();
+            }
+            else
+            {
+                ratings = onScreenUser.getRating();
+                avgRating = onScreenUser.getAverageRating();
+            }
+
             RatingRadarChartFragment ratingRadarChartFragment  =
-                    RatingRadarChartFragment.newInstance(onScreenUser.getRating(), onScreenUser.getAverageRating());
+                    RatingRadarChartFragment.newInstance(ratings, avgRating);
             ratingRadarChartFragment.show(fm, "fragment_rating_radar");
 
 
         }
         catch (Exception ex)
         {
-            Timber.e("Error launching bottom sheet");
+            Timber.e("Error launching radar chart dialog");
         }
     }
 

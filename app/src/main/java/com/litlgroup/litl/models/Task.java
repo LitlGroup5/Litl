@@ -304,7 +304,8 @@ public class Task {
         IN_BIDDING_PROCESS,
         SUCCESSFULLY_ACCEPTED,
         NOT_ACCEPTED,
-        EXPIRED
+        EXPIRED,
+        COMPLETE
     }
 
     public static String getTimestampMillis(String dueDate, String dueTime) {

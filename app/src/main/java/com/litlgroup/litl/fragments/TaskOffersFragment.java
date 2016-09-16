@@ -116,8 +116,8 @@ public class TaskOffersFragment
     private ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
-            Timber.d("Key: " + dataSnapshot.getKey());
-            Timber.d("Value: " + String.valueOf(dataSnapshot.getValue()));
+//            Timber.d("Key: " + dataSnapshot.getKey());
+//            Timber.d("Value: " + String.valueOf(dataSnapshot.getValue()));
 
             mTask = dataSnapshot.getValue(Task.class);
             mTask.setId(dataSnapshot.getKey());
