@@ -816,7 +816,6 @@ public class CreateTaskActivity
 
                     if(annotatedIndices == null || urls == null)
                         return;
-                    if(annotatedIndices.size() == urls.size()) {
                         fileLocalUris.clear();
                         mediaUrls.clear();
                         mediaPagerAdapter.removeAll();
@@ -831,30 +830,6 @@ public class CreateTaskActivity
                         }
                         mediaPagerAdapter.notifyDataSetChanged();
                         circleIndicator.refreshIndicator();
-                    }
-                    else
-                    {
-                        for(int i =0 ; i < annotatedIndices.size(); i++)
-                        {
-                            int annotatedIndex = annotatedIndices.get(i);
-                            String url = urls.get(annotatedIndex);
-                            Uri thisFileUri = Uri.parse(url);
-
-                            fileLocalUris.remove(annotatedIndex);
-                            fileLocalUris.add(annotatedIndex, thisFileUri.toString());
-
-                            if(mediaUrls.size() <= annotatedIndex) {
-                                mediaUrls.remove(annotatedIndex);
-                            }
-                            startFileUpload(thisFileUri, true);
-
-                            mediaPagerAdapter.remove(annotatedIndex);
-                            mediaPagerAdapter.insert(thisFileUri, annotatedIndex);
-
-                        }
-                        mediaPagerAdapter.notifyDataSetChanged();
-                        circleIndicator.refreshIndicator();
-                    }
                 }
             }
 

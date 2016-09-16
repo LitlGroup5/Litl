@@ -400,6 +400,7 @@ public class FullScreenMediaFragment
     }
 
     ArrayList<Integer> updatedIndices = new ArrayList<>();
+
     private void saveAnnotatedImage()
     {
         try
