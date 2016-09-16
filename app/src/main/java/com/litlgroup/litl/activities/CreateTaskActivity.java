@@ -51,6 +51,7 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -804,25 +805,53 @@ public class CreateTaskActivity
             {
                 if(resultCode == RESULT_OK)
                 {
+                    if(data == null)
+                        return;
                     boolean isModified = data.getBooleanExtra("isModified", false);
                     if(!isModified)
                         return;
                     ArrayList<String> urls = (ArrayList<String>) data.getExtras().get("urls");
-                    fileLocalUris.clear();
 
-                    mediaUrls.clear();
+                    ArrayList<Integer> annotatedIndices = (ArrayList<Integer>) data.getExtras().get("annotatedIndices");
 
-                    mediaPagerAdapter.notifyDataSetChanged();
+                    if(annotatedIndices == null || urls == null)
+                        return;
+                    if(annotatedIndices.size() == urls.size()) {
+                        fileLocalUris.clear();
+                        mediaUrls.clear();
+                        mediaPagerAdapter.removeAll();
 
+                        for (int i = 0; i < urls.size(); i++) {
+                            String url = urls.get(i);
+                            Uri thisFileUri = Uri.parse(url);
+                            fileLocalUris.add(thisFileUri.toString());
+                            startFileUpload(thisFileUri, true);
 
-                    for(int i =0; i < urls.size(); i++)
+                            mediaPagerAdapter.insert(thisFileUri, i);
+                        }
+                        mediaPagerAdapter.notifyDataSetChanged();
+                        circleIndicator.refreshIndicator();
+                    }
+                    else
                     {
-                        String url = urls.get(i);
-                        Uri thisFileUri = Uri.parse(url);
-                        fileLocalUris.add(thisFileUri.toString());
-                        startFileUpload(thisFileUri, true);
+                        for(int i =0 ; i < annotatedIndices.size(); i++)
+                        {
+                            int annotatedIndex = annotatedIndices.get(i);
+                            String url = urls.get(annotatedIndex);
+                            Uri thisFileUri = Uri.parse(url);
 
-                        mediaPagerAdapter.insert(thisFileUri, i);
+                            fileLocalUris.remove(annotatedIndex);
+                            fileLocalUris.add(annotatedIndex, thisFileUri.toString());
+
+                            if(mediaUrls.size() <= annotatedIndex) {
+                                mediaUrls.remove(annotatedIndex);
+                            }
+                            startFileUpload(thisFileUri, true);
+
+                            mediaPagerAdapter.remove(annotatedIndex);
+                            mediaPagerAdapter.insert(thisFileUri, annotatedIndex);
+
+                        }
                         mediaPagerAdapter.notifyDataSetChanged();
                         circleIndicator.refreshIndicator();
                     }
@@ -942,17 +971,21 @@ public class CreateTaskActivity
                 fileStorageReference = videosStorageReference.child(filename);
             }
 
-            InputStream stream = new FileInputStream(new File(fileUri.getPath()));
+            final InputStream stream = new FileInputStream(new File(fileUri.getPath()));
 
             UploadTask uploadTask = fileStorageReference.putStream(stream);
-
-//            btnPostTask.setEnabled(false);
 
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     fileLocalUrisToUpload.remove(fileUri);
                     TastyToast.makeText(CreateTaskActivity.this, "File upload failed", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+                    try {
+                        stream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -964,7 +997,11 @@ public class CreateTaskActivity
                         mediaUrls.add(downloadUrl.toString());
                     }
 
-//                    btnPostTask.setEnabled(true);
+                    try {
+                        stream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                 }
             });

@@ -420,21 +420,24 @@ public class FullScreenMediaFragment
 
             mediaUrls.set(pageIndex, fileUri.toString());
 
+            mediaPagerAdapter.remove(pageIndex);
+            mediaPagerAdapter.insert(fileUri, pageIndex);
+
             try {
-//                FileOutputStream outputJpg = new FileOutputStream(Environment.getExternalStorageDirectory() + "/file219.jpg");
                 FileOutputStream outputJpg = new FileOutputStream(fileUri.getPath());
-                FileOutputStream outputPng = new FileOutputStream(fileUri.getPath());
                 annotatedBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputJpg);
-                annotatedBmp.compress(Bitmap.CompressFormat.PNG, 100, outputPng);
                 outputJpg.close();
-                outputPng.close();
+                mediaPagerAdapter.notifyDataSetChanged();
+                ((MediaFullScreenActivity)getActivity()).updateMediaUrls(mediaUrls, updatedIndices);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-
+            mViewPagerCountDots.setVisibility(View.VISIBLE);
+            initializeCanvas();
+            resetAnnotationControlsToInitialState();
         }
         catch (Exception ex)
         {
@@ -460,7 +463,7 @@ public class FullScreenMediaFragment
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        ((MediaFullScreenActivity)getActivity()).updateMediaUrls(mediaUrls, updatedIndices);
+//        ((MediaFullScreenActivity)getActivity()).updateMediaUrls(mediaUrls, updatedIndices);
     }
 
     @Override

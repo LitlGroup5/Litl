@@ -377,6 +377,17 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
         }
     }
 
+    public void remove(int index)
+    {
+        mImageUrls.remove(index);
+
+        if(allowCapture && index == mImageUrls.size() - 1)
+        {
+            if(!mImageUrls.contains(null))
+                mImageUrls.add(null);
+        }
+    }
+
     public void removeAll()
     {
         mImageUrls.clear();

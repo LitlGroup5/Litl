@@ -90,11 +90,11 @@ public class MediaFullScreenActivity extends AppCompatActivity {
                 for (int i = 0; i < annotatedIndices.size(); i++) {
                     mediaUrls.set(annotatedIndices.get(i), urls.get(annotatedIndices.get(i)));
                 }
-
             }
 
             Intent intent = new Intent();
             intent.putExtra("urls", (ArrayList<String>) mediaUrls);
+            intent.putExtra("annotatedIndices", (ArrayList<Integer>)annotatedIndices);
             intent.putExtra("isModified", isModified);
 
             setResult(RESULT_OK, intent);
