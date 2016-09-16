@@ -102,6 +102,16 @@
                 android:layout_below="@+id/tvDescription"
                 android:layout_marginTop="16dp" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ivTaskCompletedIndicator"
+                android:layout_alignTop="@+id/tvPostedDate"
+                android:layout_toEndOf="@+id/tvViewedByCount"
+                android:src="@drawable/icon_check_mark_7"
+                android:layout_marginLeft="16dp"
+                android:visibility="visible" />
+
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 

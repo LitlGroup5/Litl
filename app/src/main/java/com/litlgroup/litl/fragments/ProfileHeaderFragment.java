@@ -355,7 +355,7 @@ public class ProfileHeaderFragment
         }
     }
 
-    @OnClick(R.id.tvRating)
+    @OnClick(R.id.llRating)
     public void startRadarChart()
     {
         try
