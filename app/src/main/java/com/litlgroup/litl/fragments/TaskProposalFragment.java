@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -40,6 +41,7 @@ import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.models.UserSummary;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
+import com.litlgroup.litl.utils.AppBarStateChangeListener;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
 import com.litlgroup.litl.utils.DateUtils;
@@ -89,6 +91,8 @@ public class TaskProposalFragment
     ImageView mIvMaps;
     @BindView(R.id.ivTaskCompletedIndicator)
     ImageView ivTaskCompletedIndicator;
+    @BindView(R.id.view)
+    AppBarLayout mAppBarLayout;
 
     @BindColor(android.R.color.transparent)
     int mTransparent;
@@ -164,6 +168,8 @@ public class TaskProposalFragment
         mCollapsingToolbar.setExpandedTitleColor(mTransparent);
         mCollapsingToolbar.setContentScrimColor(mPrimaryDark);
         mCollapsingToolbar.setStatusBarScrimColor(mPrimaryDark);
+        mCollapsingToolbar.setTitleEnabled(false);
+        mCollapsingToolbar.setTitleEnabled(false);
 
         initToolbar();
         setupViewPager();
@@ -171,6 +177,26 @@ public class TaskProposalFragment
         getTaskData();
 
         setupTransitionListener();
+
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+            @Override
+            public void onStateChanged(AppBarLayout appBarLayout, State lastState, State currentState) {
+                Timber.d("STATE " +  currentState.name() + " " + lastState.name());
+                if (currentState == State.COLLAPSED) {
+                    mToolbar.setTitle(mTask.getTitle());
+                }
+                else if (currentState == State.EXPANDED) {
+                    mToolbar.setTitle("");
+                    enterReveal();
+                } else if (currentState == State.IDLE) {
+                    if (lastState == State.EXPANDED)
+                        exitReveal();
+                    else if (lastState == State.COLLAPSED)
+                        mToolbar.setTitle("");
+                }
+
+            }
+        });
 
         return view;
     }
@@ -363,6 +389,7 @@ public class TaskProposalFragment
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
 
+        mToolbar.setTitle("");
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
