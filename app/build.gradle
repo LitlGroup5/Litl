@@ -81,6 +81,8 @@ dependencies {
     compile 'com.vatsal.imagezoomer:image-zoomer:1.0.2'
 
     compile 'com.android.support:customtabs:24.2.0'
+
+    compile 'com.uncopt:android.justified:1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

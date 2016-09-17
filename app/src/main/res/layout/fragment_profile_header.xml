@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/include"
-        layout="@layout/app_bar_media_pager" />
+        layout="@layout/app_bar_profile_media_pager" />
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/rel"
@@ -29,60 +29,123 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="16dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp">
+
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp">
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="75dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/ivProfileImage"
+                        android:layout_gravity="start|bottom"
+                        android:alpha="0.8"
+                        android:background="@drawable/profile_background"
+                        android:padding="@dimen/image_border"
+                        android:transitionName="profile"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        tools:src="@drawable/ic_profile_placeholder"
+                        android:layout_marginLeft="8dp"
+                        android:scaleType="center"
+                        android:adjustViewBounds="true" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_toEndOf="@+id/ivProfileImage"
+                    android:layout_marginRight="32dp"
+                    android:id="@+id/llRating"
+                    android:layout_marginLeft="8dp">
 
                     <EditText
                         android:id="@+id/etProfileName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
                         android:background="@color/colorTransparent"
                         android:enabled="false"
                         android:text="John Doe"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="#000000" />
+                        android:textColor="#000000"
+                        android:textIsSelectable="false"
+                        android:textSize="22dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="4dp" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true"
-                        android:id="@+id/llRating"
-                        >
-                    <com.iarcuschin.simpleratingbar.SimpleRatingBar
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srb_starSize="15dp"
-                        app:srb_numberOfStars="5"
-                        app:srb_rating="3"
-                        app:srb_stepSize="0.5"
-                        app:srb_borderColor="@color/colorAccentDisabled"
-                        app:srb_fillColor="@color/colorAccent"
-                        android:layout_centerVertical="true"
-                        android:layout_toStartOf="@+id/tvRating"
-                        app:srb_isIndicator="true"
-                        android:id="@+id/srbProfileRating"
-                        android:layout_marginRight="2dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="(120)"
-                        android:id="@+id/tvRating"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginRight="8dp" />
-                    </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.iarcuschin.simpleratingbar.SimpleRatingBar
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srb_starSize="20dp"
+                            app:srb_numberOfStars="5"
+                            app:srb_rating="3"
+                            app:srb_stepSize="0.5"
+                            app:srb_borderColor="@color/colorAccentDisabled"
+                            app:srb_fillColor="@color/colorAccent"
+                            app:srb_isIndicator="true"
+                            android:id="@+id/srbProfileRating"
+                            android:layout_gravity="center_vertical"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentStart="true" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="(120)"
+                            android:id="@+id/tvRating"
+                            android:layout_gravity="center_vertical"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@+id/srbProfileRating"
+                            android:layout_marginStart="9dp" />
+                    </RelativeLayout>
+                </LinearLayout>
                 </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="0.2"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_about"
+                        android:visibility="gone" />
+
+                    <com.uncopt.android.widget.text.justify.JustifiedEditText
+                        android:id="@+id/etAboutMe"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:ems="10"
+                        android:hint="Say something about yourself"
+                        android:inputType="textMultiLine"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#000000"
+                        tools:text="I&apos;m a freelance carpenter who enjoys giving woodwork an artistic touch that suits not just your needs but also your room."
+                        android:textAlignment="center" />
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -149,34 +212,6 @@
                         tools:text="3214597836" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="8dp"
-                        android:layout_weight="0.2"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/ic_about" />
-
-                    <EditText
-                        android:id="@+id/etAboutMe"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.8"
-                        android:ems="10"
-                        android:hint="Say something about yourself"
-                        android:inputType="textMultiLine"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#000000"
-                        tools:text="I&apos;m a freelance carpenter who enjoys giving woodwork an artistic touch that suits not just your needs but also your room." />
-
-                </LinearLayout>
 
 
                 <LinearLayout
