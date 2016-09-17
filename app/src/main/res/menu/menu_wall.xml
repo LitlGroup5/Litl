@@ -6,6 +6,6 @@
         android:id="@+id/spinner_wall"
         app:showAsAction="ifRoom"
         android:title="Category"
-        app:actionLayout="@layout/spinner_category">
+        android:icon="@drawable/ic_filter">
     </item>
 </menu>
