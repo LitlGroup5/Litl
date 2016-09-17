@@ -38,6 +38,7 @@ import com.litlgroup.litl.activities.ProfileActivity;
 import com.litlgroup.litl.interfaces.OnBackPressedListener;
 import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Task;
+import com.litlgroup.litl.models.UserSummary;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
 import com.litlgroup.litl.utils.CircleIndicator;
 import com.litlgroup.litl.utils.Constants;
@@ -241,16 +242,30 @@ public class TaskProposalFragment
         initBookmark();
 
         //hide mark-complete option if a bid has not been accepted yet
-        MenuItem markComplete = mMenu.findItem(R.id.action_mark_complete);
+
         if(mTask.getStatus().equals(Task.State.IN_BIDDING_PROCESS.toString())
             ||
                 mTask.getStatus().equals(Task.State.COMPLETE.toString()))
         {
-            markComplete.setVisible(false);
+            setMarkCompleteOptionVisibility(false);
 
         }
 
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private void setMarkCompleteOptionVisibility(boolean isVisible)
+    {
+        try {
+            if (mMenu != null) {
+                MenuItem markComplete = mMenu.findItem(R.id.action_mark_complete);
+                markComplete.setVisible(isVisible);
+            }
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error setting visibility on mark complete menu option");
+        }
     }
 
     private void showConfirmDeleteDialog() {
@@ -437,10 +452,31 @@ public class TaskProposalFragment
                                     .child(mTask.getId())
                                     .child(getString(R.string.task_status_child))
                                     .setValue(status);
-                            FragmentManager fm = getActivity().getSupportFragmentManager();
-                            TaskMarkedCompleteFragment taskMarkedCompleteFragment  =
-                                    TaskMarkedCompleteFragment.newInstance(mTask.getUser());
-                            taskMarkedCompleteFragment.show(fm, "fragment_rating_radar");
+
+                            setMarkCompleteOptionVisibility(false);
+
+                            mDatabase.child(Constants.TABLE_BIDS)
+                                    .child(mTask.getAcceptedOfferId())
+                                    .child(Constants.TABLE_TASKS_COLUMN_USER)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                            UserSummary userSummary = dataSnapshot.getValue(UserSummary.class);
+
+                                            FragmentManager fm = getActivity().getSupportFragmentManager();
+                                            TaskMarkedCompleteFragment taskMarkedCompleteFragment  =
+                                                    TaskMarkedCompleteFragment.newInstance(userSummary);
+                                            taskMarkedCompleteFragment.show(fm, "fragment_rating_radar");
+
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
 
                         }
                     })

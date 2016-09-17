@@ -11,7 +11,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="How did John Doe do?"
         android:id="@+id/tvBody"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:textAlignment="center"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         app:srb_starSize="50dp"
         app:srb_numberOfStars="5"
-        app:srb_rating="0"
+        app:srb_rating="3"
         app:srb_stepSize="1"
         app:srb_borderColor="@color/colorAccentDisabled"
         app:srb_fillColor="@color/colorAccent"
@@ -34,7 +34,9 @@
         android:layout_below="@+id/tvBody"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="8dp"
+
+        />
 
     <ImageView
         android:layout_width="96dp"
@@ -43,6 +45,58 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/ic_profile_placeholder"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ibPaypal"
+
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
+
+
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="Cancel"
+            android:id="@+id/btnCancel"
+            android:background="@drawable/bid_button"
+            android:textColor="#FFFFFF"
+            android:layout_weight="0.5"
+
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="Submit"
+            android:id="@+id/btnSubmit"
+            android:background="@drawable/bid_button"
+            android:textColor="#FFFFFF"
+            android:layout_weight="0.5"
+
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp" />
+
+
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibPaypal"
+        android:src="@drawable/blue_rect_paypal_44px"
+        android:background="@null"
+        android:layout_below="@+id/srbRating"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp" />
 
