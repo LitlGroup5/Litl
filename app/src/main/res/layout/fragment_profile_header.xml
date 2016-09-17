@@ -52,7 +52,6 @@
                         android:layout_alignParentStart="true"
                         tools:src="@drawable/ic_profile_placeholder"
                         android:layout_marginLeft="8dp"
-                        android:scaleType="center"
                         android:adjustViewBounds="true" />
 
 
@@ -80,7 +79,6 @@
                         android:layout_centerHorizontal="true"
                         android:layout_gravity="center_vertical"
                         android:layout_marginTop="4dp" />
-
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -111,9 +109,10 @@
                             android:layout_toEndOf="@+id/srbProfileRating"
                             android:layout_marginStart="9dp" />
                     </RelativeLayout>
-                </LinearLayout>
-                </RelativeLayout>
 
+                </LinearLayout>
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -146,12 +145,64 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/llContactUserButtons"
+                    >
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
+
+                    <ImageButton
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:src="@drawable/ic_phone"
+                        android:id="@+id/ibCallUser"
+                        />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/darker_gray"/>
+
+                    <ImageButton
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:src="@drawable/ic_email"
+                        android:id="@+id/ibEmailUser"
+                        />
+
+                </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/llEmail"
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/ibProfileEmail"
@@ -165,23 +216,25 @@
                     <EditText
                         android:id="@+id/etProfileEmail"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:layout_below="@+id/etProfileName"
-                        android:layout_weight="0.8"
                         android:background="@color/colorTransparent"
                         android:enabled="false"
                         android:text="john.doe@somemail.com"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#000000" />
+                        android:textColor="#000000"
+                        android:layout_gravity="center" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/llPhone"
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/ibContactPhone"
@@ -212,13 +265,38 @@
                         tools:text="3214597836" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/llSkillsPager"
+                    >
 
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/vpProfileSkills"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_gravity="center"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+
+                    android:paddingBottom="0dp"
+                    android:paddingEnd="@dimen/card_padding"
+                    android:paddingLeft="@dimen/card_padding"
+                    android:paddingRight="@dimen/card_padding"
+                    android:paddingStart="@dimen/card_padding"
+
+                    android:background="@color/colorTransparent"
+
+                    />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/llSkillsDescription"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="40dp"
@@ -265,8 +343,10 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="8dp">
 
                         <ImageView
                             android:layout_width="40dp"
@@ -298,6 +378,7 @@
                 </LinearLayout>
 
             </LinearLayout>
+
         </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>

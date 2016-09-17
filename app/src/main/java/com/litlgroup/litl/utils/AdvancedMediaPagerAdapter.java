@@ -202,6 +202,7 @@ public class AdvancedMediaPagerAdapter extends PagerAdapter {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
                             mVideoView.start();
+                            mVideoView.setLooping(true);
                             avi.hide();
                         }
                     });

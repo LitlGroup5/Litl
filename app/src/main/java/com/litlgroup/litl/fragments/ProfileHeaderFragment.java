@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.MediaFullScreenActivity;
 import com.litlgroup.litl.activities.ProfileActivity;
+import com.litlgroup.litl.adapters.SkillsCardPagerAdapter;
 import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.User;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
@@ -138,6 +140,32 @@ public class ProfileHeaderFragment
     @BindColor(R.color.colorPrimaryDark)
     int mPrimaryDark;
 
+    @BindView(R.id.llEmail)
+    LinearLayout llEmail;
+
+    @BindView(R.id.llPhone)
+    LinearLayout llPhone;
+
+    @BindView(R.id.llContactUserButtons)
+    LinearLayout llContactUserButtons;
+
+    @BindView(R.id.ibCallUser)
+    ImageButton ibCallUser;
+
+    @BindView(R.id.ibEmailUser)
+    ImageButton ibEmailUser;
+
+    @BindView(R.id.llSkillsDescription)
+    LinearLayout llSkillsDescription;
+
+    @BindView(R.id.llSkillsPager)
+    LinearLayout llSkillsPager;
+
+    @BindView(R.id.vpProfileSkills)
+    ViewPager vpProfileSkills;
+
+    private SkillsCardPagerAdapter skillsCardPagerAdapter;
+
     private Menu mMenu;
 
     ArrayList<String> mediaUrls;
@@ -193,12 +221,29 @@ public class ProfileHeaderFragment
             categorySelectedFlags = new boolean[multiSpAdapter.getCount()];
             multiSpSkills.setAdapter(multiSpAdapter, false, onSelectedListener);
             initializeMultiSpSkills();
+
+            setupSkillsPager();
+
         }
         catch (Exception ex)
         {
             Timber.e("Error creating View", ex);
         }
         return view;
+    }
+
+    private void setupSkillsPager()
+    {
+        try
+        {
+            skillsCardPagerAdapter = new SkillsCardPagerAdapter(getActivity());
+            vpProfileSkills.setAdapter(skillsCardPagerAdapter);
+            vpProfileSkills.setOffscreenPageLimit(2);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error setting up skills pager");
+        }
     }
 
     private void initializeMultiSpSkills()
@@ -400,7 +445,7 @@ public class ProfileHeaderFragment
     }
 
 
-    @OnClick(R.id.ibContactPhone)
+    @OnClick(R.id.ibCallUser)
     public void startCall()
     {
         try
@@ -416,12 +461,11 @@ public class ProfileHeaderFragment
         }
     }
 
-    @OnClick(R.id.ibProfileEmail)
+    @OnClick(R.id.ibEmailUser)
     public void startEmail()
     {
         try
         {
-
             String[] emailRecipient = new String[] {etProfileEmail.getText().toString().trim()};
             String emailSubject = String.format("%s - %s", getString(R.string.email_subject_base), etProfileName.getText().toString().trim());
             Intent intent = new Intent(Intent.ACTION_SENDTO);
@@ -534,6 +578,20 @@ public class ProfileHeaderFragment
 
             if(isEditMode) {
 
+
+                //hide the linear layout that contains the contact image buttons
+                llContactUserButtons.setVisibility(View.GONE);
+
+                //show the linear layouts that contain the editable fields for email and phone
+                llEmail.setVisibility(View.VISIBLE);
+                llPhone.setVisibility(View.VISIBLE);
+
+
+                //Display skills related edit fields
+                llSkillsDescription.setVisibility(View.VISIBLE);
+                llSkillsPager.setVisibility(View.GONE);
+
+
                 //Add the underbar to necessary edit-texts
                 etContactNo.getBackground()
                         .setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
@@ -541,6 +599,7 @@ public class ProfileHeaderFragment
                         .setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
                 etProfileAddress.getBackground()
                         .setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+
 
                 etSkills.setVisibility(View.INVISIBLE);
                 multiSpSkills.setVisibility(View.VISIBLE);
@@ -551,6 +610,17 @@ public class ProfileHeaderFragment
             }
             else
             {
+                //show the linear layout that contains the contact image buttons
+                llContactUserButtons.setVisibility(View.VISIBLE);
+
+                //Hide the linear layouts that contain the editable fields for email and phone
+                llEmail.setVisibility(View.GONE);
+                llPhone.setVisibility(View.GONE);
+
+                //Display skills related edit fields
+                llSkillsDescription.setVisibility(View.GONE);
+                llSkillsPager.setVisibility(View.VISIBLE);
+
                 //Remove the underbar from edit-texts
                 etContactNo.getBackground()
                         .setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN);
@@ -619,8 +689,12 @@ public class ProfileHeaderFragment
             ImageUtils.setCircularImage(ivProfileImage, profileImageUrl);
 
             ArrayList<String> skillset = null;
-            if(user.getSkillSet() != null)
+
+            if(user.getSkillSet() != null) {
                 skillset = (ArrayList<String>) user.getSkillSet();
+                skillsCardPagerAdapter.addAll(skillset);
+                skillsCardPagerAdapter.notifyDataSetChanged();
+            }
 
             ArrayList<String> media;
             if(user.getMedia() != null) {
@@ -791,17 +865,22 @@ public class ProfileHeaderFragment
         {
 
             if(isSetVisible) {
-                etProfileEmail.setVisibility(View.VISIBLE);
-                ibProfileEmail.setVisibility(View.VISIBLE);
-                etContactNo.setVisibility(View.VISIBLE);
-                ibContactPhone.setVisibility(View.VISIBLE);
+//                etProfileEmail.setVisibility(View.VISIBLE);
+//                ibProfileEmail.setVisibility(View.VISIBLE);
+//                etContactNo.setVisibility(View.VISIBLE);
+//                ibContactPhone.setVisibility(View.VISIBLE);
+
+                llContactUserButtons.setVisibility(View.VISIBLE);
+
             }
             else
             {
-                etProfileEmail.setVisibility(View.GONE);
-                etContactNo.setVisibility(View.GONE);
-                ibContactPhone.setVisibility(View.GONE);
-                ibProfileEmail.setVisibility(View.GONE);
+//                etProfileEmail.setVisibility(View.GONE);
+//                etContactNo.setVisibility(View.GONE);
+//                ibContactPhone.setVisibility(View.GONE);
+//                ibProfileEmail.setVisibility(View.GONE);
+
+                llContactUserButtons.setVisibility(View.GONE);
             }
 
         }

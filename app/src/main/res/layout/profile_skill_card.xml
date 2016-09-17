@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/cardView"
+    app:cardUseCompatPadding="true"
+    android:layout_gravity="center"
+    app:cardCornerRadius="6dp"
+    >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+
+            android:id="@+id/ivSkill"
+            android:layout_gravity="top|center_horizontal"
+            android:src="@drawable/ic_skillset_gray"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Skill"
+            android:id="@+id/tvSkill"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:textAlignment="center"
+            android:singleLine="true"
+            android:textSize="10dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+    </FrameLayout>
+
+</android.support.v7.widget.CardView >
