@@ -196,6 +196,30 @@ public class Address {
         return "";
     }
 
+    public static String getShortDisplayString(Address address)
+    {
+        try
+        {
+            String displayString = "";
+
+            if (address.getCity() != null && address.getState() != null) {
+                displayString =
+                        String.format("%s, %s",
+                                address.getCity(),
+                                address.getState()
+                        );
+            }
+
+            return displayString;
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error generating display string");
+        }
+        return "";
+    }
+
+
     public static String getMapAddress(Address address) {
 
         String streetAddress= address.getStreetAddress();

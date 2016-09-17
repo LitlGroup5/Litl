@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:background="#66000000">
+            android:background="@drawable/wall_background">
 
             <ImageView
                 android:layout_width="70dp"

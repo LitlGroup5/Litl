@@ -130,7 +130,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         tvDescription.setText(task.getTitle());
 
         TextView tvAddress = (TextView) taskCardView.findViewById(R.id.tvAddress);
-        tvAddress.setText(Address.getDisplayString(task.getAddress()));
+        tvAddress.setText(Address.getShortDisplayString(task.getAddress()));
 
 //        TextView tvDeadlineDate = (TextView) taskCardView.findViewById(R.id.tvDeadlineDate);
 //        tvDeadlineDate.setText(DateUtils.getRelativeTimeAgo(task.getDeadlineDate()));
