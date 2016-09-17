@@ -13,4 +13,18 @@
         <item>@string/recreation</item>
         <item>@string/plumbing</item>
     </string-array>
+
+    <integer-array name="categories_drawable_values">
+        <item>@drawable/all_categories</item>
+        <item>@drawable/automobile</item>
+        <item>@drawable/groceries</item>
+        <item>@drawable/shrug_icon</item>
+        <item>@drawable/house_cleaning</item>
+        <item>@drawable/electronics</item>
+        <item>@drawable/arts_and_crafts</item>
+        <item>@drawable/gardening</item>
+        <item>@drawable/woodworking</item>
+        <item>@drawable/recreation</item>
+        <item>@drawable/plumbing</item>
+    </integer-array>
 </resources>

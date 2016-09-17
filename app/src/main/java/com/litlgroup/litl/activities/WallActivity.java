@@ -16,7 +16,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -26,10 +25,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
@@ -44,6 +41,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.fragments.BookmarksFragment;
+import com.litlgroup.litl.fragments.CategorySelectionFragment;
 import com.litlgroup.litl.fragments.WallFragment;
 import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Notifications;
@@ -63,12 +61,11 @@ import butterknife.BindColor;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class WallActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class WallActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, CategorySelectionFragment.BottomSheetFragmentListener {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
-    private Spinner categorySpinner;
     private ImageView ivProfileImage;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -76,6 +73,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     private static String BOOKMARKS_TITLE = "Bookmarks";
     private static String ALL_CATEGORIES_TITLE = "All Categories";
     private GoogleApiClient mGoogleApiClient;
+
+    int selectedCategoryIndex = 0;
 
     @BindColor(R.color.colorAccent)
     int mAccentColor;
@@ -133,6 +132,8 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         setupNavigationDrawerLayout();
 
         setupNotificationListener();
+
+        returnToWallFragment(null);
     }
 
     private void setupNavigationDrawerLayout() {
@@ -193,8 +194,7 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         String selectedTitle = (String) title;
 
         List<String> categoryStrings = Arrays.asList(getResources().getStringArray(R.array.categories_array_values));
-        int selectedCategoryIndex = categoryStrings.indexOf(selectedTitle);
-        categorySpinner.setSelection(selectedCategoryIndex);
+        selectedCategoryIndex = categoryStrings.indexOf(selectedTitle);
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
@@ -259,29 +259,15 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_wall, menu);
-        MenuItem spinnerItem = menu.findItem(R.id.spinner_wall);
-        categorySpinner = (Spinner) MenuItemCompat.getActionView(spinnerItem);
-        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (toolbar.getTitle().toString().equalsIgnoreCase(BOOKMARKS_TITLE)) {
-                    loadFragmentIntoFrameLayout(BookmarksFragment.newInstance(categorySpinner.getSelectedItem().toString()));
-                } else {
-                    returnToWallFragment();
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
 
         return true;
     }
 
-    private void returnToWallFragment() {
-        String selectedCategory = categorySpinner.getSelectedItem().toString();
-        if (selectedCategory.equalsIgnoreCase("All Categories")) {
+    private void returnToWallFragment(String selectedCategory) {
+        if (selectedCategory != null && selectedCategory.equalsIgnoreCase("All Categories")) {
             selectedCategory = null;
         }
+
         loadFragmentIntoFrameLayout(WallFragment.newInstance(selectedCategory));
     }
 
@@ -289,6 +275,16 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
+        }
+
+        switch (item.getItemId()) {
+            case R.id.spinner_wall: {
+                CategorySelectionFragment myDialog = CategorySelectionFragment.newInstance(selectedCategoryIndex);
+                myDialog.setBottomSheetFragmentListener(this);
+
+                FragmentManager fm = getSupportFragmentManager();
+                myDialog.show(fm, Constants.CATEGORY_FRAGMENT);
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -432,5 +428,16 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
         notificationManager.notify(0, n.build());
 
         mDatabase.child(Constants.TABLE_NOTIFICATIONS).child(notifications.getId()).removeValue();
+    }
+
+    @Override
+    public void onClick(int position, String category) {
+        selectedCategoryIndex = position;
+
+        if (toolbar.getTitle().toString().equalsIgnoreCase(BOOKMARKS_TITLE)) {
+            loadFragmentIntoFrameLayout(BookmarksFragment.newInstance(category));
+        } else {
+            returnToWallFragment(category);
+        }
     }
 }
