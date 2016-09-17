@@ -617,6 +617,7 @@ public class ProfileHeaderFragment
             String profileImageUrl = user.getPhoto();
 
             ImageUtils.setCircularImage(ivProfileImage, profileImageUrl);
+
             ArrayList<String> skillset = null;
             if(user.getSkillSet() != null)
                 skillset = (ArrayList<String>) user.getSkillSet();
