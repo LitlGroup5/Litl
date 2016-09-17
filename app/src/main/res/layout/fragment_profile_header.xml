@@ -52,7 +52,6 @@
                         android:layout_alignParentStart="true"
                         tools:src="@drawable/ic_profile_placeholder"
                         android:layout_marginLeft="8dp"
-                        android:scaleType="center"
                         android:adjustViewBounds="true" />
 
 
@@ -114,7 +113,6 @@
                 </LinearLayout>
 
                 </RelativeLayout>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -267,12 +265,38 @@
                         tools:text="3214597836" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/llSkillsPager"
+                    >
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/vpProfileSkills"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_gravity="center"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+
+                    android:paddingBottom="0dp"
+                    android:paddingEnd="@dimen/card_padding"
+                    android:paddingLeft="@dimen/card_padding"
+                    android:paddingRight="@dimen/card_padding"
+                    android:paddingStart="@dimen/card_padding"
+
+                    android:background="@color/colorTransparent"
+
+                    />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/llSkillsDescription"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="40dp"
@@ -352,6 +376,7 @@
                 </LinearLayout>
 
             </LinearLayout>
+
         </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>

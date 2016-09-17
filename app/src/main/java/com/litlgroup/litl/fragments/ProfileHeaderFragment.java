@@ -44,6 +44,7 @@ import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.activities.MediaFullScreenActivity;
 import com.litlgroup.litl.activities.ProfileActivity;
+import com.litlgroup.litl.adapters.SkillsCardPagerAdapter;
 import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.User;
 import com.litlgroup.litl.utils.AdvancedMediaPagerAdapter;
@@ -154,6 +155,17 @@ public class ProfileHeaderFragment
     @BindView(R.id.ibEmailUser)
     ImageButton ibEmailUser;
 
+    @BindView(R.id.llSkillsDescription)
+    LinearLayout llSkillsDescription;
+
+    @BindView(R.id.llSkillsPager)
+    LinearLayout llSkillsPager;
+
+    @BindView(R.id.vpProfileSkills)
+    ViewPager vpProfileSkills;
+
+    private SkillsCardPagerAdapter skillsCardPagerAdapter;
+
     private Menu mMenu;
 
     ArrayList<String> mediaUrls;
@@ -209,12 +221,29 @@ public class ProfileHeaderFragment
             categorySelectedFlags = new boolean[multiSpAdapter.getCount()];
             multiSpSkills.setAdapter(multiSpAdapter, false, onSelectedListener);
             initializeMultiSpSkills();
+
+            setupSkillsPager();
+
         }
         catch (Exception ex)
         {
             Timber.e("Error creating View", ex);
         }
         return view;
+    }
+
+    private void setupSkillsPager()
+    {
+        try
+        {
+            skillsCardPagerAdapter = new SkillsCardPagerAdapter(getActivity());
+            vpProfileSkills.setAdapter(skillsCardPagerAdapter);
+            vpProfileSkills.setOffscreenPageLimit(2);
+        }
+        catch (Exception ex)
+        {
+            Timber.e("Error setting up skills pager");
+        }
     }
 
     private void initializeMultiSpSkills()
@@ -558,6 +587,10 @@ public class ProfileHeaderFragment
                 llPhone.setVisibility(View.VISIBLE);
 
 
+                //Display skills related edit fields
+                llSkillsDescription.setVisibility(View.VISIBLE);
+                llSkillsPager.setVisibility(View.GONE);
+
 
                 //Add the underbar to necessary edit-texts
                 etContactNo.getBackground()
@@ -566,6 +599,7 @@ public class ProfileHeaderFragment
                         .setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
                 etProfileAddress.getBackground()
                         .setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+
 
                 etSkills.setVisibility(View.INVISIBLE);
                 multiSpSkills.setVisibility(View.VISIBLE);
@@ -583,6 +617,9 @@ public class ProfileHeaderFragment
                 llEmail.setVisibility(View.GONE);
                 llPhone.setVisibility(View.GONE);
 
+                //Display skills related edit fields
+                llSkillsDescription.setVisibility(View.GONE);
+                llSkillsPager.setVisibility(View.VISIBLE);
 
                 //Remove the underbar from edit-texts
                 etContactNo.getBackground()
@@ -652,8 +689,12 @@ public class ProfileHeaderFragment
             ImageUtils.setCircularImage(ivProfileImage, profileImageUrl);
 
             ArrayList<String> skillset = null;
-            if(user.getSkillSet() != null)
+
+            if(user.getSkillSet() != null) {
                 skillset = (ArrayList<String>) user.getSkillSet();
+                skillsCardPagerAdapter.addAll(skillset);
+                skillsCardPagerAdapter.notifyDataSetChanged();
+            }
 
             ArrayList<String> media;
             if(user.getMedia() != null) {
