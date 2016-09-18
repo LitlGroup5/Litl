@@ -164,6 +164,15 @@ public class ProfileHeaderFragment
     @BindView(R.id.vpProfileSkills)
     ViewPager vpProfileSkills;
 
+    @BindView(R.id.llAboutMeEdit)
+    LinearLayout llAboutMeEdit;
+
+    @BindView(R.id.llAboutMeDisplay)
+    LinearLayout llAboutMeDisplay;
+
+    @BindView(R.id.tvAboutMe)
+    TextView tvAboutMe;
+
     private SkillsCardPagerAdapter skillsCardPagerAdapter;
 
     private Menu mMenu;
@@ -582,6 +591,11 @@ public class ProfileHeaderFragment
                 //hide the linear layout that contains the contact image buttons
                 llContactUserButtons.setVisibility(View.GONE);
 
+
+                //About me:
+                llAboutMeDisplay.setVisibility(View.GONE);
+                llAboutMeEdit.setVisibility(View.VISIBLE);
+
                 //show the linear layouts that contain the editable fields for email and phone
                 llEmail.setVisibility(View.VISIBLE);
                 llPhone.setVisibility(View.VISIBLE);
@@ -600,7 +614,7 @@ public class ProfileHeaderFragment
                 etProfileAddress.getBackground()
                         .setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
-
+                //Skills
                 etSkills.setVisibility(View.INVISIBLE);
                 multiSpSkills.setVisibility(View.VISIBLE);
                 multiSpSkills.getBackground()
@@ -612,6 +626,11 @@ public class ProfileHeaderFragment
             {
                 //show the linear layout that contains the contact image buttons
                 llContactUserButtons.setVisibility(View.VISIBLE);
+
+
+                //About me:
+                llAboutMeDisplay.setVisibility(View.VISIBLE);
+                llAboutMeEdit.setVisibility(View.GONE);
 
                 //Hide the linear layouts that contain the editable fields for email and phone
                 llEmail.setVisibility(View.GONE);
@@ -694,6 +713,9 @@ public class ProfileHeaderFragment
                 skillset = (ArrayList<String>) user.getSkillSet();
                 skillsCardPagerAdapter.addAll(skillset);
                 skillsCardPagerAdapter.notifyDataSetChanged();
+                if(skillsCardPagerAdapter.getCount() >= 1) {
+                    vpProfileSkills.setCurrentItem(1);
+                }
             }
 
             ArrayList<String> media;
@@ -729,9 +751,10 @@ public class ProfileHeaderFragment
             if(email!=null && !email.isEmpty())
                 etProfileEmail.setText(email);
 
-            if(bio != null && !bio.isEmpty())
+            if(bio != null && !bio.isEmpty()) {
                 etAboutMe.setText(bio);
-
+                tvAboutMe.setText(bio);
+            }
             if(contactNo != null && !contactNo.isEmpty())
                 etContactNo.setText(contactNo);
 

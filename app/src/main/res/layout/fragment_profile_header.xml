@@ -46,12 +46,9 @@
                         android:layout_gravity="start|bottom"
                         android:alpha="0.8"
                         android:background="@drawable/profile_background"
-                        android:padding="@dimen/image_border"
                         android:transitionName="profile"
-                        android:layout_centerVertical="true"
                         android:layout_alignParentStart="true"
                         tools:src="@drawable/ic_profile_placeholder"
-                        android:layout_marginLeft="8dp"
                         android:adjustViewBounds="true" />
 
 
@@ -117,8 +114,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:id="@+id/llAboutMeEdit"
+                    android:visibility="gone"
+                    >
 
                     <ImageView
                         android:layout_width="40dp"
@@ -130,7 +131,7 @@
                         android:src="@drawable/ic_about"
                         android:visibility="gone" />
 
-                    <com.uncopt.android.widget.text.justify.JustifiedEditText
+                    <EditText
                         android:id="@+id/etAboutMe"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -140,8 +141,27 @@
                         android:inputType="textMultiLine"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="#000000"
-                        tools:text="I&apos;m a freelance carpenter who enjoys giving woodwork an artistic touch that suits not just your needs but also your room."
-                        android:textAlignment="center" />
+                        tools:text="I&apos;m a freelance carpenter who enjoys giving woodwork an artistic touch that suits not just your needs but also your room." />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/llAboutMeDisplay"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp">
+                    <com.uncopt.android.widget.text.justify.JustifiedTextView
+                        android:id="@+id/tvAboutMe"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Say something about yourself"
+                        android:inputType="textMultiLine"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#000000"
+                        tools:text="I&apos;m a freelance carpenter who enjoys giving woodwork an artistic touch that suits not just your needs but also your room." />
 
                 </LinearLayout>
 
@@ -199,10 +219,11 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="8dp"
                     android:orientation="horizontal"
                     android:id="@+id/llEmail"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
 
                     <ImageView
                         android:id="@+id/ibProfileEmail"
@@ -231,10 +252,11 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="8dp"
                     android:orientation="horizontal"
                     android:id="@+id/llPhone"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
 
                     <ImageView
                         android:id="@+id/ibContactPhone"
@@ -293,10 +315,11 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
                     android:orientation="horizontal"
                     android:id="@+id/llSkillsDescription"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
 
                     <ImageView
                         android:layout_width="40dp"
@@ -331,6 +354,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:visibility="invisible" />
+
                     </FrameLayout>
 
                 </LinearLayout>
@@ -344,9 +368,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginRight="8dp">
+                        android:layout_marginTop="8dp">
 
                         <ImageView
                             android:layout_width="40dp"
