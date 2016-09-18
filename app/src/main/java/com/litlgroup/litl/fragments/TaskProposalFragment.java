@@ -471,7 +471,7 @@ public class TaskProposalFragment
             new LovelyStandardDialog(getActivity())
                     .setTopColorRes(android.R.color.holo_orange_light)
                     .setTopTitle("Are you sure?")
-                    .setTopTitleColor(Color.BLACK)
+                    .setTopTitleColor(Color.WHITE)
                     .setButtonsColorRes(R.color.colorAccent)
                     .setMessage("Are you sure you want to mark this task complete?")
                     .setPositiveButton("Yes", new View.OnClickListener() {

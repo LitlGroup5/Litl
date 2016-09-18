@@ -211,7 +211,7 @@ public class BidsAdapter
         new LovelyStandardDialog(mContext)
                 .setTopColorRes(android.R.color.holo_orange_light)
                 .setTopTitle("Are you sure?")
-                .setTopTitleColor(Color.BLACK)
+                .setTopTitleColor(Color.WHITE)
                 .setButtonsColorRes(R.color.colorAccent)
                 .setMessage("Are you sure you want to accept this bid?")
                 .setPositiveButton("Yes", new View.OnClickListener() {
