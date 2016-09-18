@@ -43,6 +43,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.ProfileActivity"
+            android:label="Profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.MediaFullScreenActivity"
