@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.net.Uri;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +30,9 @@ import com.litlgroup.litl.utils.ImageUtils;
 
 import org.parceler.Parcels;
 
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.List;
 
 import timber.log.Timber;
 
@@ -99,12 +102,16 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         });
 
         if (task.getMedia().size() > 0) {
-            Glide.with(taskCardView.getContext()).load(task.getMedia().get(0))
-                    .sizeMultiplier(0.5f)
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(ivBackground);
-            convertClosedTaskBackgroundImageToBlackAndWhite(ivBackground, task.getType());
+            String url = getImageUrl(task.getMedia());
+
+            if (url != null) {
+                Glide.with(taskCardView.getContext()).load(url)
+                        .sizeMultiplier(0.5f)
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(ivBackground);
+                convertClosedTaskBackgroundImageToBlackAndWhite(ivBackground, task.getType());
+            }
         } else {
             Glide.clear(ivBackground);
         }
@@ -214,4 +221,31 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
     {
         public void onLaunchTaskDetail(Task task, View background);
     }
+
+    public String getImageUrl(List<String> urls) {
+        for (String url : urls) {
+            if (isImageFile(url))
+                return url;
+        }
+
+        return null;
+    }
+
+    public boolean isImageFile(String path) {
+        if(path == null || path.isEmpty())
+            return false;
+        Uri uri = Uri.parse(path);
+        if(uri != null &&
+                uri.getAuthority() != null &&
+                uri.getAuthority().contains("firebase")) { //if loading from firebase url
+            if(path.contains("image") || path.contains("jpg"))
+                return true;
+        }
+        else {
+            String mimeType = URLConnection.guessContentTypeFromName(path);
+            return mimeType != null && mimeType.indexOf("image") == 0;
+        }
+        return false;
+    }
+
 }
