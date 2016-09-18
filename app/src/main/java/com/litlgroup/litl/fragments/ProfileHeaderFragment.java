@@ -677,8 +677,8 @@ public class ProfileHeaderFragment
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             try {
                                 onScreenUser = dataSnapshot.getValue(User.class);
-                                if(onScreenUser.getConnections().contains(currentAuthorizedUId))
-                                    setPrivateInfoVisibility(true);
+//                                if(onScreenUser.getConnections().contains(currentAuthorizedUId))
+//                                    setPrivateInfoVisibility(true);
                                 populateUserData(onScreenUser);
                             } catch (Exception ex) {
                                 Timber.e("Error getting snapshot value", ex);
