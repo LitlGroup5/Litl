@@ -713,6 +713,9 @@ public class ProfileHeaderFragment
                 skillset = (ArrayList<String>) user.getSkillSet();
                 skillsCardPagerAdapter.addAll(skillset);
                 skillsCardPagerAdapter.notifyDataSetChanged();
+                if(skillsCardPagerAdapter.getCount() >= 1) {
+                    vpProfileSkills.setCurrentItem(1);
+                }
             }
 
             ArrayList<String> media;
