@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -20,6 +21,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +31,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -47,7 +53,6 @@ import com.litlgroup.litl.models.Address;
 import com.litlgroup.litl.models.Notifications;
 import com.litlgroup.litl.models.Task;
 import com.litlgroup.litl.utils.Constants;
-import com.litlgroup.litl.utils.ImageUtils;
 import com.sdsmdg.tastytoast.TastyToast;
 
 import org.parceler.Parcels;
@@ -59,14 +64,15 @@ import java.util.Map;
 
 import butterknife.BindColor;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import timber.log.Timber;
 
 public class WallActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, CategorySelectionFragment.BottomSheetFragmentListener {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
+    ImageView ivProfileImage;
     private ActionBarDrawerToggle drawerToggle;
-    private ImageView ivProfileImage;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
@@ -78,6 +84,10 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
 
     @BindColor(R.color.colorAccent)
     int mAccentColor;
+    @BindColor(R.color.colorPrimaryDark)
+    int mPrimaryDark;
+    @BindColor(R.color.colorPrimary)
+    int mColorPrimary;
 
     private ValueEventListener notificationListener = new ValueEventListener() {
         @Override
@@ -149,12 +159,30 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
 
         View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
         setupHeaderDrawerLayout(headerLayout);
-        headerLayout.setBackgroundResource(R.drawable.wood);
     }
 
-    private void setupHeaderDrawerLayout(View headerLayout) {
+    private void setupHeaderDrawerLayout(final View headerLayout) {
         ivProfileImage = (ImageView) headerLayout.findViewById(R.id.ivProfileImage_header);
-        ImageUtils.setCircularImage(ivProfileImage, mFirebaseUser.getPhotoUrl().toString());
+
+        Glide.with(ivProfileImage.getContext())
+                .load( mFirebaseUser.getPhotoUrl().toString())
+                .asBitmap()
+                .placeholder(R.drawable.ic_profile_placeholder)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .transform(new CropCircleTransformation(ivProfileImage.getContext()))
+                .into(new BitmapImageViewTarget(ivProfileImage) {
+                          @Override
+                          public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                              super.onResourceReady(resource, glideAnimation);
+                              Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                                  public void onGenerated(Palette palette) {
+                                      int color = palette.getMutedColor(mPrimaryDark);
+                                      headerLayout.setBackgroundColor(color);
+                                  }
+                              });
+                          }
+                      }
+                );
 
         TextView userName = (TextView) headerLayout.findViewById(R.id.userName);
         String fullName = mFirebaseUser.getDisplayName();
