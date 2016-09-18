@@ -3,6 +3,7 @@ package com.litlgroup.litl.fragments;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -297,9 +298,10 @@ public class TaskProposalFragment
     private void showConfirmDeleteDialog() {
 
         new LovelyStandardDialog(getActivity())
-                .setTopColorRes(android.R.color.holo_orange_light)
+                .setTopColorRes(android.R.color.holo_orange_dark)
+                .setTopTitle("Are you sure?")
+                .setTopTitleColor(Color.WHITE)
                 .setButtonsColorRes(R.color.colorAccent)
-                .setTitle("Are you sure?")
                 .setMessage("Are you sure you want to delete this task?")
                 .setPositiveButton("Yes", new View.OnClickListener() {
                     @Override
@@ -467,8 +469,10 @@ public class TaskProposalFragment
         try
         {
             new LovelyStandardDialog(getActivity())
+                    .setTopColorRes(android.R.color.holo_orange_light)
+                    .setTopTitle("Are you sure?")
+                    .setTopTitleColor(Color.BLACK)
                     .setButtonsColorRes(R.color.colorAccent)
-                    .setTitle("Are you sure?")
                     .setMessage("Are you sure you want to mark this task complete?")
                     .setPositiveButton("Yes", new View.OnClickListener() {
                         @Override

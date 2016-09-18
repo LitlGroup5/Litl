@@ -1,6 +1,7 @@
 package com.litlgroup.litl.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -209,9 +210,9 @@ public class BidsAdapter
 
         new LovelyStandardDialog(mContext)
                 .setTopColorRes(android.R.color.holo_orange_light)
+                .setTopTitle("Are you sure?")
+                .setTopTitleColor(Color.BLACK)
                 .setButtonsColorRes(R.color.colorAccent)
-//                .setIcon(R.drawable.ic_star_border_white_36dp)
-                .setTitle("Are you sure?")
                 .setMessage("Are you sure you want to accept this bid?")
                 .setPositiveButton("Yes", new View.OnClickListener() {
                     @Override
@@ -229,9 +230,9 @@ public class BidsAdapter
         final boolean[] isConfirmedReject = {false};
         new LovelyStandardDialog(mContext)
                 .setTopColorRes(android.R.color.holo_orange_dark)
+                .setTopTitle("Are you sure?")
+                .setTopTitleColor(Color.WHITE)
                 .setButtonsColorRes(R.color.colorAccent)
-//                .setIcon(R.drawable.ic_star_border_white_36dp)
-                .setTitle("Are you sure?")
                 .setMessage("Are you sure you want to reject this bid?")
                 .setPositiveButton("Yes", new View.OnClickListener() {
                     @Override
