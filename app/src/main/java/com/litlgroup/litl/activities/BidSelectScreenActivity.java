@@ -269,7 +269,12 @@ public class BidSelectScreenActivity
         String key = database.child(Constants.TABLE_NOTIFICATIONS).push().getKey();
 
         Notifications notifications = new Notifications();
-        notifications.setAccepted(isTaskBidAccepted);
+
+        if (isTaskBidAccepted)
+            notifications.setType("ACCEPTED");
+        else
+            notifications.setType("REJECTED");
+
         notifications.setTaskId(thisTaskId);
 
         database.child(Constants.TABLE_NOTIFICATIONS).child(key).setValue(notifications);

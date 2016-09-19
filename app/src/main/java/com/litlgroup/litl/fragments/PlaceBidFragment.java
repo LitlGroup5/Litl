@@ -15,9 +15,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.litlgroup.litl.R;
 import com.litlgroup.litl.models.Bids;
+import com.litlgroup.litl.models.Notifications;
 import com.litlgroup.litl.models.UserSummary;
 import com.litlgroup.litl.utils.Constants;
 import com.sdsmdg.tastytoast.TastyToast;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,11 +35,12 @@ public class PlaceBidFragment extends BottomSheetDialogFragment {
 
     }
 
-    public static PlaceBidFragment newInstance(String taskKey, Integer bidBy) {
+    public static PlaceBidFragment newInstance(String taskKey, Integer bidBy, String createdBy) {
         PlaceBidFragment frag = new PlaceBidFragment();
 
         frag.taskKey = taskKey;
         frag.bidBy = bidBy;
+        frag.createdBy = createdBy;
 
         return frag;
     }
@@ -49,6 +53,7 @@ public class PlaceBidFragment extends BottomSheetDialogFragment {
 
     private String taskKey;
     private Integer bidBy;
+    private String createdBy;
 
     private Unbinder unbinder;
 
@@ -85,6 +90,7 @@ public class PlaceBidFragment extends BottomSheetDialogFragment {
 
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                 writeNewOffer(price, taskKey, FirebaseAuth.getInstance().getCurrentUser(), bidBy);
+                updateNotifications(price, taskKey);
                 TastyToast.makeText(getActivity(), "The bid has been placed!", TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
 
             } else {
@@ -127,5 +133,22 @@ public class PlaceBidFragment extends BottomSheetDialogFragment {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    private void updateNotifications(float price, String taskId) {
+
+        String key = mDatabase.child(Constants.TABLE_NOTIFICATIONS).push().getKey();
+
+        Notifications notifications = new Notifications();
+
+        notifications.setType("BID");
+        notifications.setTaskId(taskId);
+        notifications.setBid(String.valueOf(price));
+
+        mDatabase.child(Constants.TABLE_NOTIFICATIONS).child(key).setValue(notifications);
+
+        HashMap<String, Object> usermap = new HashMap<>();
+        usermap.put(createdBy, true);
+        mDatabase.child(Constants.TABLE_NOTIFICATIONS).child(key).updateChildren(usermap);
     }
 }

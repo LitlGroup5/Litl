@@ -320,7 +320,7 @@ public class TaskOffersFragment
     public void bidNow() {
         Timber.d("Bid Now Clicked");
 
-        PlaceBidFragment myDialog = PlaceBidFragment.newInstance(mTask.getId(), mTask.getBidBy());
+        PlaceBidFragment myDialog = PlaceBidFragment.newInstance(mTask.getId(), mTask.getBidBy(), mTask.getUser().getId());
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
         myDialog.show(fm, Constants.BID_NOW_FRAGMENT);

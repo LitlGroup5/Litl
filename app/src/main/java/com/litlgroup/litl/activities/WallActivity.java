@@ -406,18 +406,6 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void showNotification(Notifications notifications, Task task) {
-        Intent intent = new Intent(this, TaskDetailActivity.class);
-        task.setId(notifications.getTaskId());
-        task.setType(Task.Type.OFFER);
-        intent.putExtra(Constants.SELECTED_TASK, Parcels.wrap(task));
-
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(TaskDetailActivity.class);
-        stackBuilder.addNextIntent(intent);
-
-        PendingIntent detailPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
         Intent callIntent = new Intent(Intent.ACTION_DIAL);
         callIntent.setData(Uri.parse("tel: 8587768432"));
         PendingIntent callPendingIntent = PendingIntent.getActivity(this, 1, callIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -434,28 +422,74 @@ public class WallActivity extends AppCompatActivity implements GoogleApiClient.O
                 R.drawable.ic_person_location, "Directions", mapPendingIntent)
                 .build();
 
-        String state = "rejected";
+        NotificationCompat.Builder n = null;
 
-        if (notifications.getAccepted())
-            state = "accepted";
+        if (notifications.getType().equals("ACCEPTED") || notifications.getType().equals("REJECTED")) {
+            String state = "rejected";
 
-        NotificationCompat.Builder n  = new NotificationCompat.Builder(this)
-                .setContentTitle("Offer " + state)
-                .setContentText("Your offer for Litl task " + task.getTitle() + " has been " + state)
-                .setSmallIcon(R.drawable.proposals_icon)
-                .setContentIntent(detailPendingIntent)
-                .setColor(mAccentColor)
-                .addAction(callAction)
-                .addAction(mapAction)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setAutoCancel(true);
+            if (notifications.getType().equals("ACCEPTED")) {
+                state = "accepted";
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                n = new NotificationCompat.Builder(this)
+                        .setContentTitle("Offer " + state)
+                        .setContentText("Your offer for Litl task " + task.getTitle() + " has been " + state)
+                        .setStyle(new NotificationCompat.BigTextStyle())
+                        .setSmallIcon(R.drawable.proposals_icon)
+                        .setContentIntent(getTaskDetailPendingIntent(notifications, task, Task.Type.OFFER))
+                        .setColor(mAccentColor)
+                        .addAction(callAction)
+                        .addAction(mapAction)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        .setAutoCancel(true);
 
-        notificationManager.notify(0, n.build());
+            } else if (notifications.getType().equals("REJECTED")) {
+                state = "rejected";
 
-        mDatabase.child(Constants.TABLE_NOTIFICATIONS).child(notifications.getId()).removeValue();
+                n = new NotificationCompat.Builder(this)
+                        .setContentTitle("Offer " + state)
+                        .setContentText("Your offer for Litl task " + task.getTitle() + " has been " + state)
+                        .setStyle(new NotificationCompat.BigTextStyle())
+                        .setSmallIcon(R.drawable.proposals_icon)
+                        .setContentIntent(getTaskDetailPendingIntent(notifications, task, Task.Type.OFFER))
+                        .setColor(mAccentColor)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        .setAutoCancel(true);
+            }
+        } else if (notifications.getType().equals("BID")) {
+            task.setType(Task.Type.PROPOSAL);
+
+            n = new NotificationCompat.Builder(this)
+                    .setContentTitle("Bid Received")
+                    .setContentText("A new bid of $" + notifications.getBid() + " has been received for your task " + task.getTitle())
+                    .setStyle(new NotificationCompat.BigTextStyle())
+                    .setSmallIcon(R.drawable.proposals_icon)
+                    .setContentIntent(getTaskDetailPendingIntent(notifications, task, Task.Type.PROPOSAL))
+                    .setColor(mAccentColor)
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                    .setAutoCancel(true);
+        }
+
+        if (n != null) {
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            notificationManager.notify(0, n.build());
+
+            mDatabase.child(Constants.TABLE_NOTIFICATIONS).child(notifications.getId()).removeValue();
+        }
+    }
+
+    private PendingIntent getTaskDetailPendingIntent(Notifications notifications, Task task, Task.Type type) {
+        Intent intent = new Intent(this, TaskDetailActivity.class);
+        task.setId(notifications.getTaskId());
+        task.setType(type);
+        intent.putExtra(Constants.SELECTED_TASK, Parcels.wrap(task));
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(TaskDetailActivity.class);
+        stackBuilder.addNextIntent(intent);
+
+        return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override

@@ -5,15 +5,16 @@ package com.litlgroup.litl.models;
  */
 public class Notifications {
     private String id;
-    private Boolean accepted;
+    private String type;
     private String taskId;
+    private String bid;
 
-    public Boolean getAccepted() {
-        return accepted;
+    public String getType() {
+        return type;
     }
 
-    public void setAccepted(Boolean accepted) {
-        this.accepted = accepted;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getTaskId() {
@@ -24,6 +25,13 @@ public class Notifications {
         this.taskId = taskId;
     }
 
+    public String getBid() {
+        return bid;
+    }
+
+    public void setBid(String bid) {
+        this.bid = bid;
+    }
 
     public String getId() {
         return id;
