@@ -1418,16 +1418,17 @@ public class ProfileHeaderFragment
 
     @Override
     public void onStartItemViewClicked(int pageIndex) {
-        startFullScreenMedia();
+        startFullScreenMedia(pageIndex);
     }
 
 
-    public void startFullScreenMedia()
+    public void startFullScreenMedia(int pageIndex)
     {
         try
         {
             Intent intent = new Intent(getActivity(), MediaFullScreenActivity.class);
             intent.putExtra("urls", fileLocalUris);
+            intent.putExtra("pageIndex", pageIndex);
             if(profileMode == ProfileActivity.ProfileMode.ME_CREATE || profileMode == ProfileActivity.ProfileMode.ME_EDIT)
             {
                 intent.putExtra("isEditMode", true); //actually means iscreate/isedit mode

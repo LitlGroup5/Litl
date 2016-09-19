@@ -49,13 +49,16 @@ public class FullScreenMediaFragment
 
     List<String> mediaUrls;
     Boolean isEditMode;
+    int pageIndex;
 
-    public static FullScreenMediaFragment newInstance(List<String> mediaUrls, Boolean isEditMode)
+    public static FullScreenMediaFragment newInstance(List<String> mediaUrls, Boolean isEditMode, int pageIndex)
     {
         FullScreenMediaFragment frag = new FullScreenMediaFragment();
 
         frag.mediaUrls = mediaUrls;
         frag.isEditMode = isEditMode;
+        frag.pageIndex = pageIndex;
+
         return frag;
     }
 
@@ -127,6 +130,8 @@ public class FullScreenMediaFragment
             mediaPagerAdapter.addAll(mediaUrls);
 
             mediaPagerAdapter.notifyDataSetChanged();
+            mVpMedia.setCurrentItem(pageIndex);
+
             circleIndicator.refreshIndicator();
 
             swipe = new Swipe();
@@ -464,7 +469,6 @@ public class FullScreenMediaFragment
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-//        ((MediaFullScreenActivity)getActivity()).updateMediaUrls(mediaUrls, updatedIndices);
     }
 
     @Override

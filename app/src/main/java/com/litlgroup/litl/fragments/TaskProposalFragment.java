@@ -440,10 +440,11 @@ public class TaskProposalFragment
         startActivity(mapIntent);
     }
 
-    public void startFullScreenMedia() {
+    public void startFullScreenMedia(int pageIndex) {
         try {
             Intent intent = new Intent(getActivity(), MediaFullScreenActivity.class);
             intent.putExtra("urls", (ArrayList) mMediaPagerAdapter.getUrls());
+            intent.putExtra("pageIndex", pageIndex);
             startActivity(intent);
         } catch (Exception ex) {
             Timber.e("Error starting full screen media");
@@ -453,7 +454,7 @@ public class TaskProposalFragment
     @Override
     public void onStartItemViewClicked(int pageIndex) {
         try {
-            startFullScreenMedia();
+            startFullScreenMedia(pageIndex);
         } catch (Exception ex) {
             Timber.e("Error launching full screen media", ex);
         }
