@@ -369,6 +369,18 @@ public class TaskProposalFragment
                 mCircleIndicator.refreshIndicator();
             }
 
+            if(task.getStatus().equals(Task.State.IN_BIDDING_PROCESS.toString())
+                    ||
+                    task.getStatus().equals(Task.State.COMPLETE.toString()))
+            {
+                setMarkCompleteOptionVisibility(false);
+
+            }
+            else
+            {
+                setMarkCompleteOptionVisibility(true);
+            }
+
             if(task.getStatus().equals(Task.State.COMPLETE.toString()))
             {
                 ivTaskCompletedIndicator.setVisibility(View.VISIBLE);
@@ -377,6 +389,8 @@ public class TaskProposalFragment
             {
                 ivTaskCompletedIndicator.setVisibility(View.INVISIBLE);
             }
+
+
         }
     }
 
