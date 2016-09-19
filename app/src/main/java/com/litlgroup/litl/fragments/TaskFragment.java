@@ -69,6 +69,7 @@ public class TaskFragment extends Fragment {
     }
 
     public void addMoreTasksForEndlessScrolling(ArrayList<Task> moreTasks) {
+        tasks.clear();
         int startingPoint = tasks.size();
         Collections.reverse(moreTasks);
         tasks.addAll(moreTasks);

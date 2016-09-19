@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -151,9 +152,10 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
         Intent i = new Intent(thisContext, TaskDetailActivity.class);
         i.putExtra(Constants.SELECTED_TASK, Parcels.wrap(chosenTask));
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)thisContext, (View)background , "backgroundImage");
-        thisContext.startActivity(i, options.toBundle());
-//        ((Activity) thisContext).startActivityForResult(i, REQUEST_CODE, options.toBundle());
+        Bundle options = ActivityOptionsCompat.makeCustomAnimation(thisContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+        //ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)thisContext, (View)background , "backgroundImage");
+        ((Activity) thisContext).startActivity(i, options);
+
     }
 
     public void remove(Task task)
