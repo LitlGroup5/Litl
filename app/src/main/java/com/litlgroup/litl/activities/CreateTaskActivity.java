@@ -674,12 +674,12 @@ public class CreateTaskActivity
 
     public final static int FULL_SCREEN_MEDIA_ACTIVITY_REQUEST_CODE = 1044;
 
-    public void startFullScreenMedia() {
+    public void startFullScreenMedia(int pageIndex) {
         try {
             Intent intent = new Intent(CreateTaskActivity.this, MediaFullScreenActivity.class);
             intent.putExtra("urls", fileLocalUris);
             intent.putExtra("isEditMode", true); //actually means iscreate/isedit mode
-//            startActivity(intent);
+            intent.putExtra("pageIndex", pageIndex);
 
             startActivityForResult(intent, FULL_SCREEN_MEDIA_ACTIVITY_REQUEST_CODE);
         } catch (Exception ex) {
@@ -1030,7 +1030,7 @@ public class CreateTaskActivity
 
     @Override
     public void onStartItemViewClicked(int pageIndex) {
-        startFullScreenMedia();
+        startFullScreenMedia(pageIndex);
     }
 
     private String getDefaultDeadlineDate() {

@@ -22,6 +22,8 @@ public class MediaFullScreenActivity extends AppCompatActivity {
     public List<String> mediaUrls;
 
     boolean isEditMode;
+    Integer pageIndex;
+
     FullScreenMediaFragment fullScreenMediaFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +39,14 @@ public class MediaFullScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_media_full_screen);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         mediaUrls = (List<String>) getIntent().getExtras().get("urls");
-
+        pageIndex = getIntent().getIntExtra("pageIndex", 0);
         isEditMode = getIntent().getBooleanExtra("isEditMode", false);
 
         if(savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
             fullScreenMediaFragment
-                    = FullScreenMediaFragment.newInstance(mediaUrls, isEditMode);
+                    = FullScreenMediaFragment.newInstance(mediaUrls, isEditMode, pageIndex);
 
             ft.replace(R.id.flFullScreenMedia, fullScreenMediaFragment);
             ft.commit();
