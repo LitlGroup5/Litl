@@ -22,7 +22,6 @@
             android:adjustViewBounds= "true"
             android:id="@+id/ivBackground"
             android:scaleType="centerCrop"
-            android:transitionName="backgroundImage"
             />
 
         <LinearLayout
