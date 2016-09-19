@@ -273,9 +273,9 @@ public class TaskOffersFragment
             }
 
             if (task.getStatus() != null &&
-                    task.getStatus().equals(Task.State.SUCCESSFULLY_ACCEPTED.toString())
-                    &&
-                    task.getStatus().equals(Task.State.COMPLETE.toString())
+                    (task.getStatus().equals(Task.State.SUCCESSFULLY_ACCEPTED.toString())
+                    ||
+                    task.getStatus().equals(Task.State.COMPLETE.toString()))
                     ) {
                 mBtnBidNow.setEnabled(false);
             }
