@@ -13,10 +13,10 @@ The original poster of the task gets to anonymously choose which bid to accept a
 
 Required:
 
-* [ ] Users can view a launch screen where they can sign up or sign in.
+* [x] Users can view a launch screen where they can sign up or sign in.
 * [ ] Users can sign in using thir social media accounts (Facebook / Google) or using their email address and Litl password.
 * [ ] A new user can sign up with their name, email address and password.
-* [ ] The user profile screen should display information about a registered Litl user - 
+* [x] The user profile screen should display information about a registered Litl user - 
       
       - Profile picture
       - Short description
@@ -26,7 +26,7 @@ Required:
       - Tabbed Reviews (Reviews by the user and of the user)
 * [x] User should be able to look at the detail view of the Tasks in Proposals/Offers 
 * [x] User should be able to create new Proposals 
-* [ ] User should be able to edit existing Proposals 
+* [x] User should be able to edit existing Proposals 
 * [x] User should be able to accept/reject the offers by the other users
 * [x] User should be to Bid for the offers by other users 
 * [ ] User can access a drawer layout menu with following options - 
@@ -55,7 +55,7 @@ Required:
 
 Optional:
 
-* [ ] The launch screen should additionally display a set of quick tour slides
+* [x] The launch screen should additionally display a set of quick tour slides
 * [ ] Add support for connecting LinkedIn and Twitter social media accounts
 * [ ] User can **search for proposals and offers matching a particular query** and see results
 
@@ -70,6 +70,10 @@ Stretch:
 
 ## Video Walkthrough
 
+Here's a walkthrough of implemented user stories:
+
+![](http://imgur.com/6vBYWrn.gif) 
+
 Sprint-2:
 
 http://i.imgur.com/nmv1eKr.gif
@@ -77,9 +81,5 @@ http://i.imgur.com/nmv1eKr.gif
 http://imgur.com/a/HEDxD
 
 http://i.imgur.com/p5cmgGC.gif
-
-Here's a walkthrough of implemented user stories:
-
-![](http://imgur.com/fH3yJju.gif) 
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
